@@ -118,6 +118,30 @@
       background-color: #f3ece0 !important;
       border-color: #e7ded0 !important;
     }
+    /* Schedule Mode Buttons */
+    .mode-btn-active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+    html.dark .mode-btn-active {
+      border-color: #34d399;
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+    }
+    .mode-btn-inactive {
+      border-color: #cbd5e1;
+      background: transparent;
+    }
+    html.dark .mode-btn-inactive {
+      border-color: #334155;
+      background: transparent;
+      color: #94a3b8;
+    }
+    html.light .mode-btn-inactive {
+      border-color: #d6c7b2;
+      color: #78716c;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
@@ -244,6 +268,28 @@
             <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">6. 每局目標分數</label>
             <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
           </div>
+        </div>
+
+        <!-- Schedule Mode Selector -->
+        <div>
+          <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1.5">7. 賽事模式選擇</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="equal" class="w-3.5 h-3.5"></i>
+                <span id="t-mode-fair-title">平均賽事</span>
+              </div>
+              <p id="t-mode-fair-desc" class="text-[10px] font-normal opacity-70">每人場數完全一致，絕對公平</p>
+            </button>
+            <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                <span id="t-mode-max-title">最大賽事</span>
+              </div>
+              <p id="t-mode-max-desc" class="text-[10px] font-normal opacity-70">時間內最大局數，允許些微差異</p>
+            </button>
+          </div>
+          <input type="hidden" id="create-schedule-mode" value="fair" />
         </div>
 
         <!-- Player List -->
@@ -771,35 +817,37 @@
       lucide.createIcons();
     };
 
-    // Helper to calculate exact fair total games so EVERY player plays identical match count
+    // Helper: 公平模式 - 調整總局數使每人場數完全一致
     function getValidTotalGames(n, rawTargetGames) {
       if (n < 4) return 0;
-      let mBlock = n;
-      if (n % 4 === 0) {
-        mBlock = n / 4;
-      } else if (n % 2 === 0) {
-        mBlock = n / 2;
-      } else {
-        mBlock = n;
-      }
-      let blocks = Math.round(rawTargetGames / mBlock);
+      // 找最小區塊大小：每N人輪一圈，每次4人上場
+      // GCD(4, N) 的倍數即為「合法總局數」的最小單位
+      function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+      const blockSize = n / gcd(4, n);  // 每人打1場所需的局數
+      let blocks = Math.round(rawTargetGames / blockSize);
       if (blocks < 1) blocks = 1;
-      return blocks * mBlock;
+      return blocks * blockSize;
+    }
+
+    // Helper: 最大模式 - 直接取最大局數，不調整
+    function getMaxTotalGames(rawTargetGames) {
+      return Math.max(3, rawTargetGames);
     }
 
     // ----------------------------------------------------
     // INDIVIDUAL ROUND ROBIN ALGORITHM (個人雙打輪播)
     // ----------------------------------------------------
-    function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, mode = "auto") {
+    function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair") {
       const n = playersList.length;
       if (n < 4) return [];
 
-      // 1. 計算目標局數
       const totalMinutes = durationHours * 60;
       const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
 
-      // 2. 自動微調總局數，確保「總人次 (4 x 總局數)」能被「人數 N」整除 ➔ 每人場數 100% 完全相同！
-      const totalRounds = getValidTotalGames(n, rawTargetGames);
+      // 平均模式：調整局數確保每人場數完全相同；最大模式：直接用最大局數
+      const totalRounds = scheduleMode === "max"
+        ? getMaxTotalGames(rawTargetGames)
+        : getValidTotalGames(n, rawTargetGames);
 
       const gamesPlayed = {};
       const partneredCount = {};
@@ -864,6 +912,20 @@
     // ----------------------------------------------------
     // PAGE C: CREATE TOURNAMENT & TIME ESTIMATION
     // ----------------------------------------------------
+    window.setScheduleMode = function (mode) {
+      document.getElementById("create-schedule-mode").value = mode;
+      const btnFair = document.getElementById("btn-mode-fair");
+      const btnMax = document.getElementById("btn-mode-max");
+      if (mode === "fair") {
+        btnFair.className = btnFair.className.replace("mode-btn-inactive", "mode-btn-active");
+        btnMax.className = btnMax.className.replace("mode-btn-active", "mode-btn-inactive");
+      } else {
+        btnMax.className = btnMax.className.replace("mode-btn-inactive", "mode-btn-active");
+        btnFair.className = btnFair.className.replace("mode-btn-active", "mode-btn-inactive");
+      }
+      calculateTimeEstimate();
+    };
+
     window.onScoringTypeChange = function () {
       const scoringType = document.getElementById("create-scoring-type").value;
       const gameMinsEl = document.getElementById("create-game-mins");
@@ -887,6 +949,7 @@
       const scoringType = document.getElementById("create-scoring-type").value;
       const targetScore = parseInt(document.getElementById("create-target-score").value) || 15;
       const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
+      const scheduleMode = document.getElementById("create-schedule-mode").value || "fair";
       const hintText = document.getElementById("time-estimate-text");
 
       if (players.length < 4) {
@@ -894,19 +957,29 @@
         return;
       }
 
-      // 總局數計算 = 總時間 / 自訂單局預估時間
       const totalMinutes = durationHours * 60;
       const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
-      const totalGames = getValidTotalGames(players.length, rawTargetGames);
-
-      // 每人場數 = (總局數 * 每局4人) / 總參賽人數
-      const exactGamesPerPlayer = (totalGames * 4) / players.length;
       const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分" : "Rally") : (STATE.lang === "zh-TW" ? "發球得分" : "Side-out");
 
-      if (STATE.lang === "zh-TW") {
-        hintText.innerHTML = `為確保絕對公平，系統自動調整為 <strong class="text-emerald-500">${totalGames} 局賽程</strong> (<strong class="text-amber-500">每人剛好各打 ${exactGamesPerPlayer} 場</strong>，單局約 ${estMinsPerGame} 分鐘)。`;
+      if (scheduleMode === "max") {
+        // 最大賽事：直接用最大局數，場數可能有些微差異
+        const totalGames = getMaxTotalGames(rawTargetGames);
+        const maxGames = Math.ceil(totalGames * 4 / players.length);
+        const minGames = Math.floor(totalGames * 4 / players.length);
+        if (STATE.lang === "zh-TW") {
+          hintText.innerHTML = `時間內最多可安排 <strong class="text-emerald-500">${totalGames} 局賽程</strong>，每人 <strong class="text-amber-500">${minGames}–${maxGames} 場</strong> (單局約 ${estMinsPerGame} 分鐘)。`;
+        } else {
+          hintText.innerHTML = `Up to <strong class="text-emerald-500">${totalGames} games</strong> in ${durationHours}h, <strong class="text-amber-500">${minGames}–${maxGames} games/player</strong> (~${estMinsPerGame} mins/game).`;
+        }
       } else {
-        hintText.innerHTML = `To ensure 100% fair play, schedule is set to <strong class="text-emerald-500">${totalGames} games</strong> (<strong class="text-amber-500">exactly ${exactGamesPerPlayer} games/player</strong>, ~${estMinsPerGame} mins/game).`;
+        // 平均賽事：確保每人場數完全一致
+        const totalGames = getValidTotalGames(players.length, rawTargetGames);
+        const exactGamesPerPlayer = (totalGames * 4) / players.length;
+        if (STATE.lang === "zh-TW") {
+          hintText.innerHTML = `系統自動調整為 <strong class="text-emerald-500">${totalGames} 局賽程</strong>，<strong class="text-amber-500">每人剛好各打 ${exactGamesPerPlayer} 場</strong> (單局約 ${estMinsPerGame} 分鐘)。`;
+        } else {
+          hintText.innerHTML = `Adjusted to <strong class="text-emerald-500">${totalGames} games</strong> — <strong class="text-amber-500">exactly ${exactGamesPerPlayer} games/player</strong> (~${estMinsPerGame} mins/game).`;
+        }
       }
     };
 
@@ -918,8 +991,7 @@
       const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
       const scoringType = document.getElementById("create-scoring-type").value;
       const targetScore = parseInt(document.getElementById("create-target-score").value) || 15;
-      const modeEl = document.getElementById("create-rounds-mode");
-      const mode = modeEl ? modeEl.value : "auto";
+      const scheduleMode = document.getElementById("create-schedule-mode").value || "fair";
       const rawPlayers = document.getElementById("create-players").value;
 
       const players = rawPlayers.split("\n").map(s => s.trim()).filter(Boolean);
@@ -931,7 +1003,7 @@
       }
 
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
-      const matches = generateRoundRobinSchedule(uniquePlayers, duration, estMinsPerGame, mode);
+      const matches = generateRoundRobinSchedule(uniquePlayers, duration, estMinsPerGame, scheduleMode);
 
       const tournamentObj = {
         id: tournamentId,
