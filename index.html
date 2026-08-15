@@ -170,12 +170,12 @@
 
     <!-- ==================== PAGE B: TOURNAMENT HUB ==================== -->
     <section id="page-hub" class="space-y-4 sm:space-y-6">
-      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3">
-        <div>
-          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
-            <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳 (Tournament Hub)
+      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3 text-left">
+        <div class="text-left">
+          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-left">
+            <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
-          <p id="t-hub-desc" class="text-xs sub-text mt-0.5">點擊卡片即可進入即時對戰賽程</p>
+          <p id="t-hub-desc" class="text-xs sub-text mt-0.5 text-left">點擊卡片即可進入即時對戰賽程</p>
         </div>
         <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
           ➕ 建立新賽事
@@ -425,7 +425,7 @@
         dbConnected: "已連線",
 
         // Hub
-        hubTitle: "賽事大廳 (Tournament Hub)",
+        hubTitle: "賽事大廳",
         hubDesc: "點擊卡片即可進入即時對戰賽程",
         createNewBtn: "➕ 建立新賽事",
         statusFinished: "已完賽",
@@ -435,23 +435,27 @@
         gamesDoneLabel: "局完成",
 
         // Create Form
-        createTitle: "建立新賽事 (Create Tournament)",
+        createTitle: "建立新賽事",
         createDesc: "自動計算個人雙打最佳輪播與配時",
         labelName: "1. 賽事名稱",
         labelPin: "2. 管理員 PIN 碼 (4 位數)",
-        labelDuration: "3. 預計比賽時間",
+        labelDuration: "3. 預計比賽總時間",
+        labelGameMins: "4. 預估單局配時",
         unitHours: "小時",
-        labelScoring: "4. 計分賽制選擇",
+        unitMins: "分鐘",
+        labelScoring: "5. 計分賽制選擇",
+        labelTarget: "6. 每局目標分數",
         optionRally: "落地得分制 (Rally)",
         optionSideout: "發球得分制 (Side-out)",
-        labelTarget: "5. 每局目標分數",
-        labelMode: "6. 輪播組數模式",
-        optionAutoRounds: "標準公平輪播 (完整循環)",
-        optionCompactRounds: "精簡快打模式 (節省時間)",
         labelPlayers: "7. 參賽選手名單 (每列一位)",
         playersBadge: "位選手",
         timeCalcTitle: "時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
+
+        // Placeholders
+        placeholderName: "例：週六匹克球狂熱雙打賽",
+        placeholderPin: "4位數字 (刪除賽事用)",
+        placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
         // Live Tournament
         estPrefix: "預估",
@@ -479,9 +483,11 @@
         blueTeam: "🔵 藍隊",
         redTeam: "🔴 紅隊",
         restingLabel: "本局輪空休息：",
+        noResting: "無",
         saveScoreBtn: "儲存比分",
         gameCompleted: "已完成",
         gameInProgress: "未進行",
+        scorePlaceholder: "得分",
 
         // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
@@ -511,18 +517,17 @@
         createDesc: "Generate optimal round robin & time estimation",
         labelName: "1. Tournament Name",
         labelPin: "2. Admin PIN (4 Digits)",
-        labelDuration: "3. Estimated Time",
+        labelDuration: "3. Total Estimated Duration",
+        labelGameMins: "4. Single Game Mins",
         unitHours: "Hrs",
-        labelScoring: "4. Scoring System",
+        unitMins: "Mins",
+        labelScoring: "5. Scoring System",
+        labelTarget: "6. Target Points",
         optionRally: "Rally Scoring",
         optionSideout: "Side-out Scoring",
-        labelTarget: "5. Target Points",
-        labelMode: "6. Round Robin Mode",
-        optionAutoRounds: "Standard Round Robin",
-        optionCompactRounds: "Compact Fast Play",
         labelPlayers: "7. Player Roster (One per line)",
         playersBadge: "Players",
-        timeCalcTitle: "Time Estimate Calculation:",
+        timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
 
         // Live Tournament
@@ -642,23 +647,24 @@
       document.getElementById("t-label-pin").innerText = t("labelPin");
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
+      document.getElementById("t-label-game-mins").innerText = t("labelGameMins");
+      document.getElementById("t-unit-mins").innerText = t("unitMins");
       document.getElementById("t-label-scoring").innerText = t("labelScoring");
       document.getElementById("t-label-target").innerText = t("labelTarget");
-      document.getElementById("t-label-mode").innerText = t("labelMode");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
       document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
       document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
+
+      // Placeholders translation
+      document.getElementById("create-name").placeholder = t("placeholderName");
+      document.getElementById("create-pin").placeholder = t("placeholderPin");
+      document.getElementById("create-players").placeholder = t("placeholderPlayers");
 
       // Select Options
       const scoringSel = document.getElementById("create-scoring-type");
       if (scoringSel) {
         scoringSel.options[0].text = t("optionRally");
         scoringSel.options[1].text = t("optionSideout");
-      }
-      const modeSel = document.getElementById("create-rounds-mode");
-      if (modeSel) {
-        modeSel.options[0].text = t("optionAutoRounds");
-        modeSel.options[1].text = t("optionCompactRounds");
       }
 
       // Live Tournament
@@ -690,6 +696,7 @@
       document.getElementById("t-modal-qr-desc").innerText = t("modalQrDesc");
       document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
 
+      updatePlayerCountBadge();
       calculateTimeEstimate();
       lucide.createIcons();
     }
@@ -1153,7 +1160,7 @@
                   ${m.blue[0]} & ${m.blue[1]}
                 </div>
                 <div class="flex items-center pt-0.5">
-                  <input type="number" min="0" max="99" id="score-blue-${m.id}" value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="得分" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-blue-400" />
+                  <input type="number" min="0" max="99" id="score-blue-${m.id}" value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-blue-400" />
                 </div>
               </div>
 
@@ -1166,7 +1173,7 @@
                   ${m.red[0]} & ${m.red[1]}
                 </div>
                 <div class="flex items-center pt-0.5">
-                  <input type="number" min="0" max="99" id="score-red-${m.id}" value="${m.redScore !== null ? m.redScore : ''}" placeholder="得分" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-rose-400" />
+                  <input type="number" min="0" max="99" id="score-red-${m.id}" value="${m.redScore !== null ? m.redScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-rose-400" />
                 </div>
               </div>
             </div>
@@ -1174,7 +1181,7 @@
             <!-- Resting Players & Save Button Footer -->
             <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
               <div class="sub-text truncate">
-                <span>休息：<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : '無'}</strong></span>
+                <span>${t("restingLabel")}<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : t('noResting')}</strong></span>
               </div>
               <button onclick="saveMatchScore(${m.id})" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1 shrink-0 shadow-sm">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i> ${t("saveScoreBtn")}
