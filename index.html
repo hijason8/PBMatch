@@ -771,6 +771,22 @@
       lucide.createIcons();
     };
 
+    // Helper to calculate exact fair total games so EVERY player plays identical match count
+    function getValidTotalGames(n, rawTargetGames) {
+      if (n < 4) return 0;
+      let mBlock = n;
+      if (n % 4 === 0) {
+        mBlock = n / 4;
+      } else if (n % 2 === 0) {
+        mBlock = n / 2;
+      } else {
+        mBlock = n;
+      }
+      let blocks = Math.round(rawTargetGames / mBlock);
+      if (blocks < 1) blocks = 1;
+      return blocks * mBlock;
+    }
+
     // ----------------------------------------------------
     // INDIVIDUAL ROUND ROBIN ALGORITHM (個人雙打輪播)
     // ----------------------------------------------------
@@ -778,14 +794,12 @@
       const n = playersList.length;
       if (n < 4) return [];
 
-      // 1. 由「總可用分鐘數 / 自訂單局預估分鐘數」計算總共打幾局賽程
+      // 1. 計算目標局數
       const totalMinutes = durationHours * 60;
-      let totalRounds = Math.floor(totalMinutes / estMinsPerGame);
+      const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
 
-      if (mode === "compact") {
-        totalRounds = Math.floor(totalRounds * 0.75);
-      }
-      totalRounds = Math.max(3, totalRounds);
+      // 2. 自動微調總局數，確保「總人次 (4 x 總局數)」能被「人數 N」整除 ➔ 每人場數 100% 完全相同！
+      const totalRounds = getValidTotalGames(n, rawTargetGames);
 
       const gamesPlayed = {};
       const partneredCount = {};
@@ -798,6 +812,7 @@
       const matches = [];
 
       for (let r = 1; r <= totalRounds; r++) {
+        // 嚴格優先選擇場數較少者登場，確保場數完全平衡
         const sorted = [...playersList].sort((a, b) => {
           if (gamesPlayed[a] !== gamesPlayed[b]) return gamesPlayed[a] - gamesPlayed[b];
           return Math.random() - 0.5;
@@ -872,8 +887,6 @@
       const scoringType = document.getElementById("create-scoring-type").value;
       const targetScore = parseInt(document.getElementById("create-target-score").value) || 15;
       const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
-      const modeEl = document.getElementById("create-rounds-mode");
-      const mode = modeEl ? modeEl.value : "auto";
       const hintText = document.getElementById("time-estimate-text");
 
       if (players.length < 4) {
@@ -883,18 +896,17 @@
 
       // 總局數計算 = 總時間 / 自訂單局預估時間
       const totalMinutes = durationHours * 60;
-      let totalGames = Math.floor(totalMinutes / estMinsPerGame);
-      if (mode === "compact") totalGames = Math.floor(totalGames * 0.75);
-      totalGames = Math.max(3, totalGames);
+      const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
+      const totalGames = getValidTotalGames(players.length, rawTargetGames);
 
-      // 每人預估打幾場 = (總局數 * 每局4人) / 總參賽人數
-      const estGamesPerPlayer = Math.round((totalGames * 4 / players.length) * 10) / 10;
+      // 每人場數 = (總局數 * 每局4人) / 總參賽人數
+      const exactGamesPerPlayer = (totalGames * 4) / players.length;
       const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分" : "Rally") : (STATE.lang === "zh-TW" ? "發球得分" : "Side-out");
 
       if (STATE.lang === "zh-TW") {
-        hintText.innerHTML = `設定單局 <strong>${estMinsPerGame} 分鐘</strong> (${scoringLabel} ${targetScore}分)，總時間 <strong>${durationHours}h (${totalMinutes}m)</strong> 將自動安排 <strong class="text-emerald-500">${totalGames} 局賽程</strong> (<strong class="text-amber-500">每人約打 ${estGamesPerPlayer} 場</strong>)。`;
+        hintText.innerHTML = `為確保絕對公平，系統自動調整為 <strong class="text-emerald-500">${totalGames} 局賽程</strong> (<strong class="text-amber-500">每人剛好各打 ${exactGamesPerPlayer} 場</strong>，單局約 ${estMinsPerGame} 分鐘)。`;
       } else {
-        hintText.innerHTML = `Single game <strong>${estMinsPerGame} mins</strong> (${scoringLabel} ${targetScore}pt). Total <strong>${durationHours}h (${totalMinutes}m)</strong> yields <strong class="text-emerald-500">${totalGames} games</strong> (<strong class="text-amber-500">~${estGamesPerPlayer} games/player</strong>).`;
+        hintText.innerHTML = `To ensure 100% fair play, schedule is set to <strong class="text-emerald-500">${totalGames} games</strong> (<strong class="text-amber-500">exactly ${exactGamesPerPlayer} games/player</strong>, ~${estMinsPerGame} mins/game).`;
       }
     };
 
