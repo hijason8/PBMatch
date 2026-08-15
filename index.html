@@ -828,7 +828,16 @@
           console.error("Failed to parse stored Firebase config:", e);
         }
       } else {
-        updateDbStatusBadge(false, t("dbDisconnected"));
+        // Default pre-filled Firebase config
+        const defaultConfig = {
+          apiKey: "AIzaSyDHYf0ooBsXI4XuzRnlO0Sln-X7qswcs_U",
+          databaseURL: "https://pickleball-hub-d0ab1-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "pickleball-hub-d0ab1",
+          authDomain: "pickleball-hub-d0ab1.firebaseapp.com"
+        };
+        STATE.firebaseConfig = defaultConfig;
+        populateConfigFields(defaultConfig);
+        initFirebase(defaultConfig);
       }
     }
 
@@ -842,12 +851,35 @@
     window.parseJsonConfig = function () {
       const raw = document.getElementById("cfg-json-input").value.trim();
       if (!raw) return;
+
       try {
-        const parsed = JSON.parse(raw);
-        populateConfigFields(parsed);
-        showToast(STATE.lang === "zh-TW" ? "已從 JSON 填入欄位！" : "Fields populated from JSON!", "success");
+        let parsed = null;
+        // Extract the object {...} from the code snippet
+        const match = raw.match(/\{[\s\S]*?\}/);
+        if (match) {
+          let cleaned = match[0];
+          // Convert unquoted keys: e.g. apiKey: "..." -> "apiKey": "..."
+          cleaned = cleaned.replace(/([{,]\s*)([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":');
+          cleaned = cleaned.replace(/'/g, '"');
+          cleaned = cleaned.replace(/,\s*([}\]])/g, "$1");
+          parsed = JSON.parse(cleaned);
+        } else {
+          parsed = JSON.parse(raw);
+        }
+
+        if (parsed) {
+          // Auto-derive default databaseURL if missing from snippet
+          if (!parsed.databaseURL && parsed.projectId) {
+            parsed.databaseURL = `https://${parsed.projectId}-default-rtdb.firebaseio.com`;
+          }
+          populateConfigFields(parsed);
+          showToast(STATE.lang === "zh-TW" ? "已成功解析並填入欄位！" : "Fields populated!", "success");
+        } else {
+          throw new Error("Missing config object");
+        }
       } catch (e) {
-        showToast(STATE.lang === "zh-TW" ? "無效的 JSON 格式" : "Invalid JSON format", "error");
+        console.error("Parse config error:", e);
+        showToast(STATE.lang === "zh-TW" ? "格式解析失敗，請確認內容或手動填入" : "Parsing failed, please fill fields manually", "error");
       }
     };
 
