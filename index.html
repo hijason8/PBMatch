@@ -132,7 +132,7 @@
         </div>
         <div>
           <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
-            Pickleball<span class="text-emerald-500 dark:text-emerald-400">Hub</span>
+            Pickleball<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
           </h1>
           <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
         </div>
@@ -140,12 +140,6 @@
 
       <!-- Compact Action Icons Bar -->
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <!-- Status Indicator Dot -->
-        <div id="db-status-badge" class="flex items-center justify-center w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1 rounded-full card-inner border" title="連線狀態">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="db-status-dot"></span>
-          <span id="db-status-text" class="hidden sm:inline text-xs font-semibold text-emerald-600 dark:text-emerald-400 ml-1.5">已連線</span>
-        </div>
-
         <!-- Theme Toggle (Icon Only) -->
         <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
           <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
@@ -718,20 +712,14 @@
       }
     }
 
-    function updateDbStatusBadge(isOnline, text) {
-      const dot = document.getElementById("db-status-dot");
-      const label = document.getElementById("db-status-text");
-      const badge = document.getElementById("db-status-badge");
-      if (badge) badge.classList.remove("hidden");
-
-      if (isOnline) {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
-        label.innerText = text;
-        label.className = "hidden sm:inline text-xs font-semibold text-emerald-600 dark:text-emerald-400 ml-1.5";
-      } else {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
-        label.innerText = text;
-        label.className = "hidden sm:inline text-xs font-semibold text-amber-600 dark:text-amber-400 ml-1.5";
+    function updateDbStatusBadge(isOnline) {
+      const hubSpan = document.getElementById("brand-hub-text");
+      if (hubSpan) {
+        if (isOnline) {
+          hubSpan.className = "text-emerald-500 dark:text-emerald-400 transition-colors duration-300";
+        } else {
+          hubSpan.className = "text-rose-500 dark:text-rose-400 transition-colors duration-300 font-extrabold";
+        }
       }
     }
 
@@ -1022,7 +1010,7 @@
               </p>
               <div class="flex items-center gap-3 text-xs mt-2 pt-2 border-t border-stone-200 dark:border-slate-800/80">
                 <span>👥 ${tData.players ? tData.players.length : 0} ${t("playersCountLabel")}</span>
-                <span>🎾 ${done}/${total} ${t("gamesDoneLabel")}</span>
+                <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500 inline shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/><circle cx="16.5" cy="12" r="1" fill="currentColor"/><circle cx="8.8" cy="8.8" r="1" fill="currentColor"/><circle cx="15.2" cy="15.2" r="1" fill="currentColor"/><circle cx="15.2" cy="8.8" r="1" fill="currentColor"/><circle cx="8.8" cy="15.2" r="1" fill="currentColor"/></svg> ${done}/${total} ${t("gamesDoneLabel")}</span>
               </div>
             </div>
 
@@ -1047,14 +1035,17 @@
     };
 
     window.deleteTournament = async function (id, pin) {
+      const MASTER_PIN = "19851108";
       const promptMsg = STATE.lang === "zh-TW" 
-        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數管理員密碼 (Admin PIN)：`
-        : `🗑️ Delete tournament (${id})?\nEnter 4-digit Admin PIN:`;
+        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數 PIN 碼 (或最高權限主密碼)：`
+        : `🗑️ Delete tournament (${id})?\nEnter Admin PIN or Master Password:`;
 
       const inputPin = prompt(promptMsg);
       if (inputPin === null) return;
-      if (inputPin !== pin) {
-        showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符！" : "❌ PIN Incorrect!", "error");
+      
+      const cleanInput = inputPin.trim();
+      if (cleanInput !== String(pin).trim() && cleanInput !== MASTER_PIN) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符，無法刪除！" : "❌ PIN Incorrect!", "error");
         return;
       }
 
@@ -1062,14 +1053,14 @@
         try {
           await remove(ref(STATE.db, `tournaments/${id}`));
         } catch (e) {
-          console.error(e);
+          console.error("Firebase delete error:", e);
         }
       }
       const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
       delete local[id];
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
 
-      showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已刪除` : `Tournament ${id} deleted`, "success");
+      showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已成功刪除` : `Tournament ${id} deleted`, "success");
       renderHubTournaments();
     };
 
