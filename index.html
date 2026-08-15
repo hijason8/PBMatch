@@ -6,7 +6,7 @@
   <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，支援黑底穩重/白底溫馨主題切換、中英文切換、即時比分同步與個人 MVP 戰績排行榜。" />
+  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，支援黑底/白底主題切換、中英文切換、即時比分同步與個人 MVP 戰績排行榜。" />
   <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 賽事管理, 戰績表, 落地得分制, 發球得分制" />
 
   <!-- Google Fonts: Inter & Outfit -->
@@ -75,7 +75,7 @@
       border-color: #1e293b;
     }
 
-    /* Warm Light Theme Styles (白底溫馨) */
+    /* Light Theme Styles (白底) */
     html.light body {
       background-color: #fbf9f5;
       color: #292524;
@@ -144,11 +144,11 @@
       <div class="flex items-center gap-2 sm:gap-3">
         <!-- Firebase Status Indicator -->
         <div id="db-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium card-inner border">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" id="db-status-dot"></span>
-          <span id="db-status-text">未設定資料庫</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="db-status-dot"></span>
+          <span id="db-status-text">Firebase 已連線</span>
         </div>
 
-        <!-- Theme Switcher Button (黑底穩重 ↔ 白底溫馨) -->
+        <!-- Theme Switcher Button (黑底 ↔ 白底) -->
         <button onclick="toggleTheme()" id="btn-theme-toggle" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold transition flex items-center gap-1.5 shadow-sm" title="切換配色">
           <i id="theme-icon" data-lucide="moon" class="w-3.5 h-3.5 text-amber-400"></i>
           <span id="theme-btn-label">黑底</span>
@@ -170,74 +170,12 @@
           <i data-lucide="plus-circle" class="w-4 h-4 text-orange-500"></i>
           <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
         </button>
-
-        <button onclick="navigateTo('settings')" class="p-2 rounded-lg hover:bg-slate-500/10 transition flex items-center gap-1.5 text-sm font-medium" title="系統設定">
-          <i data-lucide="settings" class="w-4 h-4 sub-text"></i>
-          <span id="t-nav-settings" class="hidden md:inline">設定</span>
-        </button>
       </div>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-
-    <!-- ==================== PAGE A: SETTINGS ==================== -->
-    <section id="page-settings" class="hidden space-y-6 max-w-3xl mx-auto">
-      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-4">
-        <div>
-          <h2 id="t-settings-title" class="text-2xl font-display font-bold flex items-center gap-2">
-            <i data-lucide="settings" class="w-6 h-6 sub-text"></i> 系統設定 (Settings)
-          </h2>
-          <p id="t-settings-desc" class="text-sm sub-text mt-1">設定 Firebase Realtime Database 連線資訊 (自動儲存於 LocalStorage)</p>
-        </div>
-      </div>
-
-      <!-- Firebase Config Form -->
-      <div class="glass-card rounded-2xl p-6 space-y-4">
-        <h3 id="t-firebase-section" class="text-lg font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-          <i data-lucide="database" class="w-5 h-5"></i> Firebase Realtime Database 設定
-        </h3>
-        <p id="t-firebase-hint" class="text-xs sub-text">貼上來自 Firebase Console 的 FirebaseConfig 物件 JSON 或個別填寫：</p>
-
-        <div class="space-y-3">
-          <div>
-            <label id="t-paste-json-label" class="block text-xs font-medium mb-1">快速貼上 JSON Config (可選)</label>
-            <textarea id="cfg-json-input" rows="3" placeholder='{"apiKey": "AIzaSy...", "databaseURL": "https://...", "projectId": "..."}' class="w-full input-bg border rounded-xl p-3 text-xs focus:outline-none focus:border-emerald-500 font-mono"></textarea>
-            <button onclick="parseJsonConfig()" id="t-parse-json-btn" class="mt-1 text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-medium">↙ 填入欄位</button>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <div>
-              <label class="block text-xs font-medium mb-1">apiKey</label>
-              <input type="text" id="cfg-apiKey" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-emerald-500 focus:outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-1">databaseURL</label>
-              <input type="text" id="cfg-databaseURL" placeholder="https://your-app-default-rtdb.firebaseio.com" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-emerald-500 focus:outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-1">projectId</label>
-              <input type="text" id="cfg-projectId" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-emerald-500 focus:outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-1">authDomain</label>
-              <input type="text" id="cfg-authDomain" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-emerald-500 focus:outline-none" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-4 pt-2">
-        <button onclick="saveSettings()" id="t-save-settings-btn" class="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white dark:text-slate-950 font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2">
-          <i data-lucide="save" class="w-5 h-5"></i> 儲存所有設定
-        </button>
-        <button onclick="clearSettings()" id="t-clear-settings-btn" class="px-5 py-3.5 rounded-xl border card-inner sub-text hover:text-rose-500 hover:border-rose-500/50 transition text-sm font-medium">
-          重置清除
-        </button>
-      </div>
-    </section>
 
     <!-- ==================== PAGE B: TOURNAMENT HUB ==================== -->
     <section id="page-hub" class="space-y-6">
@@ -479,7 +417,15 @@
       tournamentData: null,
       dbUnsubscribe: null,
       lang: localStorage.getItem("pb_lang") || "zh-TW",
-      theme: localStorage.getItem("pb_theme") || "dark", // "dark" (黑底穩重) or "light" (白底溫馨)
+      theme: localStorage.getItem("pb_theme") || "dark",
+    };
+
+    // Built-in Hardcoded Firebase Config
+    const DEFAULT_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDHYf0ooBsXI4XuzRnlO0Sln-X7qswcs_U",
+      databaseURL: "https://pickleball-hub-d0ab1-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "pickleball-hub-d0ab1",
+      authDomain: "pickleball-hub-d0ab1.firebaseapp.com"
     };
 
     // Internationalization (i18n) Translations Dictionary
@@ -491,20 +437,7 @@
         appSubtitle: "個人雙打輪播賽事系統",
         navHub: "賽事大廳",
         navCreate: "建立賽事",
-        navSettings: "設定",
         dbConnected: "Firebase 已連線",
-        dbDisconnected: "未設定 Firebase",
-        localModeSuffix: " (本地模式)",
-
-        // Settings
-        settingsTitle: "系統設定 (Settings)",
-        settingsDesc: "設定 Firebase Realtime Database 連線資訊 (自動儲存於 LocalStorage)",
-        firebaseSection: "Firebase Realtime Database 設定",
-        firebaseHint: "貼上來自 Firebase Console 的 FirebaseConfig 物件 JSON 或個別填寫：",
-        pasteJsonLabel: "快速貼上 JSON Config (可選)",
-        parseJsonBtn: "↙ 填入欄位",
-        saveSettingsBtn: "儲存所有設定",
-        clearSettingsBtn: "重置清除",
 
         // Hub
         hubTitle: "賽事大廳 (Tournament Hub)",
@@ -581,20 +514,7 @@
         appSubtitle: "Individual Doubles Round Robin",
         navHub: "Tournament Hub",
         navCreate: "Create",
-        navSettings: "Settings",
         dbConnected: "Firebase Connected",
-        dbDisconnected: "Firebase Disconnected",
-        localModeSuffix: " (Local Mode)",
-
-        // Settings
-        settingsTitle: "System Settings",
-        settingsDesc: "Configure Firebase Realtime Database connection (Saved to LocalStorage)",
-        firebaseSection: "Firebase Realtime Database Config",
-        firebaseHint: "Paste FirebaseConfig object JSON or fill out manually:",
-        pasteJsonLabel: "Quick Paste JSON Config (Optional)",
-        parseJsonBtn: "↙ Fill Fields",
-        saveSettingsBtn: "Save All Settings",
-        clearSettingsBtn: "Reset & Clear",
 
         // Hub
         hubTitle: "Tournament Hub",
@@ -665,17 +585,17 @@
       }
     };
 
-    // Initialize Icons, Theme & Language
+    // Initialize Icons, Theme, Language & Firebase Connection
     document.addEventListener("DOMContentLoaded", () => {
       applyThemeUI();
-      loadStoredSettings();
+      initFirebase(DEFAULT_FIREBASE_CONFIG);
       applyLanguageUI();
       initRouting();
       lucide.createIcons();
     });
 
     // ----------------------------------------------------
-    // THEME SWITCHER (黑底穩重 ↔ 白底溫馨)
+    // THEME SWITCHER (黑底 ↔ 白底)
     // ----------------------------------------------------
     window.toggleTheme = function () {
       STATE.theme = STATE.theme === "dark" ? "light" : "dark";
@@ -735,17 +655,6 @@
       document.getElementById("t-app-subtitle").innerText = t("appSubtitle");
       document.getElementById("t-nav-hub").innerText = t("navHub");
       document.getElementById("t-nav-create").innerText = t("navCreate");
-      document.getElementById("t-nav-settings").innerText = t("navSettings");
-
-      // Settings Page
-      document.getElementById("t-settings-title").innerHTML = `<i data-lucide="settings" class="w-6 h-6 sub-text"></i> ${t("settingsTitle")}`;
-      document.getElementById("t-settings-desc").innerText = t("settingsDesc");
-      document.getElementById("t-firebase-section").innerHTML = `<i data-lucide="database" class="w-5 h-5"></i> ${t("firebaseSection")}`;
-      document.getElementById("t-firebase-hint").innerText = t("firebaseHint");
-      document.getElementById("t-paste-json-label").innerText = t("pasteJsonLabel");
-      document.getElementById("t-parse-json-btn").innerText = t("parseJsonBtn");
-      document.getElementById("t-save-settings-btn").innerHTML = `<i data-lucide="save" class="w-5 h-5"></i> ${t("saveSettingsBtn")}`;
-      document.getElementById("t-clear-settings-btn").innerText = t("clearSettingsBtn");
 
       // Hub Page
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-6 h-6 text-emerald-500"></i> ${t("hubTitle")}`;
@@ -814,80 +723,9 @@
     }
 
     // ----------------------------------------------------
-    // 1. SETTINGS & FIREBASE INITIALIZATION
+    // FIREBASE INITIALIZATION
     // ----------------------------------------------------
-    function loadStoredSettings() {
-      const storedCfg = localStorage.getItem("pb_config");
-
-      if (storedCfg) {
-        try {
-          STATE.firebaseConfig = JSON.parse(storedCfg);
-          populateConfigFields(STATE.firebaseConfig);
-          initFirebase(STATE.firebaseConfig);
-        } catch (e) {
-          console.error("Failed to parse stored Firebase config:", e);
-        }
-      } else {
-        // Default pre-filled Firebase config
-        const defaultConfig = {
-          apiKey: "AIzaSyDHYf0ooBsXI4XuzRnlO0Sln-X7qswcs_U",
-          databaseURL: "https://pickleball-hub-d0ab1-default-rtdb.asia-southeast1.firebasedatabase.app",
-          projectId: "pickleball-hub-d0ab1",
-          authDomain: "pickleball-hub-d0ab1.firebaseapp.com"
-        };
-        STATE.firebaseConfig = defaultConfig;
-        populateConfigFields(defaultConfig);
-        initFirebase(defaultConfig);
-      }
-    }
-
-    function populateConfigFields(cfg) {
-      document.getElementById("cfg-apiKey").value = cfg.apiKey || "";
-      document.getElementById("cfg-databaseURL").value = cfg.databaseURL || "";
-      document.getElementById("cfg-projectId").value = cfg.projectId || "";
-      document.getElementById("cfg-authDomain").value = cfg.authDomain || "";
-    }
-
-    window.parseJsonConfig = function () {
-      const raw = document.getElementById("cfg-json-input").value.trim();
-      if (!raw) return;
-
-      try {
-        let parsed = null;
-        // Extract the object {...} from the code snippet
-        const match = raw.match(/\{[\s\S]*?\}/);
-        if (match) {
-          let cleaned = match[0];
-          // Convert unquoted keys: e.g. apiKey: "..." -> "apiKey": "..."
-          cleaned = cleaned.replace(/([{,]\s*)([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":');
-          cleaned = cleaned.replace(/'/g, '"');
-          cleaned = cleaned.replace(/,\s*([}\]])/g, "$1");
-          parsed = JSON.parse(cleaned);
-        } else {
-          parsed = JSON.parse(raw);
-        }
-
-        if (parsed) {
-          // Auto-derive default databaseURL if missing from snippet
-          if (!parsed.databaseURL && parsed.projectId) {
-            parsed.databaseURL = `https://${parsed.projectId}-default-rtdb.firebaseio.com`;
-          }
-          populateConfigFields(parsed);
-          showToast(STATE.lang === "zh-TW" ? "已成功解析並填入欄位！" : "Fields populated!", "success");
-        } else {
-          throw new Error("Missing config object");
-        }
-      } catch (e) {
-        console.error("Parse config error:", e);
-        showToast(STATE.lang === "zh-TW" ? "格式解析失敗，請確認內容或手動填入" : "Parsing failed, please fill fields manually", "error");
-      }
-    };
-
     function initFirebase(cfg) {
-      if (!cfg || !cfg.databaseURL) {
-        updateDbStatusBadge(false, t("dbDisconnected"));
-        return;
-      }
       try {
         if (!getApps().length) {
           STATE.firebaseApp = initializeApp(cfg);
@@ -898,7 +736,7 @@
         updateDbStatusBadge(true, t("dbConnected"));
       } catch (err) {
         console.error("Firebase init error:", err);
-        updateDbStatusBadge(false, STATE.lang === "zh-TW" ? "連線失敗" : "Connection Failed");
+        updateDbStatusBadge(false, "連線失敗");
       }
     }
 
@@ -914,34 +752,13 @@
         label.className = "text-emerald-600 dark:text-emerald-400 font-semibold";
       } else {
         dot.className = "w-2 h-2 rounded-full bg-amber-400";
-        label.innerText = text + t("localModeSuffix");
+        label.innerText = text;
         label.className = "text-amber-600 dark:text-amber-400 font-semibold";
       }
     }
 
-    window.saveSettings = function () {
-      const apiKey = document.getElementById("cfg-apiKey").value.trim();
-      const databaseURL = document.getElementById("cfg-databaseURL").value.trim();
-      const projectId = document.getElementById("cfg-projectId").value.trim();
-      const authDomain = document.getElementById("cfg-authDomain").value.trim();
-
-      const config = { apiKey, databaseURL, projectId, authDomain };
-      localStorage.setItem("pb_config", JSON.stringify(config));
-
-      STATE.firebaseConfig = config;
-      initFirebase(config);
-      showToast(STATE.lang === "zh-TW" ? "⚙️ 設定已成功儲存！" : "⚙️ Settings saved!", "success");
-    };
-
-    window.clearSettings = function () {
-      if (confirm(STATE.lang === "zh-TW" ? "確定要重置並清除 LocalStorage 設定嗎？" : "Clear all saved LocalStorage settings?")) {
-        localStorage.removeItem("pb_config");
-        location.reload();
-      }
-    };
-
     // ----------------------------------------------------
-    // 2. ROUTING & SPA NAVIGATION
+    // ROUTING & SPA NAVIGATION
     // ----------------------------------------------------
     function initRouting() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -954,7 +771,7 @@
     }
 
     window.navigateTo = function (pageName) {
-      const pages = ["settings", "hub", "create", "live"];
+      const pages = ["hub", "create", "live"];
       pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
         if (el) el.classList.add("hidden");
@@ -975,7 +792,7 @@
     };
 
     // ----------------------------------------------------
-    // 3. INDIVIDUAL ROUND ROBIN ALGORITHM (個人雙打輪播)
+    // INDIVIDUAL ROUND ROBIN ALGORITHM (個人雙打輪播)
     // ----------------------------------------------------
     function generateRoundRobinSchedule(playersList, mode = "auto") {
       const n = playersList.length;
@@ -1047,7 +864,7 @@
     }
 
     // ----------------------------------------------------
-    // 4. PAGE C: CREATE TOURNAMENT & TIME ESTIMATION
+    // PAGE C: CREATE TOURNAMENT & TIME ESTIMATION
     // ----------------------------------------------------
     window.updatePlayerCountBadge = function () {
       const text = document.getElementById("create-players").value;
@@ -1126,11 +943,11 @@
         } catch (err) {
           console.error("Firebase write error:", err);
           saveToLocalTournaments(tournamentObj);
-          showToast(STATE.lang === "zh-TW" ? "Firebase 發布失敗，已轉存至本地" : "Firebase write failed, saved locally", "warning");
+          showToast(STATE.lang === "zh-TW" ? "已轉存至本地備份" : "Saved to local backup", "warning");
         }
       } else {
         saveToLocalTournaments(tournamentObj);
-        showToast(STATE.lang === "zh-TW" ? "已發布至本地模式 (未連線 Firebase)" : "Published in Local Mode", "info");
+        showToast(STATE.lang === "zh-TW" ? "已發布至本地模式" : "Published in Local Mode", "info");
       }
 
       window.history.pushState({}, "", `?t=${tournamentId}`);
@@ -1144,7 +961,7 @@
     }
 
     // ----------------------------------------------------
-    // 5. PAGE B: HUB TOURNAMENTS RENDER & DELETE
+    // PAGE B: HUB TOURNAMENTS RENDER & DELETE
     // ----------------------------------------------------
     async function renderHubTournaments() {
       const container = document.getElementById("tournaments-list");
@@ -1177,7 +994,7 @@
               <i data-lucide="trophy" class="w-8 h-8"></i>
             </div>
             <h3 class="text-lg font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
-            <p class="text-xs sub-text max-w-sm mx-auto">${STATE.lang === "zh-TW" ? "點擊下方按鈕立即創建第一個匹克球個人雙打輪播賽事！" : "Click below to create your first Pickleball round robin tournament!"}</p>
+            <p class="text-xs sub-text max-w-sm mx-auto">${STATE.lang === "zh-TW" ? "點擊下方按鈕鋪劃第一個匹克球個人雙打輪播賽事！" : "Click below to create your first Pickleball round robin tournament!"}</p>
             <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">
               ➕ ${t("createNewBtn")}
             </button>
@@ -1264,7 +1081,7 @@
     };
 
     // ----------------------------------------------------
-    // 6. PAGE D: LIVE TOURNAMENT CONTROLLER & REALTIME SYNC
+    // PAGE D: LIVE TOURNAMENT CONTROLLER & REALTIME SYNC
     // ----------------------------------------------------
     async function loadLiveTournament(tId) {
       STATE.currentTournamentId = tId;
@@ -1424,12 +1241,12 @@
       } else {
         saveToLocalTournaments(tObj);
         renderLiveUI(tObj);
-        showToast(`Game ${matchId} ${STATE.lang === "zh-TW" ? "比分已儲存 (本地模式)" : "saved locally"}`, "success");
+        showToast(`Game ${matchId} ${STATE.lang === "zh-TW" ? "比分已儲存" : "saved locally"}`, "success");
       }
     };
 
     // ----------------------------------------------------
-    // 7. LEADERBOARD CALCULATOR & TIE-BREAKER SORTING
+    // LEADERBOARD CALCULATOR & TIE-BREAKER SORTING
     // ----------------------------------------------------
     function calculateLeaderboard(players, matches) {
       const stats = {};
@@ -1520,7 +1337,7 @@
     }
 
     // ----------------------------------------------------
-    // 8. SHARE & QR CODE MODAL
+    // SHARE & QR CODE MODAL
     // ----------------------------------------------------
     window.openShareModal = function () {
       const modal = document.getElementById("modal-share");
@@ -1546,7 +1363,7 @@
     };
 
     // ----------------------------------------------------
-    // 9. TOAST NOTIFICATION SYSTEM
+    // TOAST NOTIFICATION SYSTEM
     // ----------------------------------------------------
     function showToast(msg, type = "info") {
       const container = document.getElementById("toast-container");
