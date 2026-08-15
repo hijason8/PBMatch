@@ -279,14 +279,14 @@
                 <i data-lucide="equal" class="w-3.5 h-3.5"></i>
                 <span id="t-mode-fair-title">平均賽事</span>
               </div>
-              <p id="t-mode-fair-desc" class="text-[10px] font-normal opacity-70">每人場數完全一致，絕對公平</p>
+              <p id="t-mode-fair-desc" class="text-[10px] font-normal opacity-70 leading-snug">場數完全一致</p>
             </button>
             <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
               <div class="flex items-center gap-1.5">
                 <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
                 <span id="t-mode-max-title">最大賽事</span>
               </div>
-              <p id="t-mode-max-desc" class="text-[10px] font-normal opacity-70">時間內最大局數，允許些微差異</p>
+              <p id="t-mode-max-desc" class="text-[10px] font-normal opacity-70 leading-snug">時間內最多局</p>
             </button>
           </div>
           <input type="hidden" id="create-schedule-mode" value="fair" />
@@ -493,7 +493,12 @@
         labelTarget: "6. 每局目標分數",
         optionRally: "落地得分制 (Rally)",
         optionSideout: "發球得分制 (Side-out)",
-        labelPlayers: "7. 參賽選手名單 (每列一位)",
+        labelScheduleMode: "7. 賽事模式",
+        modeFairTitle: "平均賽事",
+        modeFairDesc: "場數完全一致",
+        modeMaxTitle: "最大賽事",
+        modeMaxDesc: "時間內最多局",
+        labelPlayers: "8. 參賽選手名單 (每列一位)",
         playersBadge: "位選手",
         timeCalcTitle: "時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
@@ -571,7 +576,12 @@
         labelTarget: "6. Target Points",
         optionRally: "Rally Scoring",
         optionSideout: "Side-out Scoring",
-        labelPlayers: "7. Player Roster (One per line)",
+        labelScheduleMode: "7. Schedule Mode",
+        modeFairTitle: "Fair Play",
+        modeFairDesc: "Equal games each",
+        modeMaxTitle: "Max Games",
+        modeMaxDesc: "Most games possible",
+        labelPlayers: "8. Player Roster (One per line)",
         playersBadge: "Players",
         timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
@@ -704,6 +714,11 @@
       document.getElementById("t-unit-mins").innerText = t("unitMins");
       document.getElementById("t-label-scoring").innerText = t("labelScoring");
       document.getElementById("t-label-target").innerText = t("labelTarget");
+      document.getElementById("t-label-schedule-mode").innerText = t("labelScheduleMode");
+      document.getElementById("t-mode-fair-title").innerText = t("modeFairTitle");
+      document.getElementById("t-mode-fair-desc").innerText = t("modeFairDesc");
+      document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
+      document.getElementById("t-mode-max-desc").innerText = t("modeMaxDesc");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
       document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
       document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
