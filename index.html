@@ -484,9 +484,9 @@
         redTeam: "🔴 紅隊",
         restingLabel: "本局輪空休息：",
         noResting: "無",
-        saveScoreBtn: "儲存比分",
+        saveScoreBtn: "儲存",
+        editScoreBtn: "修改",
         gameCompleted: "已完成",
-        gameInProgress: "未進行",
         scorePlaceholder: "得分",
 
         // Modals & Toasts
@@ -563,8 +563,8 @@
         restingLabel: "Resting: ",
         noResting: "None",
         saveScoreBtn: "Save",
+        editScoreBtn: "Edit",
         gameCompleted: "Finished",
-        gameInProgress: "Pending",
         scorePlaceholder: "Score",
 
         // Modals & Toasts
@@ -887,12 +887,14 @@
       if (mode === "compact") totalGames = Math.floor(totalGames * 0.75);
       totalGames = Math.max(3, totalGames);
 
+      // 每人預估打幾場 = (總局數 * 每局4人) / 總參賽人數
+      const estGamesPerPlayer = Math.round((totalGames * 4 / players.length) * 10) / 10;
       const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分" : "Rally") : (STATE.lang === "zh-TW" ? "發球得分" : "Side-out");
 
       if (STATE.lang === "zh-TW") {
-        hintText.innerHTML = `設定單局 <strong>${estMinsPerGame} 分鐘</strong> (${scoringLabel} ${targetScore}分)，總時間 <strong>${durationHours}h (${totalMinutes}m)</strong> 將自動安排 <strong class="text-emerald-500">${totalGames} 局賽程</strong>。`;
+        hintText.innerHTML = `設定單局 <strong>${estMinsPerGame} 分鐘</strong> (${scoringLabel} ${targetScore}分)，總時間 <strong>${durationHours}h (${totalMinutes}m)</strong> 將自動安排 <strong class="text-emerald-500">${totalGames} 局賽程</strong> (<strong class="text-amber-500">每人約打 ${estGamesPerPlayer} 場</strong>)。`;
       } else {
-        hintText.innerHTML = `Single game <strong>${estMinsPerGame} mins</strong> (${scoringLabel} ${targetScore}pt). Total <strong>${durationHours}h (${totalMinutes}m)</strong> generates <strong class="text-emerald-500">${totalGames} games</strong>.`;
+        hintText.innerHTML = `Single game <strong>${estMinsPerGame} mins</strong> (${scoringLabel} ${targetScore}pt). Total <strong>${durationHours}h (${totalMinutes}m)</strong> yields <strong class="text-emerald-500">${totalGames} games</strong> (<strong class="text-amber-500">~${estGamesPerPlayer} games/player</strong>).`;
       }
     };
 
@@ -1118,12 +1120,18 @@
     function renderLiveUI(data) {
       if (!data) return;
 
+      const pCount = data.players ? data.players.length : 0;
+      const totalMatches = data.matches ? data.matches.length : 0;
+      const estGamesPerPlayer = pCount > 0 ? Math.round((totalMatches * 4 / pCount) * 10) / 10 : 0;
+
       const scoringLabel = data.scoringType === "sideout" 
         ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
         : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
       document.getElementById("live-title").innerText = data.name;
-      document.getElementById("live-players-count").innerText = `${data.players ? data.players.length : 0} 人`;
+      document.getElementById("live-players-count").innerText = STATE.lang === "zh-TW" 
+        ? `${pCount} 人 (每人約 ${estGamesPerPlayer} 場)` 
+        : `${pCount} Players (~${estGamesPerPlayer} games/player)`;
       document.getElementById("live-duration").innerText = data.durationHours || "2.0";
       document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}分)`;
 
@@ -1150,9 +1158,11 @@
                 <span class="w-5 h-5 rounded-md card-inner text-emerald-600 dark:text-emerald-400 text-[11px] flex items-center justify-center font-mono">${m.id}</span>
                 ${STATE.lang === 'zh-TW' ? `第 ${m.id} 局` : `Game ${m.id}`}
               </span>
-              <span class="text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${isDone ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'card-inner sub-text'}">
-                ${isDone ? t("gameCompleted") : t("gameInProgress")}
-              </span>
+              ${isDone ? `
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  ✓ ${t("gameCompleted")}
+                </span>
+              ` : ''}
             </div>
 
             <!-- Teams Grid (Mobile Compact & Sleek) -->
@@ -1184,13 +1194,13 @@
               </div>
             </div>
 
-            <!-- Resting Players & Save Button Footer -->
+            <!-- Resting Players & Action Button Footer -->
             <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
               <div class="sub-text truncate">
                 <span>${t("restingLabel")}<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : t('noResting')}</strong></span>
               </div>
-              <button onclick="saveMatchScore(${m.id})" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1 shrink-0 shadow-sm">
-                <i data-lucide="check" class="w-3.5 h-3.5"></i> ${t("saveScoreBtn")}
+              <button onclick="saveMatchScore(${m.id})" class="px-3 py-1 font-bold rounded-lg text-xs transition flex items-center gap-1 shrink-0 shadow-sm ${isDone ? 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30' : 'bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950'}">
+                <i data-lucide="${isDone ? 'edit-2' : 'check'}" class="w-3.5 h-3.5"></i> ${isDone ? t("editScoreBtn") : t("saveScoreBtn")}
               </button>
             </div>
           </div>
