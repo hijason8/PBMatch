@@ -201,7 +201,7 @@
         <!-- Tournament Name -->
         <div>
           <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
-          <input type="text" id="create-name" required placeholder="例：週六匹克球狂熱雙打賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+          <input type="text" id="create-name" required placeholder="例：0818 球賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
         <!-- Admin PIN -->
@@ -453,7 +453,7 @@
         submitCreateBtn: "⚡ 自動生成賽程並發布",
 
         // Placeholders
-        placeholderName: "例：週六匹克球狂熱雙打賽",
+        placeholderName: "例：0818 球賽",
         placeholderPin: "4位數字 (刪除賽事用)",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
@@ -530,13 +530,18 @@
         timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
 
+        // Placeholders (Authentic Native UI English)
+        placeholderName: "e.g., 0818 Tournament",
+        placeholderPin: "Enter 4-digit PIN",
+        placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
+
         // Live Tournament
         estPrefix: "Est.",
         hrsUnit: "Hrs",
         shareBtn: "Share / QR Code",
         scheduleTitle: "Match Schedule",
         completedGamesBadge: "Games Done",
-        leaderboardTitle: "Live Leaderboard (MVP)",
+        leaderboardTitle: "Live Leaderboard",
 
         // Leaderboard Columns
         thRank: "Rank",
@@ -553,12 +558,14 @@
         tbRule4: "4th Order: Points Against (PA) ⬆️ (Lower is better)",
 
         // Match Cards
-        blueTeam: "🔵 Blue Team",
-        redTeam: "🔴 Red Team",
+        blueTeam: "🔵 Blue",
+        redTeam: "🔴 Red",
         restingLabel: "Resting: ",
-        saveScoreBtn: "Save Score",
+        noResting: "None",
+        saveScoreBtn: "Save",
         gameCompleted: "Finished",
         gameInProgress: "Pending",
+        scorePlaceholder: "Score",
 
         // Modals & Toasts
         modalQrTitle: "Tournament QR Code",
@@ -982,7 +989,6 @@
               <i data-lucide="trophy" class="w-6 h-6"></i>
             </div>
             <h3 class="text-base font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
-            <p class="text-xs sub-text max-w-sm mx-auto">${STATE.lang === "zh-TW" ? "點擊下方按鈕鋪劃第一個匹克球個人雙打輪播賽事！" : "Click below to create your first Pickleball round robin tournament!"}</p>
             <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">
               ➕ ${t("createNewBtn")}
             </button>
@@ -1044,8 +1050,8 @@
     window.deleteTournament = async function (id, pin) {
       const MASTER_PIN = "19851108";
       const promptMsg = STATE.lang === "zh-TW" 
-        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數 PIN 碼 (或最高權限主密碼)：`
-        : `🗑️ Delete tournament (${id})?\nEnter Admin PIN or Master Password:`;
+        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數管理員 PIN 碼：`
+        : `🗑️ Delete tournament (${id})?\nEnter 4-digit Admin PIN:`;
 
       const inputPin = prompt(promptMsg);
       if (inputPin === null) return;
