@@ -2,17 +2,17 @@
 <html lang="zh-TW" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，支援黑底/白底主題切換、中英文切換、即時比分同步與個人 MVP 戰績排行榜。" />
-  <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 賽事管理, 戰績表, 落地得分制, 發球得分制" />
+  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
+  <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
 
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -34,31 +34,32 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
+    /* Custom Touch & Mobile Optimization */
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
       background: #475569;
-      border-radius: 3px;
+      border-radius: 2px;
     }
 
-    /* Dark Theme Styles */
+    /* Dark Theme */
     html.dark body {
       background-color: #090d16;
       color: #f1f5f9;
     }
     html.dark .glass-nav {
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
       border-color: #1e293b;
     }
     html.dark .glass-card {
       background: rgba(30, 41, 59, 0.75);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #f1f5f9;
     }
@@ -75,22 +76,22 @@
       border-color: #1e293b;
     }
 
-    /* Light Theme Styles (白底) */
+    /* Light Theme (白底) */
     html.light body {
       background-color: #fbf9f5;
       color: #292524;
     }
     html.light .glass-nav {
-      background: rgba(245, 240, 230, 0.92);
-      backdrop-filter: blur(16px);
+      background: rgba(245, 240, 230, 0.95);
+      backdrop-filter: blur(12px);
       border-color: #e7dfd3;
     }
     html.light .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
       border: 1px solid #ebd9c8;
       color: #292524;
-      box-shadow: 0 4px 20px -2px rgba(180, 150, 120, 0.12);
+      box-shadow: 0 2px 10px -2px rgba(180, 150, 120, 0.08);
     }
     html.light .input-bg {
       background-color: #fdfbf7;
@@ -117,138 +118,134 @@
       background-color: #f3ece0 !important;
       border-color: #e7ded0 !important;
     }
-    html.light .divide-slate-800\/60 > * + * {
-      border-color: #ebd9c8 !important;
-    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-300">
+<body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
 
-  <!-- ==================== HEADER / NAV ==================== -->
+  <!-- ==================== HEADER / NAV (超緊湊手機優化版) ==================== -->
   <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('hub')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-emerald-500/20">
-          <i data-lucide="trophy" class="w-6 h-6"></i>
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
+          <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <h1 class="font-display font-extrabold text-xl tracking-tight flex items-center gap-2">
+          <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
             Pickleball<span class="text-emerald-500 dark:text-emerald-400">Hub</span>
           </h1>
-          <p id="t-app-subtitle" class="text-[10px] sub-text font-medium tracking-wider uppercase">個人雙打輪播賽事系統</p>
+          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
         </div>
       </div>
 
-      <!-- Navigation & Status Badge & Theme/Lang Switchers -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Firebase Status Indicator -->
-        <div id="db-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium card-inner border">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="db-status-dot"></span>
-          <span id="db-status-text">Firebase 已連線</span>
+      <!-- Compact Action Icons Bar -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Status Indicator Dot -->
+        <div id="db-status-badge" class="flex items-center justify-center w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1 rounded-full card-inner border" title="連線狀態">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="db-status-dot"></span>
+          <span id="db-status-text" class="hidden sm:inline text-xs font-semibold text-emerald-600 dark:text-emerald-400 ml-1.5">已連線</span>
         </div>
 
-        <!-- Theme Switcher Button (黑底 ↔ 白底) -->
-        <button onclick="toggleTheme()" id="btn-theme-toggle" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold transition flex items-center gap-1.5 shadow-sm" title="切換配色">
-          <i id="theme-icon" data-lucide="moon" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span id="theme-btn-label">黑底</span>
+        <!-- Theme Toggle (Icon Only) -->
+        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
+          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
 
-        <!-- Language Switcher Button -->
-        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold text-emerald-600 dark:text-emerald-400 transition flex items-center gap-1 shadow-sm">
-          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-          <span id="lang-btn-label">繁體中文</span>
+        <!-- Language Toggle (Icon Only) -->
+        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm" title="切換語言 / Language">
+          <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
-        <!-- Nav Buttons -->
-        <button onclick="navigateTo('hub')" class="p-2 rounded-lg hover:bg-emerald-500/10 transition flex items-center gap-1.5 text-sm font-medium" title="賽事大廳">
+        <!-- Nav: Hub Icon Button -->
+        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
-          <span id="t-nav-hub" class="hidden md:inline">賽事大廳</span>
+          <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
         </button>
-        
-        <button onclick="navigateTo('create')" class="p-2 rounded-lg hover:bg-orange-500/10 transition flex items-center gap-1.5 text-sm font-medium" title="建立賽事">
-          <i data-lucide="plus-circle" class="w-4 h-4 text-orange-500"></i>
-          <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
+
+        <!-- Nav: Create Icon Button -->
+        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6">
 
     <!-- ==================== PAGE B: TOURNAMENT HUB ==================== -->
-    <section id="page-hub" class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-300 dark:border-slate-800 pb-4">
+    <section id="page-hub" class="space-y-4 sm:space-y-6">
+      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3">
         <div>
-          <h2 id="t-hub-title" class="text-2xl font-display font-bold flex items-center gap-2">
-            <i data-lucide="layout-grid" class="w-6 h-6 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳 (Tournament Hub)
+          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
+            <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳 (Tournament Hub)
           </h2>
-          <p id="t-hub-desc" class="text-sm sub-text mt-1">瀏覽進行中與歷史賽事，點擊隨時進入即時賽程</p>
+          <p id="t-hub-desc" class="text-xs sub-text mt-0.5">點擊卡片即可進入即時對戰賽程</p>
         </div>
-        <button onclick="navigateTo('create')" id="t-create-new-btn" class="bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-5 py-2.5 rounded-xl hover:brightness-110 shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2">
-          <i data-lucide="plus-circle" class="w-5 h-5"></i> ➕ 建立新賽事
+        <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
+          ➕ 建立新賽事
         </button>
       </div>
 
       <!-- Tournaments Grid -->
-      <div id="tournaments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         <!-- Rendered dynamically -->
       </div>
     </section>
 
     <!-- ==================== PAGE C: CREATE TOURNAMENT ==================== -->
-    <section id="page-create" class="hidden max-w-2xl mx-auto space-y-6">
-      <div class="border-b border-stone-300 dark:border-slate-800 pb-4">
-        <h2 id="t-create-title" class="text-2xl font-display font-bold flex items-center gap-2">
-          <i data-lucide="plus-circle" class="w-6 h-6 text-orange-500"></i> 建立新賽事 (Create Tournament)
+    <section id="page-create" class="hidden max-w-2xl mx-auto space-y-4 sm:space-y-6">
+      <div class="border-b border-stone-300 dark:border-slate-800 pb-3">
+        <h2 id="t-create-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> 建立新賽事 (Create Tournament)
         </h2>
-        <p id="t-create-desc" class="text-sm sub-text mt-1">設定時間、賽制與參賽名單，系統自動計算最佳輪播組合</p>
+        <p id="t-create-desc" class="text-xs sub-text mt-0.5">自動計算個人雙打最佳輪播與配時</p>
       </div>
 
-      <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-6 space-y-5">
+      <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
         <!-- Tournament Name -->
         <div>
-          <label id="t-label-name" class="block text-sm font-semibold mb-1.5">1. 賽事名稱</label>
-          <input type="text" id="create-name" required placeholder="例：週六匹克球狂熱雙打賽" class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none" />
+          <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
+          <input type="text" id="create-name" required placeholder="例：週六匹克球狂熱雙打賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
         <!-- Admin PIN -->
         <div>
-          <label id="t-label-pin" class="block text-sm font-semibold mb-1.5">2. 管理員 PIN 碼 (4 位數)</label>
-          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" required placeholder="4位數字 (用於刪除賽事)" class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+          <label id="t-label-pin" class="block text-xs sm:text-sm font-semibold mb-1">2. 管理員 PIN 碼 (4 位數)</label>
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" required placeholder="4位數字 (刪除賽事用)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <!-- Duration & Scoring Rules Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-3">
           <!-- Estimated Duration -->
           <div>
-            <label id="t-label-duration" class="block text-sm font-semibold mb-1.5">3. 預計比賽總時間 (小時)</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">3. 預計比賽時間</label>
             <div class="relative">
-              <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-3 pr-16 text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <span id="t-unit-hours" class="absolute right-3 top-3 text-xs sub-text font-semibold">小時 (hrs)</span>
+              <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
             </div>
           </div>
 
           <!-- Scoring Mode Selection -->
           <div>
-            <label id="t-label-scoring" class="block text-sm font-semibold mb-1.5">4. 計分賽制選擇</label>
-            <select id="create-scoring-type" required class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none">
-              <option value="rally">落地得分制 (Rally Scoring / 每球得分)</option>
-              <option value="sideout">發球得分制 (Side-out / 傳統發球方得分)</option>
+            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">4. 計分賽制選擇</label>
+            <select id="create-scoring-type" required class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+              <option value="rally">落地得分制 (Rally)</option>
+              <option value="sideout">發球得分制 (Side-out)</option>
             </select>
           </div>
         </div>
 
         <!-- Target Score & Mode -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-target" class="block text-sm font-semibold mb-1.5">5. 每局目標分數</label>
-            <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none" />
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">5. 每局目標分數</label>
+            <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
           </div>
           <div>
-            <label id="t-label-mode" class="block text-sm font-semibold mb-1.5">6. 輪播組數模式</label>
-            <select id="create-rounds-mode" onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none">
+            <label id="t-label-mode" class="block text-xs sm:text-sm font-semibold mb-1">6. 輪播組數模式</label>
+            <select id="create-rounds-mode" onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="auto">標準公平輪播 (完整循環)</option>
               <option value="compact">精簡快打模式 (節省時間)</option>
             </select>
@@ -257,93 +254,90 @@
 
         <!-- Player List -->
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label id="t-label-players" class="block text-sm font-semibold">7. 參賽選手名單 (每列一位姓名)</label>
-            <span id="player-count-badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位選手</span>
+          <div class="flex items-center justify-between mb-1">
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">7. 參賽選手名單 (每列一位)</label>
+            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
-          <textarea id="create-players" rows="6" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F&#10;選手 G" class="w-full input-bg border rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
         </div>
 
         <!-- Time Estimation Hint Box -->
-        <div id="time-estimate-box" class="p-3.5 rounded-xl card-inner border text-xs space-y-1">
-          <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-            <i data-lucide="clock" class="w-4 h-4"></i> 時間預估算試計算：
+        <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
+          <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i> 時間預估試算：
           </div>
-          <p id="time-estimate-text" class="sub-text">請輸入選手名單以預估總局數與每局平均可用時間。</p>
+          <p id="time-estimate-text" class="sub-text text-[11px]">輸入選手名單預估局數與每局時間。</p>
         </div>
 
-        <button type="submit" id="t-submit-create-btn" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white dark:text-slate-950 font-bold py-4 rounded-xl shadow-lg shadow-orange-500/20 transition text-base flex items-center justify-center gap-2 mt-4">
-          <i data-lucide="zap" class="w-5 h-5"></i> 自動生成輪播賽程並發布
+        <button type="submit" id="t-submit-create-btn" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5 mt-2">
+          <i data-lucide="zap" class="w-4 h-4"></i> 自動生成賽程並發布
         </button>
       </form>
     </section>
 
-    <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW ==================== -->
-    <section id="page-live" class="hidden space-y-6">
-      <!-- Top Tournament Title Bar -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-l-4 border-l-emerald-500">
+    <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW (進入賽程頁面排版優化) ==================== -->
+    <section id="page-live" class="hidden space-y-4 sm:space-y-6">
+      <!-- Top Compact Title Banner -->
+      <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-l-4 border-l-emerald-500">
         <div>
-          <div class="flex items-center gap-3 flex-wrap">
-            <h2 id="live-title" class="text-2xl sm:text-3xl font-display font-extrabold tracking-tight">賽事載入中...</h2>
-            <span id="live-id-badge" class="px-3 py-1 rounded-lg card-inner border font-mono text-xs text-emerald-600 dark:text-emerald-400 font-semibold">ID: ---</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight">賽事載入中...</h2>
+            <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
           </div>
-          <div class="flex flex-wrap items-center gap-3 text-xs mt-2.5">
-            <span class="flex items-center gap-1 px-2.5 py-1 rounded-md card-inner border"><i data-lucide="calendar" class="w-3.5 h-3.5 sub-text"></i> <span id="live-date">2026-08-15</span></span>
-            <span class="flex items-center gap-1 px-2.5 py-1 rounded-md card-inner border"><i data-lucide="users" class="w-3.5 h-3.5 sub-text"></i> <span id="live-players-count">0 人參賽</span></span>
-            <span class="flex items-center gap-1 px-2.5 py-1 rounded-md card-inner border"><i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
-            <span class="flex items-center gap-1 px-2.5 py-1 rounded-md card-inner border"><i data-lucide="target" class="w-3.5 h-3.5 text-emerald-500"></i> <span id="t-scoring-prefix">賽制:</span> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分制 (15分)</span></span>
+          <!-- Compact Info Badges Row -->
+          <div class="flex flex-wrap items-center gap-2 text-[11px] mt-2">
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="users" class="w-3 h-3 sub-text"></i> <span id="live-players-count">0 人</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target" class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button onclick="openShareModal()" id="t-share-btn" class="px-4 py-2.5 rounded-xl card-inner hover:brightness-95 border transition text-xs font-semibold flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="share-2" class="w-4 h-4 text-emerald-500"></i> 分享 / QR Code
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="openShareModal()" id="t-share-btn" class="w-full sm:w-auto px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
+            <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> 分享 / QR Code
           </button>
         </div>
       </div>
 
-      <!-- Main Live Grid (2 Columns: Matches Schedule vs Leaderboard) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Main Live Grid (2 Columns on Desktop, Single Column on Mobile) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         <!-- Left: Matches Schedule (7 Cols) -->
-        <div class="lg:col-span-7 space-y-4">
+        <div class="lg:col-span-7 space-y-3">
           <div class="flex items-center justify-between">
-            <h3 id="t-schedule-title" class="text-xl font-display font-bold flex items-center gap-2">
-              <i data-lucide="swords" class="w-5 h-5 text-emerald-500"></i> 對戰賽程表
+            <h3 id="t-schedule-title" class="text-base sm:text-xl font-display font-bold flex items-center gap-1.5">
+              <i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> 對戰賽程表
             </h3>
-            <div class="flex items-center gap-2 text-xs">
-              <span id="completed-count" class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">0 / 0 局完成</span>
-            </div>
+            <span id="completed-count" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-bold">0 / 0 局完成</span>
           </div>
 
-          <div id="matches-container" class="space-y-4">
+          <div id="matches-container" class="space-y-3">
             <!-- Matches Cards rendered dynamically -->
           </div>
         </div>
 
         <!-- Right: Leaderboard (5 Cols) -->
-        <div class="lg:col-span-5 space-y-4">
+        <div class="lg:col-span-5 space-y-3">
           <div class="flex items-center justify-between">
-            <h3 id="t-leaderboard-title" class="text-xl font-display font-bold flex items-center gap-2">
-              <i data-lucide="crown" class="w-5 h-5 text-amber-500"></i> 個人 MVP 戰績排行榜
+            <h3 id="t-leaderboard-title" class="text-base sm:text-xl font-display font-bold flex items-center gap-1.5">
+              <i data-lucide="crown" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500"></i> 戰績排行
             </h3>
-            <span id="t-tiebreaker-summary" class="text-[10px] sub-text">Tie-breaker: 勝場 > 淨勝分 > 得分 > 失分(低)</span>
           </div>
 
           <!-- Leaderboard Table Card -->
           <div class="glass-card rounded-2xl overflow-hidden border">
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs">
-                <thead class="card-inner sub-text uppercase font-semibold border-b">
+                <thead class="card-inner sub-text uppercase font-semibold border-b text-[11px]">
                   <tr>
-                    <th id="th-rank" class="p-3 text-center w-12">名次</th>
-                    <th id="th-player" class="p-3">選手名稱</th>
-                    <th id="th-wl" class="p-3 text-center">勝 / 敗</th>
-                    <th id="th-diff" class="p-3 text-center">淨勝 (+/-)</th>
-                    <th id="th-pf-pa" class="p-3 text-center">總得分 / 總失分</th>
+                    <th id="th-rank" class="py-2.5 px-2 text-center w-10">名次</th>
+                    <th id="th-player" class="py-2.5 px-2">選手名稱</th>
+                    <th id="th-wl" class="py-2.5 px-1.5 text-center">勝/敗</th>
+                    <th id="th-diff" class="py-2.5 px-1.5 text-center">淨勝</th>
+                    <th id="th-pf-pa" class="py-2.5 px-2 text-center">得分/失分</th>
                   </tr>
                 </thead>
-                <tbody id="leaderboard-tbody" class="divide-y font-medium">
+                <tbody id="leaderboard-tbody" class="divide-y font-medium text-xs">
                   <!-- Rendered dynamically -->
                 </tbody>
               </table>
@@ -351,9 +345,9 @@
           </div>
 
           <!-- Tie-breaker rules explainer -->
-          <div class="p-4 rounded-xl card-inner border text-[11px] sub-text space-y-1">
+          <div class="p-3 rounded-xl card-inner border text-[11px] sub-text space-y-1">
             <div id="t-tiebreaker-box-title" class="font-semibold text-stone-800 dark:text-slate-200">📊 排行榜 Tie-breaker 排名規則：</div>
-            <ol id="t-tiebreaker-list" class="list-decimal list-inside space-y-0.5 sub-text">
+            <ol id="t-tiebreaker-list" class="list-decimal list-inside space-y-0.5 sub-text text-[10.5px]">
               <li>第 1 順位：勝場數 (Wins) ⬇️</li>
               <li>第 2 順位：總淨勝分 (+/- = 總得分 - 總失分) ⬇️</li>
               <li>第 3 順位：總得分 (PF / Points For) ⬇️</li>
@@ -369,31 +363,31 @@
 
   <!-- ==================== SHARE / QR MODAL ==================== -->
   <div id="modal-share" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-sm w-full p-6 space-y-5 border relative text-center">
-      <button onclick="closeShareModal()" class="absolute top-4 right-4 sub-text hover:text-emerald-500">
+    <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative text-center">
+      <button onclick="closeShareModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
-        <i data-lucide="qr-code" class="w-6 h-6"></i>
+      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto">
+        <i data-lucide="qr-code" class="w-5 h-5"></i>
       </div>
 
       <div>
-        <h3 id="t-modal-qr-title" class="text-lg font-bold font-display">賽事專屬 QR Code</h3>
-        <p id="t-modal-qr-desc" class="text-xs sub-text mt-1">邀請選手與觀眾掃描，即時同步掌握戰況比分</p>
+        <h3 id="t-modal-qr-title" class="text-base font-bold font-display">賽事專屬 QR Code</h3>
+        <p id="t-modal-qr-desc" class="text-xs sub-text mt-0.5">掃描同步戰況比分</p>
       </div>
 
       <!-- QR Image -->
-      <div class="bg-white p-3 rounded-xl inline-block shadow-lg border border-stone-200">
-        <img id="share-qr-img" src="" alt="QR Code" class="w-44 h-44 mx-auto" />
+      <div class="bg-white p-2.5 rounded-xl inline-block shadow-md border border-stone-200">
+        <img id="share-qr-img" src="" alt="QR Code" class="w-40 h-40 mx-auto" />
       </div>
 
       <!-- Share URL Input -->
       <div class="space-y-2">
         <div class="flex items-center gap-2">
-          <input type="text" id="share-url-input" readonly class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:outline-none" />
-          <button onclick="copyShareUrl()" id="t-copy-btn" class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition shrink-0">
-            <i data-lucide="copy" class="w-4 h-4"></i> 複製
+          <input type="text" id="share-url-input" readonly class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:outline-none" />
+          <button onclick="copyShareUrl()" id="t-copy-btn" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition shrink-0">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製
           </button>
         </div>
       </div>
@@ -401,7 +395,7 @@
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script type="module">
@@ -431,17 +425,14 @@
     // Internationalization (i18n) Translations Dictionary
     const I18N = {
       "zh-TW": {
-        langBtn: "繁體中文",
-        themeDark: "黑底",
-        themeLight: "白底",
-        appSubtitle: "個人雙打輪播賽事系統",
+        appSubtitle: "排賽系統",
         navHub: "賽事大廳",
         navCreate: "建立賽事",
-        dbConnected: "Firebase 已連線",
+        dbConnected: "已連線",
 
         // Hub
         hubTitle: "賽事大廳 (Tournament Hub)",
-        hubDesc: "瀏覽進行中與歷史賽事，點擊隨時進入即時賽程",
+        hubDesc: "點擊卡片即可進入即時對戰賽程",
         createNewBtn: "➕ 建立新賽事",
         statusFinished: "已完賽",
         statusActive: "進行中",
@@ -451,74 +442,69 @@
 
         // Create Form
         createTitle: "建立新賽事 (Create Tournament)",
-        createDesc: "設定時間、賽制與參賽名單，系統自動計算最佳輪播組合",
+        createDesc: "自動計算個人雙打最佳輪播與配時",
         labelName: "1. 賽事名稱",
         labelPin: "2. 管理員 PIN 碼 (4 位數)",
-        labelDuration: "3. 預計比賽總時間 (小時)",
-        unitHours: "小時 (hrs)",
+        labelDuration: "3. 預計比賽時間",
+        unitHours: "小時",
         labelScoring: "4. 計分賽制選擇",
-        optionRally: "落地得分制 (Rally Scoring / 每球得分)",
-        optionSideout: "發球得分制 (Side-out / 傳統發球方得分)",
+        optionRally: "落地得分制 (Rally)",
+        optionSideout: "發球得分制 (Side-out)",
         labelTarget: "5. 每局目標分數",
         labelMode: "6. 輪播組數模式",
         optionAutoRounds: "標準公平輪播 (完整循環)",
         optionCompactRounds: "精簡快打模式 (節省時間)",
-        labelPlayers: "7. 參賽選手名單 (每列一位姓名)",
+        labelPlayers: "7. 參賽選手名單 (每列一位)",
         playersBadge: "位選手",
-        timeCalcTitle: "時間預估算試計算：",
-        submitCreateBtn: "⚡ 自動生成輪播賽程並發布",
+        timeCalcTitle: "時間預估試算：",
+        submitCreateBtn: "⚡ 自動生成賽程並發布",
 
         // Live Tournament
         estPrefix: "預估",
         hrsUnit: "小時",
-        scoringPrefix: "賽制:",
         shareBtn: "分享 / QR Code",
         scheduleTitle: "對戰賽程表",
         completedGamesBadge: "局完成",
-        leaderboardTitle: "個人 MVP 戰績排行榜",
-        tiebreakerSummary: "Tie-breaker: 勝場 > 淨勝分 > 總得分 > 總失分(低)",
+        leaderboardTitle: "戰績排行",
 
         // Leaderboard Columns
         thRank: "名次",
         thPlayer: "選手名稱",
-        thWl: "勝 / 敗",
-        thDiff: "淨勝 (+/-)",
-        thPfPa: "總得分 / 總失分",
+        thWl: "勝/敗",
+        thDiff: "淨勝",
+        thPfPa: "得分/失分",
 
         // Leaderboard Rules Box
         tbTitle: "📊 排行榜 Tie-breaker 排名規則：",
         tbRule1: "第 1 順位：勝場數 (Wins) ⬇️",
-        tbRule2: "第 2 順位：總淨勝分 (+/- = 總得分 - 總失分) ⬇️",
-        tbRule3: "第 3 順位：總得分 (PF / Points For) ⬇️",
-        tbRule4: "第 4 順位：總失分 (PA / Points Against) ⬆️ (較低者優先)",
+        tbRule2: "第 2 順位：總淨勝分 (+/- = 得分 - 失分) ⬇️",
+        tbRule3: "第 3 順位：總得分 (PF) ⬇️",
+        tbRule4: "第 4 順位：總失分 (PA) ⬆️ (較低者優先)",
 
         // Match Cards
-        blueTeam: "🔵 藍隊 (Blue Team)",
-        redTeam: "🔴 紅隊 (Red Team)",
+        blueTeam: "🔵 藍隊",
+        redTeam: "🔴 紅隊",
         restingLabel: "本局輪空休息：",
         saveScoreBtn: "儲存比分",
-        gameCompleted: "✓ 已完成",
-        gameInProgress: "進行中",
+        gameCompleted: "已完成",
+        gameInProgress: "未進行",
 
         // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
-        modalQrDesc: "邀請選手與觀眾掃描，即時同步掌握戰況比分",
+        modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
-        copiedToast: "📋 賽事專屬連結已複製至剪貼簿！"
+        copiedToast: "📋 專屬連結已複製！"
       },
 
       "en": {
-        langBtn: "English",
-        themeDark: "Dark Mode",
-        themeLight: "Warm Light",
-        appSubtitle: "Individual Doubles Round Robin",
-        navHub: "Tournament Hub",
+        appSubtitle: "Pickleball Hub",
+        navHub: "Hub",
         navCreate: "Create",
-        dbConnected: "Firebase Connected",
+        dbConnected: "Connected",
 
         // Hub
         hubTitle: "Tournament Hub",
-        hubDesc: "Browse active & past tournaments, click to view live matches",
+        hubDesc: "Click card to view live match schedule",
         createNewBtn: "➕ Create Tournament",
         statusFinished: "Completed",
         statusActive: "In Progress",
@@ -528,60 +514,58 @@
 
         // Create Form
         createTitle: "Create Tournament",
-        createDesc: "Set duration, scoring rules & player list to generate round robin matches",
+        createDesc: "Generate optimal round robin & time estimation",
         labelName: "1. Tournament Name",
-        labelPin: "2. Admin PIN Code (4 Digits)",
-        labelDuration: "3. Estimated Duration (Hours)",
-        unitHours: "Hours (hrs)",
+        labelPin: "2. Admin PIN (4 Digits)",
+        labelDuration: "3. Estimated Time",
+        unitHours: "Hrs",
         labelScoring: "4. Scoring System",
-        optionRally: "Rally Scoring (Point on every rally)",
-        optionSideout: "Side-out Scoring (Traditional serving team scores)",
-        labelTarget: "5. Target Points per Game",
+        optionRally: "Rally Scoring",
+        optionSideout: "Side-out Scoring",
+        labelTarget: "5. Target Points",
         labelMode: "6. Round Robin Mode",
-        optionAutoRounds: "Standard Round Robin (Full Loop)",
-        optionCompactRounds: "Compact Mode (Fast Play)",
-        labelPlayers: "7. Player Roster (One name per line)",
+        optionAutoRounds: "Standard Round Robin",
+        optionCompactRounds: "Compact Fast Play",
+        labelPlayers: "7. Player Roster (One per line)",
         playersBadge: "Players",
-        timeCalcTitle: "Estimated Time Calculation:",
-        submitCreateBtn: "⚡ Generate Schedule & Publish",
+        timeCalcTitle: "Time Estimate Calculation:",
+        submitCreateBtn: "⚡ Generate & Publish Schedule",
 
         // Live Tournament
         estPrefix: "Est.",
-        hrsUnit: "Hours",
-        scoringPrefix: "Rules:",
+        hrsUnit: "Hrs",
         shareBtn: "Share / QR Code",
         scheduleTitle: "Match Schedule",
-        completedGamesBadge: "Games Completed",
+        completedGamesBadge: "Games Done",
         leaderboardTitle: "Live Leaderboard (MVP)",
-        tiebreakerSummary: "Tie-breaker: Wins > Diff (+/-) > Points For > Points Against (Low)",
 
         // Leaderboard Columns
         thRank: "Rank",
         thPlayer: "Player Name",
-        thWl: "W / L",
-        thDiff: "Diff (+/-)",
-        thPfPa: "Points For / Points Against",
+        thWl: "W/L",
+        thDiff: "Diff",
+        thPfPa: "PF/PA",
 
         // Leaderboard Rules Box
-        tbTitle: "📊 Leaderboard Tie-breaker Rules:",
+        tbTitle: "📊 Tie-breaker Rules:",
         tbRule1: "1st Order: Wins (W) ⬇️",
-        tbRule2: "2nd Order: Point Differential (+/- = Points For - Points Against) ⬇️",
-        tbRule3: "3rd Order: Total Points For (PF) ⬇️",
-        tbRule4: "4th Order: Total Points Against (PA) ⬆️ (Lower is better)",
+        tbRule2: "2nd Order: Point Differential (+/-) ⬇️",
+        tbRule3: "3rd Order: Points For (PF) ⬇️",
+        tbRule4: "4th Order: Points Against (PA) ⬆️ (Lower is better)",
 
         // Match Cards
         blueTeam: "🔵 Blue Team",
         redTeam: "🔴 Red Team",
-        restingLabel: "Resting Players: ",
+        restingLabel: "Resting: ",
         saveScoreBtn: "Save Score",
-        gameCompleted: "✓ Finished",
-        gameInProgress: "In Progress",
+        gameCompleted: "Finished",
+        gameInProgress: "Pending",
 
         // Modals & Toasts
         modalQrTitle: "Tournament QR Code",
-        modalQrDesc: "Scan to synchronize live scores and standings",
-        copyBtn: "Copy Link",
-        copiedToast: "📋 Tournament link copied to clipboard!"
+        modalQrDesc: "Scan to sync live scores",
+        copyBtn: "Copy",
+        copiedToast: "📋 Link copied to clipboard!"
       }
     };
 
@@ -608,24 +592,21 @@
 
     function applyThemeUI() {
       const html = document.documentElement;
-      const themeLabel = document.getElementById("theme-btn-label");
       const themeIcon = document.getElementById("theme-icon");
 
       if (STATE.theme === "light") {
         html.classList.remove("dark");
         html.classList.add("light");
-        if (themeLabel) themeLabel.innerText = t("themeLight");
         if (themeIcon) {
           themeIcon.setAttribute("data-lucide", "sun");
-          themeIcon.className = "w-3.5 h-3.5 text-orange-500";
+          themeIcon.className = "w-4 h-4 text-orange-500";
         }
       } else {
         html.classList.remove("light");
         html.classList.add("dark");
-        if (themeLabel) themeLabel.innerText = t("themeDark");
         if (themeIcon) {
           themeIcon.setAttribute("data-lucide", "moon");
-          themeIcon.className = "w-3.5 h-3.5 text-amber-400";
+          themeIcon.className = "w-4 h-4 text-amber-400";
         }
       }
       lucide.createIcons();
@@ -651,18 +632,17 @@
     }
 
     function applyLanguageUI() {
-      document.getElementById("lang-btn-label").innerText = t("langBtn");
       document.getElementById("t-app-subtitle").innerText = t("appSubtitle");
       document.getElementById("t-nav-hub").innerText = t("navHub");
       document.getElementById("t-nav-create").innerText = t("navCreate");
 
       // Hub Page
-      document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-6 h-6 text-emerald-500"></i> ${t("hubTitle")}`;
+      document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
       document.getElementById("t-hub-desc").innerText = t("hubDesc");
-      document.getElementById("t-create-new-btn").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5"></i> ${t("createNewBtn")}`;
+      document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
 
       // Create Form Page
-      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-6 h-6 text-orange-500"></i> ${t("createTitle")}`;
+      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-create-desc").innerText = t("createDesc");
       document.getElementById("t-label-name").innerText = t("labelName");
       document.getElementById("t-label-pin").innerText = t("labelPin");
@@ -672,8 +652,8 @@
       document.getElementById("t-label-target").innerText = t("labelTarget");
       document.getElementById("t-label-mode").innerText = t("labelMode");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
-      document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-4 h-4"></i> ${t("timeCalcTitle")}`;
-      document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-5 h-5"></i> ${t("submitCreateBtn")}`;
+      document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
+      document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
       // Select Options
       const scoringSel = document.getElementById("create-scoring-type");
@@ -690,11 +670,9 @@
       // Live Tournament
       document.getElementById("t-est-prefix").innerText = t("estPrefix");
       document.getElementById("t-hrs-unit").innerText = t("hrsUnit");
-      document.getElementById("t-scoring-prefix").innerText = t("scoringPrefix");
-      document.getElementById("t-share-btn").innerHTML = `<i data-lucide="share-2" class="w-4 h-4 text-emerald-500"></i> ${t("shareBtn")}`;
-      document.getElementById("t-schedule-title").innerHTML = `<i data-lucide="swords" class="w-5 h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
-      document.getElementById("t-leaderboard-title").innerHTML = `<i data-lucide="crown" class="w-5 h-5 text-amber-500"></i> ${t("leaderboardTitle")}`;
-      document.getElementById("t-tiebreaker-summary").innerText = t("tiebreakerSummary");
+      document.getElementById("t-share-btn").innerHTML = `<i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> ${t("shareBtn")}`;
+      document.getElementById("t-schedule-title").innerHTML = `<i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
+      document.getElementById("t-leaderboard-title").innerHTML = `<i data-lucide="crown" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500"></i> ${t("leaderboardTitle")}`;
 
       // Leaderboard Table Headers
       document.getElementById("th-rank").innerText = t("thRank");
@@ -716,7 +694,7 @@
       // Modal
       document.getElementById("t-modal-qr-title").innerText = t("modalQrTitle");
       document.getElementById("t-modal-qr-desc").innerText = t("modalQrDesc");
-      document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-4 h-4"></i> ${t("copyBtn")}`;
+      document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
 
       calculateTimeEstimate();
       lucide.createIcons();
@@ -736,7 +714,7 @@
         updateDbStatusBadge(true, t("dbConnected"));
       } catch (err) {
         console.error("Firebase init error:", err);
-        updateDbStatusBadge(false, "連線失敗");
+        updateDbStatusBadge(false, "離線");
       }
     }
 
@@ -747,13 +725,13 @@
       if (badge) badge.classList.remove("hidden");
 
       if (isOnline) {
-        dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
         label.innerText = text;
-        label.className = "text-emerald-600 dark:text-emerald-400 font-semibold";
+        label.className = "hidden sm:inline text-xs font-semibold text-emerald-600 dark:text-emerald-400 ml-1.5";
       } else {
-        dot.className = "w-2 h-2 rounded-full bg-amber-400";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
         label.innerText = text;
-        label.className = "text-amber-600 dark:text-amber-400 font-semibold";
+        label.className = "hidden sm:inline text-xs font-semibold text-amber-600 dark:text-amber-400 ml-1.5";
       }
     }
 
@@ -894,12 +872,12 @@
 
       const totalMinutes = durationHours * 60;
       const avgMinutesPerGame = Math.round((totalMinutes / totalGames) * 10) / 10;
-      const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分制" : "Rally Scoring") : (STATE.lang === "zh-TW" ? "發球得分制" : "Side-out Scoring");
+      const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分" : "Rally") : (STATE.lang === "zh-TW" ? "發球得分" : "Side-out");
 
       if (STATE.lang === "zh-TW") {
-        hintText.innerHTML = `預計總時間 <strong>${durationHours} 小時 (${totalMinutes} 分鐘)</strong>，預計安排 <strong>${totalGames} 局賽程</strong>。平均每局配時約 <strong class="text-amber-500">${avgMinutesPerGame} 分鐘</strong> (${scoringLabel})。`;
+        hintText.innerHTML = `總時間 <strong>${durationHours}h (${totalMinutes}m)</strong>，共 <strong>${totalGames} 局</strong>。每局約 <strong class="text-amber-500">${avgMinutesPerGame} 分鐘</strong> (${scoringLabel})。`;
       } else {
-        hintText.innerHTML = `Total duration <strong>${durationHours} hrs (${totalMinutes} mins)</strong>, scheduling <strong>${totalGames} games</strong>. Avg per game: <strong class="text-amber-500">${avgMinutesPerGame} mins</strong> (${scoringLabel}).`;
+        hintText.innerHTML = `Duration <strong>${durationHours}h (${totalMinutes}m)</strong>, total <strong>${totalGames} games</strong>. Avg: <strong class="text-amber-500">${avgMinutesPerGame} mins/game</strong> (${scoringLabel}).`;
       }
     };
 
@@ -917,7 +895,7 @@
       const uniquePlayers = [...new Set(players)];
 
       if (uniquePlayers.length < 4) {
-        showToast(STATE.lang === "zh-TW" ? "參賽選手至少需要 4 位！" : "At least 4 players required!", "error");
+        showToast(STATE.lang === "zh-TW" ? "選手至少需 4 位！" : "At least 4 players required!", "error");
         return;
       }
 
@@ -965,7 +943,7 @@
     // ----------------------------------------------------
     async function renderHubTournaments() {
       const container = document.getElementById("tournaments-list");
-      container.innerHTML = `<div class="col-span-full text-center py-12 sub-text"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2"></i>Loading...</div>`;
+      container.innerHTML = `<div class="col-span-full text-center py-8 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
       lucide.createIcons();
 
       let list = [];
@@ -989,13 +967,13 @@
 
       if (list.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full glass-card rounded-2xl p-12 text-center space-y-4">
-            <div class="w-16 h-16 rounded-2xl card-inner sub-text flex items-center justify-center mx-auto">
-              <i data-lucide="trophy" class="w-8 h-8"></i>
+          <div class="col-span-full glass-card rounded-2xl p-8 text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl card-inner sub-text flex items-center justify-center mx-auto">
+              <i data-lucide="trophy" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-lg font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
+            <h3 class="text-base font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
             <p class="text-xs sub-text max-w-sm mx-auto">${STATE.lang === "zh-TW" ? "點擊下方按鈕鋪劃第一個匹克球個人雙打輪播賽事！" : "Click below to create your first Pickleball round robin tournament!"}</p>
-            <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">
+            <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">
               ➕ ${t("createNewBtn")}
             </button>
           </div>
@@ -1015,30 +993,30 @@
           : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
         return `
-          <div class="glass-card rounded-2xl p-5 space-y-4 border hover:border-emerald-500/40 transition flex flex-col justify-between">
+          <div class="glass-card rounded-xl p-4 space-y-3 border hover:border-emerald-500/40 transition flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono card-inner text-emerald-600 dark:text-emerald-400 border">${tData.id}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold font-mono card-inner text-emerald-600 dark:text-emerald-400 border">${tData.id}</span>
                 <span class="text-[10px] px-2 py-0.5 rounded font-medium ${isFinished ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20'}">
                   ${isFinished ? t("statusFinished") : t("statusActive")}
                 </span>
               </div>
-              <h3 class="text-lg font-bold mt-2 font-display line-clamp-1">${tData.name}</h3>
+              <h3 class="text-base font-bold mt-1.5 font-display line-clamp-1">${tData.name}</h3>
               <p class="text-xs sub-text mt-1 flex items-center gap-1">
-                <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("estPrefix")} ${tData.durationHours || 2} ${t("hrsUnit")} · ${scoringLabel} (${tData.targetScore || 15}pt)
+                <i data-lucide="clock" class="w-3 h-3"></i> ${t("estPrefix")} ${tData.durationHours || 2}${t("hrsUnit")} · ${scoringLabel} (${tData.targetScore || 15}分)
               </p>
-              <div class="flex items-center gap-4 text-xs mt-3 pt-3 border-t border-stone-200 dark:border-slate-800/80">
+              <div class="flex items-center gap-3 text-xs mt-2 pt-2 border-t border-stone-200 dark:border-slate-800/80">
                 <span>👥 ${tData.players ? tData.players.length : 0} ${t("playersCountLabel")}</span>
                 <span>🎾 ${done}/${total} ${t("gamesDoneLabel")}</span>
               </div>
             </div>
 
-            <div class="flex items-center gap-2 pt-2">
+            <div class="flex items-center gap-2 pt-1">
               <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
               </button>
               <button onclick="deleteTournament('${tData.id}', '${tData.adminPin}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
           </div>
@@ -1122,16 +1100,15 @@
       if (!data) return;
 
       const scoringLabel = data.scoringType === "sideout" 
-        ? (STATE.lang === "zh-TW" ? "發球得分制 (Side-out)" : "Side-out Scoring") 
-        : (STATE.lang === "zh-TW" ? "落地得分制 (Rally)" : "Rally Scoring");
+        ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
+        : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
       document.getElementById("live-title").innerText = data.name;
-      document.getElementById("live-date").innerText = data.createdAt || "";
-      document.getElementById("live-players-count").innerText = `${data.players ? data.players.length : 0} ${t("playersCountLabel")}`;
+      document.getElementById("live-players-count").innerText = `${data.players ? data.players.length : 0} 人`;
       document.getElementById("live-duration").innerText = data.durationHours || "2.0";
-      document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}${STATE.lang === "zh-TW" ? "分" : "pt"})`;
+      document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}分)`;
 
-      // Render Matches
+      // Render Matches Schedule
       renderMatchesList(data.matches || []);
 
       // Calculate & Render Leaderboard
@@ -1147,57 +1124,54 @@
       container.innerHTML = matches.map((m, idx) => {
         const isDone = m.completed;
         return `
-          <div class="glass-card rounded-2xl p-4 sm:p-5 border ${isDone ? 'border-emerald-500/40' : ''} transition space-y-4">
-            <!-- Header -->
+          <div class="glass-card rounded-xl p-3 sm:p-4 border ${isDone ? 'border-emerald-500/40' : ''} transition space-y-3">
+            <!-- Game Header -->
             <div class="flex items-center justify-between">
-              <span class="text-sm font-display font-extrabold flex items-center gap-2">
-                <span class="w-6 h-6 rounded-lg card-inner text-emerald-600 dark:text-emerald-400 text-xs flex items-center justify-center font-mono">${m.id}</span>
-                ${m.roundName || 'Game ' + (idx + 1)}
+              <span class="text-xs sm:text-sm font-display font-extrabold flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md card-inner text-emerald-600 dark:text-emerald-400 text-[11px] flex items-center justify-center font-mono">${m.id}</span>
+                ${STATE.lang === 'zh-TW' ? `第 ${m.id} 局` : `Game ${m.id}`}
               </span>
-              <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold ${isDone ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'card-inner sub-text'}">
+              <span class="text-[10.5px] px-2 py-0.5 rounded-full font-semibold ${isDone ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'card-inner sub-text'}">
                 ${isDone ? t("gameCompleted") : t("gameInProgress")}
               </span>
             </div>
 
-            <!-- Teams Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Teams Grid (Mobile Compact & Sleek) -->
+            <div class="grid grid-cols-2 gap-1.5">
               <!-- Blue Team -->
-              <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 space-y-2">
-                <div class="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider flex items-center justify-between">
+              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/25 space-y-1">
+                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-blue-600 dark:text-blue-400 tracking-tight flex items-center justify-between">
                   <span>${t("blueTeam")}</span>
                 </div>
-                <div class="text-sm font-semibold">
+                <div class="text-xs font-semibold line-clamp-1">
                   ${m.blue[0]} & ${m.blue[1]}
                 </div>
-                <!-- Score Input -->
-                <div class="flex items-center gap-2 pt-1">
-                  <input type="number" min="0" max="99" id="score-blue-${m.id}" value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="${STATE.lang === 'zh-TW' ? '得分' : 'Score'}" class="w-20 input-bg border border-blue-500/40 rounded-lg p-2 text-center font-mono text-base focus:outline-none focus:border-blue-400" />
+                <div class="flex items-center pt-0.5">
+                  <input type="number" min="0" max="99" id="score-blue-${m.id}" value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="得分" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-blue-400" />
                 </div>
               </div>
 
               <!-- Red Team -->
-              <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-2">
-                <div class="text-[11px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider flex items-center justify-between">
+              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/25 space-y-1">
+                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-rose-600 dark:text-rose-400 tracking-tight flex items-center justify-between">
                   <span>${t("redTeam")}</span>
                 </div>
-                <div class="text-sm font-semibold">
+                <div class="text-xs font-semibold line-clamp-1">
                   ${m.red[0]} & ${m.red[1]}
                 </div>
-                <!-- Score Input -->
-                <div class="flex items-center gap-2 pt-1">
-                  <input type="number" min="0" max="99" id="score-red-${m.id}" value="${m.redScore !== null ? m.redScore : ''}" placeholder="${STATE.lang === 'zh-TW' ? '得分' : 'Score'}" class="w-20 input-bg border border-rose-500/40 rounded-lg p-2 text-center font-mono text-base focus:outline-none focus:border-rose-400" />
+                <div class="flex items-center pt-0.5">
+                  <input type="number" min="0" max="99" id="score-red-${m.id}" value="${m.redScore !== null ? m.redScore : ''}" placeholder="得分" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-rose-400" />
                 </div>
               </div>
             </div>
 
-            <!-- Resting Players & Save Button -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 border-t border-stone-200 dark:border-slate-800/60">
-              <div class="text-xs sub-text flex items-center gap-1.5">
-                <i data-lucide="coffee" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span>${t("restingLabel")} <strong>${m.resting && m.resting.length ? m.resting.join(', ') : (STATE.lang === 'zh-TW' ? '無' : 'None')}</strong></span>
+            <!-- Resting Players & Save Button Footer -->
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
+              <div class="sub-text truncate">
+                <span>休息：<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : '無'}</strong></span>
               </div>
-              <button onclick="saveMatchScore(${m.id})" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-md shadow-emerald-500/10">
-                <i data-lucide="check" class="w-4 h-4"></i> ${t("saveScoreBtn")}
+              <button onclick="saveMatchScore(${m.id})" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs transition flex items-center gap-1 shrink-0 shadow-sm">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i> ${t("saveScoreBtn")}
               </button>
             </div>
           </div>
@@ -1212,7 +1186,7 @@
       const redScoreVal = document.getElementById(`score-red-${matchId}`).value;
 
       if (blueScoreVal === "" || redScoreVal === "") {
-        showToast(STATE.lang === "zh-TW" ? "請先輸入藍隊與紅隊的得分！" : "Please enter scores for both teams!", "warning");
+        showToast(STATE.lang === "zh-TW" ? "請先輸入得分！" : "Please enter scores!", "warning");
         return;
       }
 
@@ -1234,14 +1208,14 @@
       if (STATE.db) {
         try {
           await set(ref(STATE.db, `tournaments/${tObj.id}/matches`), tObj.matches);
-          showToast(`Game ${matchId} ${STATE.lang === "zh-TW" ? "比分已同步！" : "scores updated!"}`, "success");
+          showToast(STATE.lang === "zh-TW" ? `第 ${matchId} 局比分已同步！` : `Game ${matchId} updated!`, "success");
         } catch (e) {
           console.error("Save score error:", e);
         }
       } else {
         saveToLocalTournaments(tObj);
         renderLiveUI(tObj);
-        showToast(`Game ${matchId} ${STATE.lang === "zh-TW" ? "比分已儲存" : "saved locally"}`, "success");
+        showToast(STATE.lang === "zh-TW" ? `第 ${matchId} 局比分已儲存` : `Game ${matchId} saved`, "success");
       }
     };
 
@@ -1299,35 +1273,34 @@
     function renderLeaderboardTable(leaderboard) {
       const tbody = document.getElementById("leaderboard-tbody");
       if (!leaderboard.length) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center sub-text">${STATE.lang === 'zh-TW' ? '尚無選手數據' : 'No Player Data'}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center sub-text text-xs">${STATE.lang === 'zh-TW' ? '尚無數據' : 'No Data'}</td></tr>`;
         return;
       }
 
       tbody.innerHTML = leaderboard.map((row, idx) => {
         const isMvp = idx === 0 && row.played > 0;
-        let rankBadge = `<span class="font-mono sub-text font-bold">${idx + 1}</span>`;
-        if (isMvp) rankBadge = `<span class="text-lg" title="👑 MVP Leader">👑</span>`;
-        else if (idx === 1 && row.played > 0) rankBadge = `<span class="text-base">🥈</span>`;
-        else if (idx === 2 && row.played > 0) rankBadge = `<span class="text-base">🥉</span>`;
+        let rankBadge = `<span class="font-mono sub-text font-bold text-[11px]">${idx + 1}</span>`;
+        if (isMvp) rankBadge = `<span class="text-base" title="👑 MVP Leader">👑</span>`;
+        else if (idx === 1 && row.played > 0) rankBadge = `<span class="text-sm">🥈</span>`;
+        else if (idx === 2 && row.played > 0) rankBadge = `<span class="text-sm">🥉</span>`;
 
         const winUnit = STATE.lang === "zh-TW" ? "勝" : "W";
         const lossUnit = STATE.lang === "zh-TW" ? "敗" : "L";
 
         return `
           <tr class="${isMvp ? 'bg-amber-500/10 font-bold border-l-2 border-amber-400' : 'hover:bg-stone-500/5'} transition">
-            <td class="p-3 text-center">${rankBadge}</td>
-            <td class="p-3 flex items-center gap-2">
-              <span class="font-semibold ${isMvp ? 'text-amber-600 dark:text-amber-300' : ''}">${row.name}</span>
-              ${isMvp ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-600 dark:text-amber-300 font-extrabold uppercase">MVP</span>' : ''}
+            <td class="py-2 px-1 text-center">${rankBadge}</td>
+            <td class="py-2 px-2">
+              <span class="font-semibold text-xs ${isMvp ? 'text-amber-600 dark:text-amber-300' : ''}">${row.name}</span>
             </td>
-            <td class="p-3 text-center font-mono">
-              <span class="text-emerald-600 dark:text-emerald-400">${row.wins}${winUnit}</span> / <span class="text-rose-600 dark:text-rose-400">${row.losses}${lossUnit}</span>
+            <td class="py-2 px-1 text-center font-mono text-[11px]">
+              <span class="text-emerald-600 dark:text-emerald-400">${row.wins}${winUnit}</span>/<span class="text-rose-600 dark:text-rose-400">${row.losses}${lossUnit}</span>
             </td>
-            <td class="p-3 text-center font-mono font-bold ${row.diff > 0 ? 'text-emerald-600 dark:text-emerald-400' : row.diff < 0 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
+            <td class="py-2 px-1 text-center font-mono text-[11px] font-bold ${row.diff > 0 ? 'text-emerald-600 dark:text-emerald-400' : row.diff < 0 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
               ${row.diff > 0 ? '+' + row.diff : row.diff}
             </td>
-            <td class="p-3 text-center font-mono sub-text">
-              ${row.pf} / ${row.pa}
+            <td class="py-2 px-2 text-center font-mono text-[11px] sub-text">
+              ${row.pf}/${row.pa}
             </td>
           </tr>
         `;
@@ -1374,7 +1347,7 @@
       else if (type === "error") bgClass = "bg-rose-950/90 dark:bg-rose-950/90 bg-rose-50 border-rose-500/50 text-rose-800 dark:text-rose-300";
       else if (type === "warning") bgClass = "bg-amber-950/90 dark:bg-amber-950/90 bg-amber-50 border-amber-500/50 text-amber-800 dark:text-amber-300";
 
-      toast.className = `px-4 py-3 rounded-xl border text-xs font-semibold shadow-xl transition transform translate-y-2 ${bgClass} flex items-center gap-2 pointer-events-auto`;
+      toast.className = `px-3.5 py-2.5 rounded-xl border text-xs font-semibold shadow-xl transition transform translate-y-2 ${bgClass} flex items-center gap-2 pointer-events-auto`;
       toast.innerHTML = `<span>${msg}</span>`;
 
       container.appendChild(toast);
