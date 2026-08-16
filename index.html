@@ -148,7 +148,7 @@
       <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
           <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> 歷史與已完賽紀錄 (<span id="archived-count">0</span>)
+            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> 已完賽紀錄 (<span id="archived-count">0</span>)
           </h3>
           <span id="archive-arrow" class="text-xs sub-text">▼ 展開</span>
         </div>
@@ -328,14 +328,14 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead class="card-inner sub-text uppercase font-semibold border-b text-[11px]">
-              <tr>
-                <th id="th-c-rank" class="py-3 px-3 text-center w-12">排名</th>
-                <th id="th-c-player" class="py-3 px-3">成員名稱</th>
-                <th id="th-c-winrate" class="py-3 px-2 text-center">總勝率</th>
-                <th id="th-c-wl" class="py-3 px-2 text-center">勝 / 敗</th>
-                <th id="th-c-played" class="py-3 px-2 text-center">總局數</th>
-                <th id="th-c-diff" class="py-3 px-2 text-center">總淨勝分</th>
-                <th id="th-c-pfpa" class="py-3 px-3 text-center">總得分 / 失分</th>
+              <tr class="whitespace-nowrap">
+                <th id="th-c-rank" class="py-2.5 px-2 text-center w-10">排名</th>
+                <th id="th-c-player" class="py-2.5 px-2">成員</th>
+                <th id="th-c-winrate" class="py-2.5 px-1.5 text-center">勝率</th>
+                <th id="th-c-wl" class="py-2.5 px-1.5 text-center">勝敗</th>
+                <th id="th-c-played" class="py-2.5 px-1.5 text-center">局數</th>
+                <th id="th-c-diff" class="py-2.5 px-1.5 text-center">淨勝</th>
+                <th id="th-c-pfpa" class="py-2.5 px-2 text-center">得/失</th>
               </tr>
             </thead>
             <tbody id="club-leaderboard-tbody" class="divide-y font-medium text-xs">
@@ -374,9 +374,9 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-          <!-- 1. 模式切換按鈕 -->
+          <!-- 1. 模式切換按鈕 (未完賽時顯示) -->
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 輸入模式
+            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> 輸入模式
           </button>
           
           <button onclick="unlockSuperAdminAuth()" id="btn-super-admin-unlock" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
@@ -399,9 +399,13 @@
         </div>
       </div>
 
-      <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold flex items-center justify-between">
-        <span class="flex items-center gap-1.5"><i data-lucide="lock" class="w-4 h-4"></i> 本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
-        <span class="text-[11px] sub-text">如需修正請點擊右上方「社群管理者解凍修改」</span>
+      <!-- 完賽鎖定提示框：清晰雙行結構 -->
+      <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold space-y-1">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="lock" class="w-4 h-4 shrink-0"></i>
+          <span>本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
+        </div>
+        <div class="text-[11px] sub-text pl-5">如需修正，請點擊右上方「社團管理者解凍修改」</div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
@@ -663,12 +667,12 @@
         switchClubLabel: "社團：",
         btnDeleteClub: "刪除社團",
         thCRank: "排名",
-        thCPlayer: "成員名稱",
-        thCWinRate: "總勝率",
-        thCWL: "勝 / 敗",
-        thCPlayed: "總局數",
-        thCDiff: "總淨勝分",
-        thCPFPA: "總得分 / 失分",
+        thCPlayer: "成員",
+        thCWinRate: "勝率",
+        thCWL: "勝敗",
+        thCPlayed: "局數",
+        thCDiff: "淨勝",
+        thCPFPA: "得/失",
         modalClubTitle: "建立新社團",
         modalClubDesc: "設定社團管理與使用密碼",
         modalClubNameLabel: "社團名稱 *",
@@ -761,12 +765,12 @@
         switchClubLabel: "Club:",
         btnDeleteClub: "Delete Club",
         thCRank: "Rank",
-        thCPlayer: "Member Name",
-        thCWinRate: "Win Rate",
-        thCWL: "W / L",
-        thCPlayed: "Total Games",
-        thCDiff: "Diff (+/-)",
-        thCPFPA: "PF / PA",
+        thCPlayer: "Member",
+        thCWinRate: "Win %",
+        thCWL: "W/L",
+        thCPlayed: "Games",
+        thCDiff: "Diff",
+        thCPFPA: "PF/PA",
         modalClubTitle: "Create New Club",
         modalClubDesc: "Set up club mgmt & use passwords",
         modalClubNameLabel: "Club Name *",
@@ -1682,14 +1686,14 @@
         tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text text-xs">社團「${currentClub}」尚無有效的比賽戰績</td></tr>`;
       } else {
         tbody.innerHTML = ranking.map((r, idx) => `
-          <tr class="hover:bg-stone-500/5">
-            <td class="py-3 px-3 text-center font-bold font-mono">${idx + 1}</td>
-            <td class="py-3 px-3 font-semibold text-emerald-500">${r.name}</td>
-            <td class="py-3 px-2 text-center font-bold font-mono text-amber-500">${r.winRate}%</td>
-            <td class="py-3 px-2 text-center font-mono">${r.wins} / ${r.losses}</td>
-            <td class="py-3 px-2 text-center font-mono sub-text">${r.played}</td>
-            <td class="py-3 px-2 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
-            <td class="py-3 px-3 text-center font-mono sub-text">${r.pf} / ${r.pa}</td>
+          <tr class="hover:bg-stone-500/5 whitespace-nowrap">
+            <td class="py-2.5 px-2 text-center font-bold font-mono">${idx + 1}</td>
+            <td class="py-2.5 px-2 font-semibold text-emerald-500 truncate max-w-[100px]">${r.name}</td>
+            <td class="py-2.5 px-1.5 text-center font-bold font-mono text-amber-500">${r.winRate}%</td>
+            <td class="py-2.5 px-1.5 text-center font-mono">${r.wins}/${r.losses}</td>
+            <td class="py-2.5 px-1.5 text-center font-mono sub-text">${r.played}</td>
+            <td class="py-2.5 px-1.5 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
+            <td class="py-2.5 px-2 text-center font-mono sub-text">${r.pf}/${r.pa}</td>
           </tr>
         `).join("");
       }
@@ -1829,10 +1833,18 @@
         lockedBanner.classList.add("hidden");
       }
 
-      // 按鈕文字改為： 觀看模式 / 輸入模式
-      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked 
-        ? `<i data-lucide="eye" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` 
-        : `<i data-lucide="edit-3" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
+      // 完賽後隱藏「輸入模式/觀看模式」按鈕
+      const btnToggleAdmin = document.getElementById("btn-toggle-admin");
+      if (isFinished) {
+        btnToggleAdmin.classList.add("hidden");
+        btnToggleAdmin.classList.remove("flex");
+      } else {
+        btnToggleAdmin.classList.remove("hidden");
+        btnToggleAdmin.classList.add("flex");
+        btnToggleAdmin.innerHTML = STATE.isAdminUnlocked 
+          ? `<i data-lucide="eye" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` 
+          : `<i data-lucide="edit-3" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
+      }
       
       const btnSuperUnlock = document.getElementById("btn-super-admin-unlock");
       if (isFinished && !STATE.isSuperAdminUnlocked) {
@@ -2015,9 +2027,9 @@
         return;
       }
       tbody.innerHTML = ranking.map((r, idx) => `
-        <tr class="hover:bg-stone-500/5">
+        <tr class="hover:bg-stone-500/5 whitespace-nowrap">
           <td class="py-2.5 px-2 text-center font-bold font-mono">${idx + 1}</td>
-          <td class="py-2.5 px-2 font-semibold truncate max-w-[120px]">${r.name}</td>
+          <td class="py-2.5 px-2 font-semibold truncate max-w-[100px]">${r.name}</td>
           <td class="py-2.5 px-1.5 text-center font-mono">${r.wins}/${r.losses}</td>
           <td class="py-2.5 px-1.5 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
           <td class="py-2.5 px-2 text-center font-mono sub-text">${r.pf}/${r.pa}</td>
@@ -2054,4 +2066,3 @@
   </script>
 </body>
 </html>
-
