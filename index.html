@@ -139,7 +139,7 @@
       <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
         <div>
           <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
-          <input type="text" id="create-name" required placeholder="例：0818 球賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+          <input type="text" id="create-name" required placeholder="例：週末雙打積分賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
         <div>
@@ -152,22 +152,22 @@
           </select>
         </div>
 
-        <!-- 社團密碼驗證框 -->
+        <!-- 社團驗證框（僅在社團有設定權限2密碼時動態顯示） -->
         <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
           <label id="t-label-club-auth" class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受密碼保護，請輸入社團管理密碼：
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受密碼保護，請輸入社團權限 2 管理密碼：
           </label>
-          <input type="password" id="create-club-auth-pwd" placeholder="輸入社團管理密碼驗證建立權限" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          <input type="password" id="create-club-auth-pwd" placeholder="輸入社團權限 2 密碼驗證" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div>
-          <label id="t-label-visibility" class="block text-xs sm:text-sm font-semibold mb-1">3. 賽事公開層級與隱私</label>
+          <label id="t-label-visibility" class="block text-xs sm:text-sm font-semibold mb-1">3. 賽事隱私</label>
           <div class="grid grid-cols-2 gap-2">
             <button type="button" id="btn-vis-public" onclick="setVisibility('public')" class="mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
-              <span>🌐</span> <span id="t-vis-public-label">公開賽局</span>
+              <span>🌐</span> <span id="t-vis-public-label">公開</span>
             </button>
             <button type="button" id="btn-vis-private" onclick="setVisibility('private')" class="mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
-              <span>🔒</span> <span id="t-vis-private-label">社團專屬</span>
+              <span>🔒</span> <span id="t-vis-private-label">私密</span>
             </button>
           </div>
           <input type="hidden" id="create-visibility" value="public" />
@@ -182,21 +182,14 @@
 
         <div>
           <label id="t-label-pin-title" class="block text-xs sm:text-sm font-semibold mb-1">
-            4. 管理員 PIN 碼 (修改比分用) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
+            4. 賽事管理者 PIN 碼 (解鎖修改比分與結束賽事) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
           </label>
-          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="4 位數字，預防非相關人員修改比分" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
-        </div>
-
-        <div>
-          <label id="t-label-delete-pwd-title" class="block text-xs sm:text-sm font-semibold mb-1">
-            5. 刪除賽事密碼 <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">(選填，社團預設值可覆蓋)</span>
-          </label>
-          <input type="password" id="create-delete-pwd" placeholder="可自訂刪除密碼 (最高權限密碼永久保留)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="4 位數字，留空則人人可修改" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">6. 預計比賽總時間</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">5. 預計比賽總時間</label>
             <div class="relative">
               <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
@@ -204,14 +197,14 @@
           </div>
 
           <div>
-            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">7. 比賽場地數</label>
+            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">6. 比賽場地數</label>
             <input type="number" id="create-courts" min="1" max="20" value="1" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">8. 預估單局配時</label>
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">7. 預估單局配時</label>
             <div class="relative">
               <input type="number" id="create-game-mins" min="3" max="60" value="15" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
@@ -219,7 +212,7 @@
           </div>
 
           <div>
-            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">9. 計分賽制選擇</label>
+            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">8. 計分賽制選擇</label>
             <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="rally">落地得分制 (Rally)</option>
               <option value="sideout">發球得分制 (Side-out)</option>
@@ -229,11 +222,11 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">10. 每局目標分數</label>
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">9. 每局目標分數</label>
             <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
           <div>
-            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">11. 賽事模式</label>
+            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">10. 賽事模式</label>
             <div class="grid grid-cols-2 gap-1.5">
               <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-fair-title">平均</span>
@@ -248,7 +241,7 @@
 
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">12. 參賽選手名單</label>
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">11. 參賽選手名單</label>
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
 
@@ -350,7 +343,7 @@
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖修改權限
           </button>
           <button onclick="forceEndTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="power" class="w-3.5 h-3.5"></i> 強制結束賽事
+            <i data-lucide="power" class="w-3.5 h-3.5"></i> 結束賽事
           </button>
           <button onclick="openShareModal()" id="t-share-btn" class="px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> 分享 / QR
@@ -417,9 +410,9 @@
 
       <div>
         <h3 id="t-modal-club-title" class="text-base font-bold font-display flex items-center gap-1.5">
-          <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 建立新社團 / 俱樂部
+          <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 建立新社團
         </h3>
-        <p id="t-modal-club-desc" class="text-xs sub-text mt-0.5">預先建立社團並設定管理與刪除密碼</p>
+        <p id="t-modal-club-desc" class="text-xs sub-text mt-0.5">設定社團權限密碼以保護管理與刪除</p>
       </div>
 
       <form onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
@@ -429,13 +422,13 @@
         </div>
 
         <div>
-          <label id="t-modal-club-pwd-label" class="block font-semibold mb-1">社團檢視 / 管理密碼 (選填)</label>
-          <input type="password" id="club-new-pwd" maxlength="4" placeholder="4 位數字，切換至此社團需輸入" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          <label id="t-modal-club-pwd2-label" class="block font-semibold mb-1">社團權限 2 密碼 (日常管理/建賽事用) <span class="text-[10px] sub-text font-normal">(選填)</span></label>
+          <input type="password" id="club-new-pwd2" maxlength="4" placeholder="4 位數字，留空則人人可管理" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div>
-          <label id="t-modal-club-del-label" class="block font-semibold mb-1">社團預設刪除賽事密碼 (選填)</label>
-          <input type="password" id="club-new-del-pwd" placeholder="刪除此社團旗下賽事的密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          <label id="t-modal-club-pwd1-label" class="block font-semibold mb-1">社團權限 1 密碼 (刪除社團專用) <span class="text-[10px] sub-text font-normal">(選填)</span></label>
+          <input type="password" id="club-new-pwd1" maxlength="4" placeholder="4 位數字，用於刪除社團與清空" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <button type="submit" id="btn-submit-club" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold py-2.5 rounded-xl shadow transition text-xs mt-2 flex items-center justify-center gap-1">
@@ -515,7 +508,7 @@
         createNewBtn: "➕ 建立新賽事",
         statusFinished: "已完賽",
         statusActive: "進行中",
-        statusForceEnded: "提前結束",
+        statusForceEnded: "已結束",
         enterTournament: "進入賽事",
         playersCountLabel: "人參賽",
         gamesDoneLabel: "局完成",
@@ -524,22 +517,21 @@
         labelName: "1. 賽事名稱",
         labelClub: "2. 所屬社團 / 俱樂部",
         btnOpenCreateClub: "➕ 新增社團",
-        labelClubAuth: "該社團受密碼保護，請輸入社團管理密碼：",
-        placeholderClubAuth: "輸入社團管理密碼驗證建立權限",
-        labelVisibility: "3. 賽事公開層級與隱私",
-        visPublic: "公開賽局",
-        visPrivate: "社團專屬",
+        labelClubAuth: "該社團受權限 2 密碼保護，請輸入日常管理密碼：",
+        placeholderClubAuth: "輸入社團權限 2 密碼驗證",
+        labelVisibility: "3. 賽事隱私",
+        visPublic: "公開",
+        visPrivate: "私密",
         labelViewPwd: "設定觀看密碼",
         viewPwdHint: "(4 位數，留空則人人可觀看)",
-        labelPinTitle: "4. 管理員 PIN 碼 (修改比分用)",
-        labelDeletePwdTitle: "5. 刪除賽事密碼",
+        labelPinTitle: "4. 賽事管理者 PIN 碼 (解鎖修改比分與結束賽事)",
         optionalTag: "(選填)",
-        labelDuration: "6. 預計比賽總時間",
-        labelCourts: "7. 比賽場地數",
-        labelGameMins: "8. 預估單局配時",
-        labelScoring: "9. 計分賽制選擇",
-        labelTarget: "10. 每局目標分數",
-        labelScheduleMode: "11. 賽事模式",
+        labelDuration: "5. 預計比賽總時間",
+        labelCourts: "6. 比賽場地數",
+        labelGameMins: "7. 預估單局配時",
+        labelScoring: "8. 計分賽制選擇",
+        labelTarget: "9. 每局目標分數",
+        labelScheduleMode: "10. 賽事模式",
         unitHours: "小時",
         unitMins: "分鐘",
         courtsUnit: "場地",
@@ -547,7 +539,7 @@
         optionSideout: "發球得分制 (Side-out)",
         modeFairTitle: "平均賽事",
         modeMaxTitle: "最大局數",
-        labelPlayers: "12. 參賽選手名單",
+        labelPlayers: "11. 參賽選手名單",
         quickFillLabel: "快速帶入預設選手：",
         quickFillBtn: "⚡ 自動填入 A, B, C...",
         importClubRosterBtn: "👥 帶入社團成員",
@@ -556,9 +548,8 @@
         timeCalcTitle: "時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
 
-        placeholderName: "例：0818 球賽",
-        placeholderPin: "4 位數字，預防非相關人員修改比分",
-        placeholderDeletePwd: "可自訂刪除密碼 (最高權限密碼永久保留)",
+        placeholderName: "例：週末雙打積分賽",
+        placeholderPin: "4 位數字，留空則人人可修改",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
         clubTitle: "社團賽事紀錄",
@@ -574,14 +565,14 @@
         thCDiff: "總淨勝分",
         thCPFPA: "總得分 / 失分",
 
-        modalClubTitle: "建立新社團 / 俱樂部",
-        modalClubDesc: "預先建立社團並設定管理與刪除密碼",
+        modalClubTitle: "建立新社團",
+        modalClubDesc: "設定社團權限密碼以保護管理與刪除",
         modalClubNameLabel: "社團名稱 *",
         placeholderClubName: "例：週末輕鬆打",
-        modalClubPwdLabel: "社團檢視 / 管理密碼 (選填)",
-        placeholderClubPwd: "4 位數字，切換至此社團需輸入",
-        modalClubDelLabel: "社團預設刪除賽事密碼 (選填)",
-        placeholderClubDelPwd: "刪除此社團旗下賽事的密碼",
+        modalClubPwd2Label: "社團權限 2 密碼 (日常管理/建賽事用)",
+        placeholderClubPwd2: "4 位數字，留空則人人可管理",
+        modalClubPwd1Label: "社團權限 1 密碼 (刪除社團專用)",
+        placeholderClubPwd1: "4 位數字，用於刪除社團與清空",
         btnSubmitClub: "建立社團",
 
         estPrefix: "預估",
@@ -592,7 +583,7 @@
         leaderboardTitle: "戰績排行",
         unlockBtn: "解鎖修改權限",
         lockBtn: "鎖定為觀看模式",
-        forceEndBtn: "強制結束賽事",
+        forceEndBtn: "結束賽事",
 
         thRank: "名次",
         thPlayer: "選手名稱",
@@ -613,7 +604,7 @@
         saveScoreBtn: "儲存",
         editScoreBtn: "修改",
         scorePlaceholder: "得分",
-        canceledGame: "已停辦 (未進行)",
+        canceledGame: "已取消 (放棄賽事)",
 
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
@@ -631,7 +622,7 @@
         createNewBtn: "➕ Create Tournament",
         statusFinished: "Completed",
         statusActive: "In Progress",
-        statusForceEnded: "Ended Early",
+        statusForceEnded: "Ended",
         enterTournament: "Enter View",
         playersCountLabel: "Players",
         gamesDoneLabel: "Games Done",
@@ -640,22 +631,21 @@
         labelName: "1. Tournament Name",
         labelClub: "2. Club / Group Name",
         btnOpenCreateClub: "➕ Add Club",
-        labelClubAuth: "Club is password protected, enter club password:",
-        placeholderClubAuth: "Enter club password to verify access",
-        labelVisibility: "3. Privacy & Access Level",
-        visPublic: "Public Match",
-        visPrivate: "Club Private",
+        labelClubAuth: "Club is protected by Privilege 2 password:",
+        placeholderClubAuth: "Enter Privilege 2 password",
+        labelVisibility: "3. Privacy",
+        visPublic: "Public",
+        visPrivate: "Private",
         labelViewPwd: "Set View Password",
         viewPwdHint: "(4 digits, leave blank for open view)",
-        labelPinTitle: "4. Admin PIN (Score Edit)",
-        labelDeletePwdTitle: "5. Delete Password",
+        labelPinTitle: "4. Tournament PIN (Unlock Score & End Match)",
         optionalTag: "(Optional)",
-        labelDuration: "6. Total Estimated Duration",
-        labelCourts: "7. Number of Courts",
-        labelGameMins: "8. Single Game Mins",
-        labelScoring: "9. Scoring System",
-        labelTarget: "10. Target Points",
-        labelScheduleMode: "11. Schedule Mode",
+        labelDuration: "5. Total Estimated Duration",
+        labelCourts: "6. Number of Courts",
+        labelGameMins: "7. Single Game Mins",
+        labelScoring: "8. Scoring System",
+        labelTarget: "9. Target Points",
+        labelScheduleMode: "10. Schedule Mode",
         unitHours: "Hrs",
         unitMins: "Mins",
         courtsUnit: "Courts",
@@ -663,7 +653,7 @@
         optionSideout: "Side-out Scoring",
         modeFairTitle: "Fair Play",
         modeMaxTitle: "Max Games",
-        labelPlayers: "12. Player Roster",
+        labelPlayers: "11. Player Roster",
         quickFillLabel: "Quick Auto-fill Players:",
         quickFillBtn: "⚡ Auto Fill A, B, C...",
         importClubRosterBtn: "👥 Import Club Members",
@@ -672,9 +662,8 @@
         timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
 
-        placeholderName: "e.g., 0818 Tournament",
-        placeholderPin: "4 digits PIN to prevent score tampering",
-        placeholderDeletePwd: "Password to delete (Master key retained)",
+        placeholderName: "e.g., Weekend Pickleball",
+        placeholderPin: "4 digits PIN, optional",
         placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
 
         clubTitle: "Club Records",
@@ -691,13 +680,13 @@
         thCPFPA: "PF / PA",
 
         modalClubTitle: "Create New Club",
-        modalClubDesc: "Setup club with manage & delete passwords",
+        modalClubDesc: "Set up club passwords for security & deletion",
         modalClubNameLabel: "Club Name *",
         placeholderClubName: "e.g., Weekend Pickleball",
-        modalClubPwdLabel: "Club Access Password (Optional)",
-        placeholderClubPwd: "4 digits, required when switching to club",
-        modalClubDelLabel: "Default Delete Password (Optional)",
-        placeholderClubDelPwd: "Password to delete club tournaments",
+        modalClubPwd2Label: "Privilege 2 Password (Management/Create)",
+        placeholderClubPwd2: "4 digits, optional",
+        modalClubPwd1Label: "Privilege 1 Password (Deletion Only)",
+        placeholderClubPwd1: "4 digits, for club deletion",
         btnSubmitClub: "Create Club",
 
         estPrefix: "Est.",
@@ -708,7 +697,7 @@
         leaderboardTitle: "Live Standings",
         unlockBtn: "Unlock Admin",
         lockBtn: "Lock View",
-        forceEndBtn: "Force End Tournament",
+        forceEndBtn: "End Match",
 
         thRank: "Rank",
         thPlayer: "Player Name",
@@ -729,7 +718,7 @@
         saveScoreBtn: "Save",
         editScoreBtn: "Edit",
         scorePlaceholder: "Score",
-        canceledGame: "Canceled (Not Played)",
+        canceledGame: "Canceled (Match Dropped)",
 
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
@@ -887,7 +876,6 @@
       document.getElementById("t-vis-private-label").innerText = t("visPrivate");
       document.getElementById("t-label-view-pwd").innerHTML = `${t("labelViewPwd")} <span id="t-optional-tag-3" class="text-[10px] sub-text font-normal">${t("viewPwdHint")}</span>`;
       document.getElementById("t-label-pin-title").innerHTML = `${t("labelPinTitle")} <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
-      document.getElementById("t-label-delete-pwd-title").innerHTML = `${t("labelDeletePwdTitle")} <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
       document.getElementById("t-label-courts").innerText = t("labelCourts");
@@ -924,15 +912,14 @@
       document.getElementById("t-modal-club-desc").innerText = t("modalClubDesc");
       document.getElementById("t-modal-club-name-label").innerText = t("modalClubNameLabel");
       document.getElementById("club-new-name").placeholder = t("placeholderClubName");
-      document.getElementById("t-modal-club-pwd-label").innerText = t("modalClubPwdLabel");
-      document.getElementById("club-new-pwd").placeholder = t("placeholderClubPwd");
-      document.getElementById("t-modal-club-del-label").innerText = t("modalClubDelLabel");
-      document.getElementById("club-new-del-pwd").placeholder = t("placeholderClubDelPwd");
+      document.getElementById("t-modal-club-pwd2-label").innerText = t("modalClubPwd2Label");
+      document.getElementById("club-new-pwd2").placeholder = t("placeholderClubPwd2");
+      document.getElementById("t-modal-club-pwd1-label").innerText = t("modalClubPwd1Label");
+      document.getElementById("club-new-pwd1").placeholder = t("placeholderClubPwd1");
       document.getElementById("btn-submit-club").innerText = t("btnSubmitClub");
 
       document.getElementById("create-name").placeholder = t("placeholderName");
       document.getElementById("create-pin").placeholder = t("placeholderPin");
-      document.getElementById("create-delete-pwd").placeholder = t("placeholderDeletePwd");
       document.getElementById("create-players").placeholder = t("placeholderPlayers");
 
       const scoringSel = document.getElementById("create-scoring-type");
@@ -1187,7 +1174,7 @@
       document.getElementById("modal-create-club").classList.add("hidden");
     };
 
-    // 🌟 建立社團：即時刷新選單並選取
+    // 建立新社團（權限 1 與權限 2 密碼）
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
       const submitBtn = document.getElementById("btn-submit-club");
@@ -1195,8 +1182,8 @@
       submitBtn.innerText = "Loading...";
 
       const clubName = document.getElementById("club-new-name").value.trim();
-      const clubPwd = document.getElementById("club-new-pwd").value.trim();
-      const delPwd = document.getElementById("club-new-del-pwd").value.trim();
+      const pwd2 = document.getElementById("club-new-pwd2").value.trim();
+      const pwd1 = document.getElementById("club-new-pwd1").value.trim();
 
       if (!clubName) {
         submitBtn.disabled = false;
@@ -1206,8 +1193,8 @@
 
       const clubObj = {
         name: clubName,
-        password: clubPwd || null,
-        defaultDeletePassword: delPwd || null,
+        password: pwd2 || null,         // 權限 2：日常管理與建賽事
+        deletePassword: pwd1 || null,   // 權限 1：刪除社團專用
         createdAt: new Date().toLocaleString("zh-TW")
       };
 
@@ -1226,14 +1213,13 @@
       showToast(STATE.lang === "zh-TW" ? `社團「${clubName}」建立成功！` : `Club ${clubName} created!`, "success");
       
       document.getElementById("club-new-name").value = "";
-      document.getElementById("club-new-pwd").value = "";
-      document.getElementById("club-new-del-pwd").value = "";
+      document.getElementById("club-new-pwd2").value = "";
+      document.getElementById("club-new-pwd1").value = "";
       closeCreateClubModal();
 
       submitBtn.disabled = false;
       submitBtn.innerText = t("btnSubmitClub");
 
-      // 重新載入並動態切換
       await fetchAllClubs();
       
       const createPage = document.getElementById("page-create");
@@ -1248,7 +1234,7 @@
       }
     };
 
-    // 🌟 刪除當前選取的社團
+    // 刪除社團（需核對權限 1 密碼或系統最高權限）
     window.deleteCurrentClub = async function () {
       const currentClub = STATE.selectedClubName;
       if (!currentClub) {
@@ -1260,19 +1246,20 @@
       const MASTER_PIN = "19851108";
 
       const promptMsg = STATE.lang === "zh-TW" 
-        ? `🗑️ 確定要刪除社團「${currentClub}」嗎？\n請輸入社團管理密碼：`
-        : `🗑️ Delete club "${currentClub}"?\nEnter club password:`;
+        ? `🗑️ 確定要刪除社團「${currentClub}」嗎？\n請輸入社團權限 1 (刪除專用) 密碼：`
+        : `🗑️ Delete club "${currentClub}"?\nEnter Privilege 1 password:`;
 
       const inputPwd = prompt(promptMsg);
       if (inputPwd === null) return;
 
       const cleanInput = inputPwd.trim();
-      const isClubPwdCorrect = clubInfo && clubInfo.password && cleanInput === String(clubInfo.password).trim();
-      const isNoPwdClub = clubInfo && !clubInfo.password;
+      const clubDelPwd = clubInfo ? clubInfo.deletePassword : null;
+      const isDelPwdCorrect = clubDelPwd && cleanInput === String(clubDelPwd).trim();
+      const isNoPwdClub = clubInfo && !clubDelPwd && !clubInfo.password;
       const isMasterPwdCorrect = cleanInput === MASTER_PIN;
 
-      if (!isNoPwdClub && !isClubPwdCorrect && !isMasterPwdCorrect) {
-        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，無法刪除社團！" : "❌ Incorrect Password!", "error");
+      if (!isNoPwdClub && !isDelPwdCorrect && !isMasterPwdCorrect) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 權限 1 密碼錯誤，無法刪除社團！" : "❌ Incorrect Privilege 1 Password!", "error");
         return;
       }
 
@@ -1308,10 +1295,10 @@
       }
     }
 
+    // 選擇社團時，若有權限 2 密碼則動態顯示驗證輸入框
     window.onClubSelectChange = function () {
       const selectedClub = document.getElementById("create-club-select").value;
       const btnImport = document.getElementById("btn-import-club-roster");
-      const delPwdInput = document.getElementById("create-delete-pwd");
       const authBox = document.getElementById("box-club-auth-pwd");
       const authPwdInput = document.getElementById("create-club-auth-pwd");
 
@@ -1320,7 +1307,6 @@
         document.getElementById("club-roster-chips").classList.add("hidden");
         authBox.classList.add("hidden");
         authPwdInput.value = "";
-        delPwdInput.value = "";
         return;
       }
 
@@ -1330,10 +1316,6 @@
       } else {
         authBox.classList.add("hidden");
         authPwdInput.value = "";
-      }
-
-      if (clubInfo && clubInfo.defaultDeletePassword) {
-        delPwdInput.value = clubInfo.defaultDeletePassword;
       }
 
       const clubPlayers = getPlayersFromClub(selectedClub);
@@ -1491,14 +1473,14 @@
       const visibility = document.getElementById("create-visibility").value;
       const rawViewPwd = document.getElementById("create-view-pwd").value.trim();
       const rawPin = document.getElementById("create-pin").value.trim();
-      const rawDeletePwd = document.getElementById("create-delete-pwd").value.trim();
 
+      // 核對社團權限 2 密碼
       if (clubName) {
         const clubInfo = STATE.allClubsCache[clubName];
         if (clubInfo && clubInfo.password) {
           const authPwd = document.getElementById("create-club-auth-pwd").value.trim();
           if (authPwd !== String(clubInfo.password).trim() && authPwd !== "19851108") {
-            showToast(STATE.lang === "zh-TW" ? `❌ 社團「${clubName}」密碼錯誤，無法建立賽事！` : `❌ Incorrect password for club ${clubName}!`, "error");
+            showToast(STATE.lang === "zh-TW" ? `❌ 社團「${clubName}」權限 2 密碼錯誤！` : `❌ Incorrect Privilege 2 password for club ${clubName}!`, "error");
             return;
           }
         }
@@ -1548,7 +1530,6 @@
         viewPassword: (visibility === 'private' && rawViewPwd !== "") ? rawViewPwd : null,
         adminPin: pin,
         hasPinProtection: isPinEnabled,
-        deletePassword: rawDeletePwd !== "" ? rawDeletePwd : null,
         durationHours: duration,
         courtsCount: courtsCount,
         scoringType: scoringType,
@@ -1660,7 +1641,7 @@
               <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
               </button>
-              <button onclick="deleteTournament('${tData.id}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
+              <button onclick="deleteTournament('${tData.id}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete / Drop">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
@@ -1674,7 +1655,7 @@
     window.enterTournament = function (id) {
       const tData = STATE.allTournamentsCache.find(t => t.id === id);
       if (tData && tData.visibility === 'private' && tData.viewPassword) {
-        const inputPwd = prompt(STATE.lang === "zh-TW" ? "🔒 此為社團專屬賽事，請輸入 4 位數觀看密碼：" : "🔒 Private tournament, enter 4-digit password:");
+        const inputPwd = prompt(STATE.lang === "zh-TW" ? "🔒 此為私密賽事，請輸入 4 位數觀看密碼：" : "🔒 Private tournament, enter 4-digit password:");
         if (inputPwd === null) return;
         if (inputPwd.trim() !== String(tData.viewPassword).trim()) {
           showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，無法進入！" : "❌ Incorrect Password!", "error");
@@ -1686,30 +1667,30 @@
       loadLiveTournament(id);
     };
 
+    // 放棄賽事（刪除紀錄）
     window.deleteTournament = async function (id) {
       const MASTER_PIN = "19851108";
       const tData = STATE.allTournamentsCache.find(t => t.id === id);
       if (!tData) return;
 
       const clubInfo = tData.clubName ? STATE.allClubsCache[tData.clubName] : null;
-      const clubDelPwd = clubInfo ? clubInfo.defaultDeletePassword : null;
-      const selfDelPwd = tData.deletePassword;
+      const clubDelPwd = clubInfo ? clubInfo.deletePassword : null;
 
       const promptMsg = STATE.lang === "zh-TW" 
-        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入刪除密碼：`
-        : `🗑️ Delete tournament (${id})?\nEnter delete password:`;
+        ? `🗑️ 確定要放棄/刪除此賽事 (${id}) 嗎？此操作將不保留紀錄。\n請輸入賽事 PIN 碼或社團權限 1 密碼：`
+        : `🗑️ Drop/Delete tournament (${id})?\nEnter PIN or Club Privilege 1 password:`;
 
       const inputPwd = prompt(promptMsg);
       if (inputPwd === null) return;
       
       const cleanInput = inputPwd.trim();
-      
-      const isSelfPwdCorrect = selfDelPwd && cleanInput === String(selfDelPwd).trim();
-      const isClubPwdCorrect = clubDelPwd && cleanInput === String(clubDelPwd).trim();
-      const isMasterPwdCorrect = cleanInput === MASTER_PIN;
+      const isPinCorrect = tData.adminPin && cleanInput === String(tData.adminPin).trim();
+      const isClubDelCorrect = clubDelPwd && cleanInput === String(clubDelPwd).trim();
+      const isNoPwdMatch = !tData.hasPinProtection && !clubDelPwd;
+      const isMasterPin = cleanInput === MASTER_PIN;
 
-      if (!isSelfPwdCorrect && !isClubPwdCorrect && !isMasterPwdCorrect) {
-        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，刪除失敗！" : "❌ Incorrect Password!", "error");
+      if (!isNoPwdMatch && !isPinCorrect && !isClubDelCorrect && !isMasterPin) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，放棄賽事失敗！" : "❌ Incorrect Password!", "error");
         return;
       }
 
@@ -1724,7 +1705,7 @@
       delete local[id];
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
 
-      showToast(STATE.lang === "zh-TW" ? `賽事已刪除` : `Tournament deleted`, "success");
+      showToast(STATE.lang === "zh-TW" ? `賽事已放棄並刪除` : `Tournament dropped & deleted`, "success");
       renderHubTournaments();
     };
 
@@ -1761,13 +1742,13 @@
       const clubInfo = STATE.allClubsCache[targetClub];
 
       if (clubInfo && clubInfo.password) {
-        const inputPwd = prompt(STATE.lang === "zh-TW" ? `🔒 社團「${targetClub}」受密碼保護，請輸入檢視密碼：` : `🔒 Enter password for ${targetClub}:`);
+        const inputPwd = prompt(STATE.lang === "zh-TW" ? `🔒 社團「${targetClub}」受保護，請輸入權限 2 管理密碼：` : `🔒 Enter Privilege 2 password for ${targetClub}:`);
         if (inputPwd === null) {
           select.value = STATE.selectedClubName;
           return;
         }
-        if (inputPwd.trim() !== String(clubInfo.password).trim()) {
-          showToast(STATE.lang === "zh-TW" ? "❌ 社團密碼錯誤！" : "❌ Incorrect Club Password!", "error");
+        if (inputPwd.trim() !== String(clubInfo.password).trim() && inputPwd.trim() !== "19851108") {
+          showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤！" : "❌ Incorrect Password!", "error");
           select.value = STATE.selectedClubName;
           return;
         }
@@ -1906,7 +1887,7 @@
       }
 
       if (tObj.hasPinProtection && tObj.adminPin) {
-        const inputPin = prompt(STATE.lang === "zh-TW" ? "請輸入管理員 PIN 碼解鎖修改權限：" : "Enter Admin PIN to unlock:");
+        const inputPin = prompt(STATE.lang === "zh-TW" ? "請輸入賽事管理者 PIN 碼解鎖修改權限與結束賽事：" : "Enter Tournament PIN to unlock:");
         if (inputPin === null) return;
         if (inputPin.trim() !== String(tObj.adminPin).trim() && inputPin.trim() !== "19851108") {
           showToast(STATE.lang === "zh-TW" ? "❌ PIN 碼錯誤！" : "❌ Incorrect PIN!", "error");
@@ -1915,16 +1896,17 @@
       }
 
       STATE.isAdminUnlocked = true;
-      showToast(STATE.lang === "zh-TW" ? "🔓 解鎖成功！可編輯比分與強制結束" : "Unlocked! Score editing enabled", "success");
+      showToast(STATE.lang === "zh-TW" ? "🔓 解鎖成功！可編輯比分與結束賽事" : "Unlocked! Score editing enabled", "success");
       renderLiveUI(tObj);
     };
 
+    // 結束賽事（保留已完成紀錄結算）
     window.forceEndTournament = async function () {
       if (!STATE.isAdminUnlocked) return;
 
       const confirmMsg = STATE.lang === "zh-TW"
-        ? "⚠️ 確定要【強制結束賽事】嗎？\n未完成的局數將自動停辦，並以目前已完成的比分計算最終名次。"
-        : "⚠️ Force end tournament now?\nUnfinished games will be canceled and standings locked with current scores.";
+        ? "⚠️ 確定要【結束賽事】嗎？\n未完成的局數將自動取消，並以目前已完成的比分計算最終名次。"
+        : "⚠️ End tournament now?\nUnfinished games will be canceled and standings locked with current scores.";
 
       if (!confirm(confirmMsg)) return;
 
@@ -1941,14 +1923,14 @@
       if (STATE.db) {
         try {
           await set(ref(STATE.db, `tournaments/${tObj.id}`), tObj);
-          showToast(STATE.lang === "zh-TW" ? "賽事已強制結束並結算" : "Tournament force ended & settled", "success");
+          showToast(STATE.lang === "zh-TW" ? "賽事已結束並結算" : "Tournament ended & settled", "success");
         } catch (e) {
           console.error("Force end error:", e);
         }
       } else {
         saveToLocalTournaments(tObj);
         renderLiveUI(tObj);
-        showToast(STATE.lang === "zh-TW" ? "賽事已強制結束" : "Tournament force ended", "success");
+        showToast(STATE.lang === "zh-TW" ? "賽事已結束" : "Tournament ended", "success");
       }
     };
 
