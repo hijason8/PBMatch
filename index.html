@@ -5,8 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>PB Match</title>
   
-  <meta name="description" content="PB Match 專業匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
-  <meta name="keywords" content="PB Match, Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
+  <meta name="description" content="PB Match 專業匹克球賽事管理系統" />
+  <meta name="theme-color" content="#10b981" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PB Match" />
+
+  <!-- PWA Manifest Data (Data URI 格式，無需額外建立 manifest.json 檔案) -->
+  <link rel="manifest" href='data:application/manifest+json,{
+    "name": "PB Match",
+    "short_name": "PB Match",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#090d16",
+    "theme_color": "#10b981",
+    "icons": [
+      {
+        "src": "data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22128%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22><stop offset=%220%25%22 stop-color=%22%2310b981%22/><stop offset=%22100%25%22 stop-color=%22%23fbbf24%22/></linearGradient></defs><path fill=%22%23090d16%22 d=%22M160 128h192v64c0 53-43 96-96 96s-96-43-96-96v-64zm-32 32h-32c-17.7 0-32 14.3-32 32 0 35.3 28.7 64 64 64v-32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm256 0c17.7 0 32 14.3 32 32s-14.3 32-32 32v32c35.3 0 64-28.7 64-64 0-17.7-14.3-32-32-32h-32zm-144 160h32v64h64v32H144v-32h64v-64z%22/></svg>",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ]
+  }' />
+
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22128%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22><stop offset=%220%25%22 stop-color=%22%2310b981%22/><stop offset=%22100%25%22 stop-color=%22%23fbbf24%22/></linearGradient></defs><path fill=%22%23090d16%22 d=%22M160 128h192v64c0 53-43 96-96 96s-96-43-96-96v-64zm-32 32h-32c-17.7 0-32 14.3-32 32 0 35.3 28.7 64 64 64v-32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm256 0c17.7 0 32 14.3 32 32s-14.3 32-32 32v32c35.3 0 64-28.7 64-64 0-17.7-14.3-32-32-32h-32zm-144 160h32v64h64v32H144v-32h64v-64z%22/></svg>" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -52,7 +76,6 @@
     html.light .text-slate-400 { color: #78716c !important; }
     html.light .bg-slate-900, html.light .bg-slate-950, html.light .bg-slate-800 { background-color: #f3ece0 !important; border-color: #e7ded0 !important; }
 
-    /* Button Selectors */
     .mode-btn-active { border-color: #10b981; background: rgba(16, 185, 129, 0.12); color: #059669; }
     html.dark .mode-btn-active { border-color: #34d399; background: rgba(52, 211, 153, 0.15); color: #34d399; }
     .mode-btn-inactive { border-color: #cbd5e1; background: transparent; }
@@ -73,7 +96,6 @@
           <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
             PB<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Match</span>
           </h1>
-          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
         </div>
       </div>
 
@@ -390,7 +412,6 @@
         </div>
       </div>
     </section>
-
   </main>
 
   <!-- MODAL: CREATE CLUB -->
@@ -491,7 +512,6 @@
 
     const I18N = {
       "zh-TW": {
-        appSubtitle: "排賽系統",
         navHub: "賽事大廳",
         navClub: "社團紀錄",
         navCreate: "建立賽事",
@@ -593,7 +613,6 @@
       },
 
       "en": {
-        appSubtitle: "PB Match",
         navHub: "Hub",
         navClub: "Club Records",
         navCreate: "Create",
@@ -700,8 +719,22 @@
       initFirebase(DEFAULT_FIREBASE_CONFIG);
       applyLanguageUI();
       initRouting();
+      registerServiceWorker();
       lucide.createIcons();
     });
+
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          self.addEventListener('install', (e) => self.skipWaiting());
+          self.addEventListener('activate', (e) => self.clients.claim());
+          self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+        `;
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(err => console.log('SW Register error:', err));
+      }
+    }
 
     window.addEventListener("popstate", () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -758,7 +791,6 @@
     }
 
     function applyLanguageUI() {
-      document.getElementById("t-app-subtitle").innerText = t("appSubtitle");
       document.getElementById("t-nav-hub").innerText = t("navHub");
       document.getElementById("t-nav-club").innerText = t("navClub");
       document.getElementById("t-nav-create").innerText = t("navCreate");
@@ -1527,7 +1559,7 @@
       if (clubInfo && clubInfo.password) {
         const inputPwd = prompt(STATE.lang === "zh-TW" ? `🔒 社團「${targetClub}」受密碼保護，請輸入檢視密碼：` : `🔒 Enter password for ${targetClub}:`);
         if (inputPwd === null) {
-          select.value = STATE.selectedClubName; // 恢復選取
+          select.value = STATE.selectedClubName;
           return;
         }
         if (inputPwd.trim() !== String(clubInfo.password).trim()) {
@@ -2024,4 +2056,3 @@
   </script>
 </body>
 </html>
-
