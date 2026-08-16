@@ -86,7 +86,7 @@
 
       <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
         <!-- UI / 系統操作類 -->
-        <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式">
+        <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="系統資料庫控制台">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
 
@@ -96,6 +96,10 @@
 
         <button onclick="toggleLanguage()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="切換語言">
           <i data-lucide="globe" class="w-4 h-4"></i>
+        </button>
+
+        <button id="btn-install-pwa" onclick="installPWA()" class="hidden w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 transition active:scale-95 shadow-sm shrink-0" title="安裝 App">
+          <i data-lucide="download" class="w-4 h-4"></i>
         </button>
 
         <!-- 中間分隔斜線 -->
@@ -139,7 +143,7 @@
       <!-- 進行中的賽事區 -->
       <div class="space-y-3">
         <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-          <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> 進行中賽事
+          <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> <span id="t-hub-active">進行中賽事</span>
         </h3>
         <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
       </div>
@@ -148,7 +152,7 @@
       <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
           <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> 已完賽紀錄 (<span id="archived-count">0</span>)
+            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-hub-archived">已完賽紀錄</span> (<span id="archived-count">0</span>)
           </h3>
           <span id="archive-arrow" class="text-xs sub-text">▼ 展開</span>
         </div>
@@ -257,35 +261,30 @@
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
 
-          <!-- 預設代號區 -->
-          <div class="flex flex-wrap items-center gap-2 mb-2 bg-stone-100 dark:bg-slate-900/60 p-2 rounded-xl border border-stone-200 dark:border-slate-800">
-            <span id="t-quick-fill-label" class="text-xs sub-text font-medium whitespace-nowrap">使用代號ABC：</span>
+          <!-- 自動代號生成區 -->
+          <div class="flex items-center gap-2 mb-2 bg-stone-100 dark:bg-slate-900/60 p-2.5 rounded-xl border border-stone-200 dark:border-slate-800">
+            <span id="t-quick-fill-label" class="text-xs sub-text font-medium whitespace-nowrap">自動代號生成，人數：</span>
             <input type="number" id="auto-player-count" min="4" max="64" value="8" inputmode="numeric"
                    onkeydown="preventInvalidNumberChars(event, false)"
-                   oninput="clampNumberInput(this, 4, 64)"
+                   oninput="clampNumberInput(this, 4, 64); autoGeneratePlayers();"
                    placeholder="人數" class="w-16 input-bg border rounded-lg p-1 text-xs text-center font-mono focus:border-emerald-500 focus:outline-none" />
-            <button type="button" onclick="autoGeneratePlayers()" id="t-quick-fill-btn" class="px-2.5 py-1 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold transition shrink-0">
-              帶入預設 (A, B, C...)
-            </button>
-            <button type="button" id="btn-import-club-roster" onclick="importClubRoster()" class="hidden px-2.5 py-1 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-lg text-xs font-bold transition shrink-0">
-              👥 帶入社團成員
-            </button>
           </div>
 
-          <!-- 社團成員標籤區 -->
-          <div id="club-roster-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2 rounded-xl border card-inner text-xs">
-            <span id="t-chips-hint" class="sub-text text-[11px] w-full mb-0.5">點擊快速加入社團成員：</span>
+          <!-- 社團成員選擇區 -->
+          <div id="club-roster-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2.5 rounded-xl border card-inner text-xs">
+            <span id="t-chips-hint" class="sub-text text-[11px] w-full mb-0.5">點擊該社團成員：</span>
             <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
           </div>
 
           <!-- 歷史輸入選手紀錄點選區 -->
-          <div id="history-player-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2 rounded-xl border card-inner text-xs">
-            <span class="sub-text text-[11px] w-full mb-0.5">點擊選擇歷史過往選手：</span>
+          <div id="history-player-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2.5 rounded-xl border card-inner text-xs">
+            <span id="t-history-hint" class="sub-text text-[11px] w-full mb-0.5">點擊選擇歷史過往選手：</span>
             <div id="history-chips-container" class="flex flex-wrap gap-1.5"></div>
           </div>
 
-          <label class="block text-xs sub-text font-semibold mb-1">或 手動輸入選手名稱：</label>
-          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="請在此手動輸入選手姓名，每行一位：&#10;選手 A&#10;選手 B&#10;選手 C&#10;選手 D" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+          <!-- 手動輸入區 -->
+          <label id="t-manual-input-title" class="block text-xs sub-text font-semibold mb-1">手動輸入，每行一人：</label>
+          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
         </div>
 
         <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
@@ -341,7 +340,7 @@
               </tr>
             </thead>
             <tbody id="club-leaderboard-tbody" class="divide-y font-medium text-xs">
-              <tr><td colspan="7" class="p-6 text-center sub-text text-xs">👈 請先於右上角選取社團以查看戰績數據</td></tr>
+              <tr><td id="t-club-select-prompt" colspan="7" class="p-6 text-center sub-text text-xs">👈 請先於右上角選取社團以查看戰績數據</td></tr>
             </tbody>
           </table>
         </div>
@@ -350,7 +349,7 @@
       <!-- 社團歷史賽事封存 -->
       <div id="club-history-tournaments-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-          <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> 該社團歷史封存賽事 (<span id="club-history-count">0</span>)
+          <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-club-history">該社團歷史封存賽事</span> (<span id="club-history-count">0</span>)
         </h3>
         <div id="club-history-tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
       </div>
@@ -401,9 +400,9 @@
       <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold space-y-1">
         <div class="flex items-center gap-1.5">
           <i data-lucide="lock" class="w-4 h-4 shrink-0"></i>
-          <span>本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
+          <span id="t-locked-notice">本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
         </div>
-        <div class="text-[11px] sub-text pl-5">如需修正，請點擊右上方「社團管理者解凍修改」</div>
+        <div id="t-locked-sub" class="text-[11px] sub-text pl-5">如需修正，請點擊右上方「社團管理者解凍修改」</div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
@@ -460,30 +459,30 @@
       <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3">
         <div>
           <h2 class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-rose-500">
-            <i data-lucide="shield-alert" class="w-6 h-6"></i> 上帝模式 - 系統資料庫控制台
+            <i data-lucide="shield-alert" class="w-6 h-6"></i> <span id="t-god-title">系統資料庫控制台</span>
           </h2>
-          <p class="text-xs sub-text mt-0.5">最高管理員專用：一鍵勾選刪除異常資料與清除快取</p>
+          <p id="t-god-desc" class="text-xs sub-text mt-0.5">最高管理員專用：一鍵勾選刪除異常資料與清除快取</p>
         </div>
-        <button onclick="navigateTo('hub')" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold">返回大廳</button>
+        <button onclick="navigateTo('hub')" id="t-god-back" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold">返回大廳</button>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="glass-card rounded-2xl p-4 space-y-3 border border-rose-500/30">
-          <h3 class="font-bold text-sm text-rose-400 flex items-center gap-1.5">
+          <h3 id="t-god-local-title" class="font-bold text-sm text-rose-400 flex items-center gap-1.5">
             <i data-lucide="database" class="w-4 h-4"></i> 本機與快取維護
           </h3>
-          <p class="text-xs sub-text">清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。</p>
-          <button onclick="godClearLocalStorage()" class="w-full py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition">
+          <p id="t-god-local-desc" class="text-xs sub-text">清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。</p>
+          <button onclick="godClearLocalStorage()" id="t-god-local-btn" class="w-full py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition">
             🧹 清除所有本機快取 (LocalStorage)
           </button>
         </div>
 
         <div class="glass-card rounded-2xl p-4 space-y-3 border border-amber-500/30">
-          <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5">
+          <h3 id="t-god-cloud-title" class="font-bold text-sm text-amber-400 flex items-center gap-1.5">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i> 資料強制重整
           </h3>
-          <p class="text-xs sub-text">強制從雲端重新拉取最新的社團與賽事清單。</p>
-          <button onclick="godRefreshData()" class="w-full py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
+          <p id="t-god-cloud-desc" class="text-xs sub-text">強制從雲端重新拉取最新的社團與賽事清單。</p>
+          <button onclick="godRefreshData()" id="t-god-cloud-btn" class="w-full py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
             🔄 強制重新載入雲端與本地資料
           </button>
         </div>
@@ -492,10 +491,10 @@
       <div class="space-y-4 pt-2">
         <div class="glass-card rounded-2xl p-4 space-y-3 border">
           <div class="flex items-center justify-between">
-            <h3 class="font-bold text-sm flex items-center gap-1.5">
+            <h3 id="t-god-t-title" class="font-bold text-sm flex items-center gap-1.5">
               <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i> 所有賽事列表 (勾選批量管理)
             </h3>
-            <button onclick="godDeleteSelectedTournaments()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
+            <button onclick="godDeleteSelectedTournaments()" id="t-god-t-btn" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
               🗑️ 刪除勾選的賽事
             </button>
           </div>
@@ -504,10 +503,10 @@
 
         <div class="glass-card rounded-2xl p-4 space-y-3 border">
           <div class="flex items-center justify-between">
-            <h3 class="font-bold text-sm flex items-center gap-1.5">
+            <h3 id="t-god-c-title" class="font-bold text-sm flex items-center gap-1.5">
               <i data-lucide="users" class="w-4 h-4 text-amber-500"></i> 所有社團列表 (勾選批量管理)
             </h3>
-            <button onclick="godDeleteSelectedClubs()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
+            <button onclick="godDeleteSelectedClubs()" id="t-god-c-btn" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
               🗑️ 刪除勾選的社團
             </button>
           </div>
@@ -592,6 +591,8 @@
     import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+    let deferredPrompt = null; // 處理 PWA 安裝提示
+
     const STATE = {
       firebaseApp: null,
       db: null,
@@ -621,6 +622,8 @@
         navCreate: "建立賽事",
         dbConnected: "已連線",
         hubTitle: "賽事大廳",
+        hubActive: "進行中賽事",
+        hubArchived: "已完賽紀錄",
         createNewBtn: "➕ 建立新賽事",
         statusFinished: "🔒 已完賽 (戰績凍結)",
         statusActive: "⚡ 進行中",
@@ -649,19 +652,22 @@
         optionSideout: "發球得分制 (Side-out)",
         modeFairTitle: "平均局數",
         modeMaxTitle: "最大局數",
-        quickFillLabel: "使用代號ABC：",
-        quickFillBtn: "帶入預設 (A, B, C...)",
-        importClubRosterBtn: "👥 帶入社團成員",
-        chipsHint: "點擊快速加入社團成員：",
+        quickFillLabel: "自動代號生成，人數：",
+        autoPlayerPlaceholder: "人數",
+        chipsHint: "點擊該社團成員：",
+        historyHint: "點擊選擇歷史過往選手：",
+        manualInputTitle: "手動輸入，每行一人：",
         playersBadge: "位選手",
         timeCalcTitle: "賽程數與時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
         placeholderName: "例：週末雙打積分賽",
-        placeholderPlayers: "請在此手動輸入選手姓名，每行一位：\n選手 A\n選手 B\n選手 C\n選手 D",
+        placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D",
         clubTitle: "社團賽事紀錄",
         clubDesc: "選擇社團查看成員歷史總勝率與累積戰績",
         switchClubLabel: "社團：",
         btnDeleteClub: "刪除社團",
+        clubSelectPrompt: "👈 請先於右上角選取社團以查看戰績數據",
+        clubHistory: "該社團歷史封存賽事",
         thCRank: "排名",
         thCPlayer: "成員",
         thCWinRate: "勝率",
@@ -703,13 +709,30 @@
         noResting: "無",
         saveScoreBtn: "儲存比分",
         editScoreBtn: "修改比分",
-        scorePlaceholder: "得分",
+        scoreBluePlaceholder: "藍隊得分",
+        scoreRedPlaceholder: "紅隊得分",
         canceledGame: "已單局流局 (作廢)",
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
         copiedToast: "📋 專屬連結已複製！",
-        godModePrompt: "維護密碼："
+        godModePrompt: "維護密碼：",
+        godTitle: "系統資料庫控制台",
+        godDesc: "最高管理員專用：一鍵勾選刪除異常資料與清除快取",
+        godBack: "返回大廳",
+        godLocalTitle: "本機與快取維護",
+        godLocalDesc: "清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。",
+        godLocalBtn: "🧹 清除所有本機快取",
+        godCloudTitle: "資料強制重整",
+        godCloudDesc: "強制從雲端重新拉取最新的社團與賽事清單。",
+        godCloudBtn: "🔄 強制重新載入雲端與本地資料",
+        godTTitle: "所有賽事列表 (勾選批量管理)",
+        godTBtn: "🗑️ 刪除勾選的賽事",
+        godCTitle: "所有社團列表 (勾選批量管理)",
+        godCBtn: "🗑️ 刪除勾選的社團",
+        lockedNotice: "本賽事已完賽並鎖定數據，現場管理員無法修改比分。",
+        lockedSub: "如需修正，請點擊右上方「社團管理者解凍修改」",
+        installAppTooltip: "安裝 App"
       },
       "en": {
         navHub: "Hub",
@@ -717,6 +740,8 @@
         navCreate: "Create",
         dbConnected: "Connected",
         hubTitle: "Tournament Hub",
+        hubActive: "Active Tournaments",
+        hubArchived: "Archived Records",
         createNewBtn: "➕ Create Tournament",
         statusFinished: "🔒 Finished (Locked)",
         statusActive: "⚡ Active",
@@ -745,19 +770,22 @@
         optionSideout: "Side-out Scoring",
         modeFairTitle: "Average Games",
         modeMaxTitle: "Max Games",
-        quickFillLabel: "Use Codes ABC:",
-        quickFillBtn: "Fill Default (A, B...)",
-        importClubRosterBtn: "👥 Import Club Members",
-        chipsHint: "Click to add club member:",
+        quickFillLabel: "Auto Code Gen, Count:",
+        autoPlayerPlaceholder: "Count",
+        chipsHint: "Click Club Member:",
+        historyHint: "Click Historical Player:",
+        manualInputTitle: "Manual Entry, One Per Line:",
         playersBadge: "Players",
         timeCalcTitle: "Estimate & Player Match Count:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
         placeholderName: "e.g., Weekend Pickleball",
-        placeholderPlayers: "Type player names here (one per line):\nPlayer A\nPlayer B\nPlayer C\nPlayer D",
+        placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D",
         clubTitle: "Club Records",
         clubDesc: "Select club to view historical member stats & standings",
         switchClubLabel: "Club:",
         btnDeleteClub: "Delete Club",
+        clubSelectPrompt: "👈 Select a club to view historical stats",
+        clubHistory: "Club Archived Tournaments",
         thCRank: "Rank",
         thCPlayer: "Member",
         thCWinRate: "Win %",
@@ -799,13 +827,30 @@
         noResting: "None",
         saveScoreBtn: "Save Score",
         editScoreBtn: "Edit Score",
-        scorePlaceholder: "Score",
+        scoreBluePlaceholder: "Blue Score",
+        scoreRedPlaceholder: "Red Score",
         canceledGame: "Match Voided",
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
         copyBtn: "Copy",
         copiedToast: "📋 Link copied to clipboard!",
-        godModePrompt: "Maintenance Password:"
+        godModePrompt: "Maintenance Password:",
+        godTitle: "System Database Console",
+        godDesc: "Super Admin: One-click delete & clear cache",
+        godBack: "Back to Hub",
+        godLocalTitle: "Local & Cache Maint.",
+        godLocalDesc: "Clear browser cache (LocalStorage) to fix data/UI issues.",
+        godLocalBtn: "🧹 Clear Local Cache",
+        godCloudTitle: "Force Refresh",
+        godCloudDesc: "Force pull latest club and tournament data from cloud.",
+        godCloudBtn: "🔄 Reload Cloud & Local Data",
+        godTTitle: "All Tournaments (Select to manage)",
+        godTBtn: "🗑️ Delete Selected Tournaments",
+        godCTitle: "All Clubs (Select to manage)",
+        godCBtn: "🗑️ Delete Selected Clubs",
+        lockedNotice: "Tournament finished. Scores locked.",
+        lockedSub: "Click 'Super Admin Unlock' to edit.",
+        installAppTooltip: "Install App"
       }
     };
 
@@ -817,6 +862,14 @@
       initRouting();
       registerServiceWorker();
       lucide.createIcons();
+
+      // PWA 攔截安裝提示事件
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('btn-install-pwa');
+        if (installBtn) installBtn.classList.remove('hidden');
+      });
     });
 
     window.preventInvalidNumberChars = function(e, allowDecimal = false) {
@@ -829,6 +882,18 @@
       if (el.value === '') return;
       let val = parseFloat(el.value);
       if (val > max) el.value = max;
+    };
+
+    window.installPWA = async function() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('User accepted PWA installation');
+        }
+        deferredPrompt = null;
+        document.getElementById('btn-install-pwa').classList.add('hidden');
+      }
     };
 
     function initDynamicPwaIcon() {
@@ -944,6 +1009,8 @@
       document.getElementById("t-nav-create").innerText = t("navCreate");
 
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
+      document.getElementById("t-hub-active").innerText = t("hubActive");
+      document.getElementById("t-hub-archived").innerText = t("hubArchived");
       document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
 
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
@@ -965,9 +1032,10 @@
       document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
       document.getElementById("t-quick-fill-label").innerText = t("quickFillLabel");
-      document.getElementById("t-quick-fill-btn").innerText = t("quickFillBtn");
-      document.getElementById("btn-import-club-roster").innerText = t("importClubRosterBtn");
+      document.getElementById("auto-player-count").placeholder = t("autoPlayerPlaceholder");
       document.getElementById("t-chips-hint").innerText = t("chipsHint");
+      document.getElementById("t-history-hint").innerText = t("historyHint");
+      document.getElementById("t-manual-input-title").innerText = t("manualInputTitle");
       document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="calculator" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
       document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
@@ -975,6 +1043,8 @@
       document.getElementById("t-club-desc").innerText = t("clubDesc");
       document.getElementById("t-delete-club-label").innerText = t("btnDeleteClub");
       document.getElementById("t-switch-club-label").innerText = t("switchClubLabel");
+      document.getElementById("t-club-select-prompt").innerText = t("clubSelectPrompt");
+      document.getElementById("t-club-history").innerText = t("clubHistory");
       document.getElementById("th-c-rank").innerText = t("thCRank");
       document.getElementById("th-c-player").innerText = t("thCPlayer");
       document.getElementById("th-c-winrate").innerText = t("thCWinRate");
@@ -1026,6 +1096,26 @@
       document.getElementById("t-modal-qr-desc").innerText = t("modalQrDesc");
       document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
 
+      // God Mode UI
+      document.getElementById("t-god-title").innerText = t("godTitle");
+      document.getElementById("t-god-desc").innerText = t("godDesc");
+      document.getElementById("t-god-back").innerText = t("godBack");
+      document.getElementById("t-god-local-title").innerHTML = `<i data-lucide="database" class="w-4 h-4"></i> ${t("godLocalTitle")}`;
+      document.getElementById("t-god-local-desc").innerText = t("godLocalDesc");
+      document.getElementById("t-god-local-btn").innerText = t("godLocalBtn");
+      document.getElementById("t-god-cloud-title").innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> ${t("godCloudTitle")}`;
+      document.getElementById("t-god-cloud-desc").innerText = t("godCloudDesc");
+      document.getElementById("t-god-cloud-btn").innerText = t("godCloudBtn");
+      document.getElementById("t-god-t-title").innerHTML = `<i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i> ${t("godTTitle")}`;
+      document.getElementById("t-god-t-btn").innerText = t("godTBtn");
+      document.getElementById("t-god-c-title").innerHTML = `<i data-lucide="users" class="w-4 h-4 text-amber-500"></i> ${t("godCTitle")}`;
+      document.getElementById("t-god-c-btn").innerText = t("godCBtn");
+      document.getElementById("t-locked-notice").innerText = t("lockedNotice");
+      document.getElementById("t-locked-sub").innerText = t("lockedSub");
+      
+      const installBtn = document.getElementById("btn-install-pwa");
+      if(installBtn) installBtn.title = t("installAppTooltip");
+
       updatePlayerCountBadge();
       calculateTimeEstimate();
       lucide.createIcons();
@@ -1071,6 +1161,7 @@
       else if (pageName === "create") {
         await populateClubSelect();
         renderHistoryPlayerChips();
+        autoGeneratePlayers();
       }
       else if (pageName === "club") await initClubPage();
       else if (pageName === "godmode") await renderGodModeTables();
@@ -1391,16 +1482,15 @@
       else authBox.classList.add("hidden");
 
       const clubPlayers = getPlayersFromClub(selectedClub);
-      if (clubPlayers.length > 0) {
-        document.getElementById("btn-import-club-roster").classList.remove("hidden");
+      if (selectedClub && clubPlayers.length > 0) {
         renderClubChips(clubPlayers);
       } else {
-        document.getElementById("btn-import-club-roster").classList.add("hidden");
         document.getElementById("club-roster-chips").classList.add("hidden");
       }
     };
 
     function getPlayersFromClub(clubName) {
+      if (!clubName) return [];
       const playersSet = new Set();
       STATE.allTournamentsCache.forEach(tData => {
         if (tData.clubName && tData.clubName.trim().toLowerCase() === clubName.toLowerCase() && tData.status !== "voided") {
@@ -1450,13 +1540,6 @@
         updatePlayerCountBadge();
         calculateTimeEstimate();
       }
-    };
-
-    window.importClubRoster = function() {
-      const selectedClub = document.getElementById("create-club-select").value;
-      document.getElementById("create-players").value = getPlayersFromClub(selectedClub).join("\n");
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
     };
 
     window.autoGeneratePlayers = function () {
@@ -1636,7 +1719,7 @@
       if (STATE.selectedClubName) {
         renderClubLeaderboard();
       } else {
-        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text text-xs">👈 請先於右上角選取社團以查看戰績數據</td></tr>`;
+        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td id="t-club-select-prompt" colspan="7" class="p-6 text-center sub-text text-xs">${t("clubSelectPrompt")}</td></tr>`;
         document.getElementById("club-history-tournaments-section").classList.add("hidden");
       }
     }
@@ -1646,7 +1729,7 @@
       if (STATE.selectedClubName) {
         renderClubLeaderboard();
       } else {
-        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text text-xs">👈 請先於右上角選取社團以查看戰績數據</td></tr>`;
+        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td id="t-club-select-prompt" colspan="7" class="p-6 text-center sub-text text-xs">${t("clubSelectPrompt")}</td></tr>`;
         document.getElementById("club-history-tournaments-section").classList.add("hidden");
       }
     };
@@ -1924,8 +2007,8 @@
             </div>
 
             <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="藍隊得分" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="紅隊得分" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="${t('scoreBluePlaceholder')}" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="${t('scoreRedPlaceholder')}" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
 
             ${canEdit ? `
