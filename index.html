@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PB Match - 匹克球個人雙打輪播賽事管理系統</title>
+  <title>PB Match</title>
   
   <meta name="description" content="PB Match 專業匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
   <meta name="keywords" content="PB Match, Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
@@ -52,6 +52,7 @@
     html.light .text-slate-400 { color: #78716c !important; }
     html.light .bg-slate-900, html.light .bg-slate-950, html.light .bg-slate-800 { background-color: #f3ece0 !important; border-color: #e7ded0 !important; }
 
+    /* Button Selectors */
     .mode-btn-active { border-color: #10b981; background: rgba(16, 185, 129, 0.12); color: #059669; }
     html.dark .mode-btn-active { border-color: #34d399; background: rgba(52, 211, 153, 0.15); color: #34d399; }
     .mode-btn-inactive { border-color: #cbd5e1; background: transparent; }
@@ -61,7 +62,7 @@
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
 
-  <!-- ==================== HEADER / NAV ==================== -->
+  <!-- HEADER / NAV -->
   <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
       <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
@@ -92,7 +93,7 @@
 
         <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="社團賽事紀錄">
           <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
-          <span id="t-nav-club" class="hidden sm:inline">社團賽事紀錄</span>
+          <span id="t-nav-club" class="hidden sm:inline">社團紀錄</span>
         </button>
 
         <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
@@ -106,11 +107,11 @@
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6">
 
-    <!-- ==================== PAGE B: TOURNAMENT HUB ==================== -->
+    <!-- PAGE B: TOURNAMENT HUB -->
     <section id="page-hub" class="space-y-4 sm:space-y-6">
       <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3 text-left">
-        <div class="text-left">
-          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-left">
+        <div>
+          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
             <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
         </div>
@@ -122,7 +123,7 @@
       <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
     </section>
 
-    <!-- ==================== PAGE C: CREATE TOURNAMENT ==================== -->
+    <!-- PAGE C: CREATE TOURNAMENT -->
     <section id="page-create" class="hidden max-w-2xl mx-auto space-y-4 sm:space-y-6">
       <div class="border-b border-stone-300 dark:border-slate-800 pb-3">
         <h2 id="t-create-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
@@ -137,25 +138,26 @@
         </div>
 
         <div>
-          <label id="t-label-club" class="block text-xs sm:text-sm font-semibold mb-1">
-            2. 所屬社團 / 俱樂部 <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">(選填，方便歸戶戰績)</span>
-          </label>
-          <input type="text" id="create-club" list="clubs-datalist" placeholder="輸入或選擇社團名稱 (例：台北匹克球會)" onchange="onClubInputChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
-          <datalist id="clubs-datalist"></datalist>
+          <div class="flex items-center justify-between mb-1">
+            <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">2. 所屬社團 / 俱樂部 <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">(選填)</span></label>
+            <button type="button" onclick="openCreateClubModal()" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">➕ 新增社團</button>
+          </div>
+          <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+            <option value="">-- 無 (公開一般賽事) --</option>
+          </select>
         </div>
 
         <div>
           <label id="t-label-visibility" class="block text-xs sm:text-sm font-semibold mb-1">3. 賽事公開層級與隱私</label>
           <div class="grid grid-cols-2 gap-2">
-            <label class="flex items-center gap-2 p-2.5 rounded-xl border card-inner cursor-pointer hover:border-emerald-500">
-              <input type="radio" name="create-visibility" value="public" checked onchange="toggleViewPwdInput(false)" class="text-emerald-500" />
-              <span id="t-vis-public-label" class="text-xs font-bold">🌐 公開賽局</span>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 rounded-xl border card-inner cursor-pointer hover:border-amber-500">
-              <input type="radio" name="create-visibility" value="private" onchange="toggleViewPwdInput(true)" class="text-amber-500" />
-              <span id="t-vis-private-label" class="text-xs font-bold">🔒 社團專屬</span>
-            </label>
+            <button type="button" id="btn-vis-public" onclick="setVisibility('public')" class="mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
+              <span>🌐</span> <span id="t-vis-public-label">公開賽局</span>
+            </button>
+            <button type="button" id="btn-vis-private" onclick="setVisibility('private')" class="mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
+              <span>🔒</span> <span id="t-vis-private-label">社團專屬</span>
+            </button>
           </div>
+          <input type="hidden" id="create-visibility" value="public" />
         </div>
 
         <div id="box-view-password" class="hidden">
@@ -174,9 +176,9 @@
 
         <div>
           <label id="t-label-delete-pwd-title" class="block text-xs sm:text-sm font-semibold mb-1">
-            5. 刪除賽事密碼 <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">(選填)</span>
+            5. 刪除賽事密碼 <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">(選填，社團預設值可覆蓋)</span>
           </label>
-          <input type="password" id="create-delete-pwd" placeholder="可自訂刪除賽事密碼 (留空則僅能使用最高權限密碼)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+          <input type="password" id="create-delete-pwd" placeholder="可自訂刪除密碼 (最高權限密碼永久保留)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -220,10 +222,10 @@
           <div>
             <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">11. 賽事模式</label>
             <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2 rounded-xl border text-xs font-bold transition text-center">
+              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-fair-title">平均</span>
               </button>
-              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-2 py-2 rounded-xl border text-xs font-bold transition text-center">
+              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-max-title">最大局數</span>
               </button>
             </div>
@@ -269,19 +271,22 @@
       </form>
     </section>
 
-    <!-- ==================== PAGE E: CLUB RECORDS ==================== -->
+    <!-- PAGE E: CLUB RECORDS -->
     <section id="page-club" class="hidden space-y-4 sm:space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-300 dark:border-slate-800 pb-3">
         <div>
           <h2 id="t-club-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
             <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 社團賽事紀錄
           </h2>
-          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積淨勝分</p>
+          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績</p>
         </div>
 
         <div class="flex items-center gap-2">
+          <button onclick="openCreateClubModal()" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold rounded-xl text-xs shrink-0">
+            ➕ 建立新社團
+          </button>
           <span id="t-switch-club-label" class="text-xs sub-text font-medium whitespace-nowrap">切換社團：</span>
-          <select id="club-select" onchange="renderClubLeaderboard()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-emerald-500 focus:outline-none min-w-[160px]"></select>
+          <select id="club-select" onchange="verifyAndSwitchClub()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-emerald-500 focus:outline-none min-w-[150px]"></select>
         </div>
       </div>
 
@@ -305,7 +310,7 @@
       </div>
     </section>
 
-    <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW ==================== -->
+    <!-- PAGE D: LIVE TOURNAMENT VIEW -->
     <section id="page-live" class="hidden space-y-4 sm:space-y-6">
       <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-l-4 border-l-emerald-500">
         <div>
@@ -385,9 +390,47 @@
         </div>
       </div>
     </section>
+
   </main>
 
-  <!-- ==================== SHARE / QR MODAL ==================== -->
+  <!-- MODAL: CREATE CLUB -->
+  <div id="modal-create-club" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative">
+      <button onclick="closeCreateClubModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div>
+        <h3 class="text-base font-bold font-display flex items-center gap-1.5">
+          <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 建立新社團 / 俱樂部
+        </h3>
+        <p class="text-xs sub-text mt-0.5">預先建立社團並設定管理與刪除密碼</p>
+      </div>
+
+      <form onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold mb-1">社團名稱 *</label>
+          <input type="text" id="club-new-name" required placeholder="例：台北匹克球會" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-amber-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">社團檢視 / 管理密碼 (選填)</label>
+          <input type="password" id="club-new-pwd" maxlength="4" placeholder="4 位數字，切換至此社團需輸入" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">社團預設刪除賽事密碼 (選填)</label>
+          <input type="password" id="club-new-del-pwd" placeholder="刪除此社團旗下賽事的密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold py-2.5 rounded-xl shadow transition text-xs mt-2">
+          建立社團
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SHARE / QR MODAL -->
   <div id="modal-share" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative text-center">
       <button onclick="closeShareModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
@@ -420,7 +463,7 @@
 
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <!-- JAVASCRIPT LOGIC -->
   <script type="module">
     import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -433,6 +476,8 @@
       dbUnsubscribe: null,
       isAdminUnlocked: false,
       allTournamentsCache: [],
+      allClubsCache: {},
+      selectedClubName: "",
       lang: localStorage.getItem("pb_lang") || "zh-TW",
       theme: localStorage.getItem("pb_theme") || "dark",
     };
@@ -448,11 +493,10 @@
       "zh-TW": {
         appSubtitle: "排賽系統",
         navHub: "賽事大廳",
-        navClub: "社團賽事紀錄",
+        navClub: "社團紀錄",
         navCreate: "建立賽事",
         dbConnected: "已連線",
 
-        // Hub
         hubTitle: "賽事大廳",
         createNewBtn: "➕ 建立新賽事",
         statusFinished: "已完賽",
@@ -462,13 +506,12 @@
         playersCountLabel: "人參賽",
         gamesDoneLabel: "局完成",
 
-        // Create Form
         createTitle: "建立新賽事",
         labelName: "1. 賽事名稱",
         labelClub: "2. 所屬社團 / 俱樂部",
         labelVisibility: "3. 賽事公開層級與隱私",
-        visPublic: "🌐 公開賽局",
-        visPrivate: "🔒 社團專屬",
+        visPublic: "公開賽局",
+        visPrivate: "社團專屬",
         labelViewPwd: "設定觀看密碼",
         viewPwdHint: "(4 位數，留空則人人可觀看)",
         labelPinTitle: "4. 管理員 PIN 碼 (修改比分用)",
@@ -496,15 +539,13 @@
         timeCalcTitle: "時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
 
-        // Placeholders
         placeholderName: "例：0818 球賽",
         placeholderPin: "4 位數字，預防非相關人員修改比分",
-        placeholderDeletePwd: "可自訂刪除賽事密碼 (留空則僅能使用最高權限密碼)",
+        placeholderDeletePwd: "可自訂刪除密碼 (最高權限密碼永久保留)",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
-        // Club Page
         clubTitle: "社團賽事紀錄",
-        clubDesc: "選擇社團查看成員歷史總勝率與累積淨勝分",
+        clubDesc: "選擇社團查看成員歷史總勝率與累積戰績",
         switchClubLabel: "切換社團：",
         thCRank: "排名",
         thCPlayer: "成員名稱",
@@ -514,7 +555,6 @@
         thCDiff: "總淨勝分",
         thCPFPA: "總得分 / 失分",
 
-        // Live Tournament
         estPrefix: "預估",
         hrsUnit: "小時",
         shareBtn: "分享 / QR Code",
@@ -525,7 +565,6 @@
         lockBtn: "鎖定為觀看模式",
         forceEndBtn: "強制結束賽事",
 
-        // Leaderboard Columns
         thRank: "名次",
         thPlayer: "選手名稱",
         thWl: "勝/敗",
@@ -538,7 +577,6 @@
         tbRule3: "第 3 順位：總得分 (PF) ⬇️",
         tbRule4: "第 4 順位：總失分 (PA) ⬆️ (較低者優先)",
 
-        // Match Cards
         blueTeam: "🔵 藍隊",
         redTeam: "🔴 紅隊",
         restingLabel: "本局輪空休息：",
@@ -548,7 +586,6 @@
         scorePlaceholder: "得分",
         canceledGame: "已停辦 (未進行)",
 
-        // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
@@ -562,7 +599,6 @@
         navCreate: "Create",
         dbConnected: "Connected",
 
-        // Hub
         hubTitle: "Tournament Hub",
         createNewBtn: "➕ Create Tournament",
         statusFinished: "Completed",
@@ -572,13 +608,12 @@
         playersCountLabel: "Players",
         gamesDoneLabel: "Games Done",
 
-        // Create Form
         createTitle: "Create Tournament",
         labelName: "1. Tournament Name",
         labelClub: "2. Club / Group Name",
         labelVisibility: "3. Privacy & Access Level",
-        visPublic: "🌐 Public Match",
-        visPrivate: "🔒 Club Private",
+        visPublic: "Public Match",
+        visPrivate: "Club Private",
         labelViewPwd: "Set View Password",
         viewPwdHint: "(4 digits, leave blank for open view)",
         labelPinTitle: "4. Admin PIN (Score Edit)",
@@ -606,13 +641,11 @@
         timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
 
-        // Placeholders
         placeholderName: "e.g., 0818 Tournament",
         placeholderPin: "4 digits PIN to prevent score tampering",
-        placeholderDeletePwd: "Password to delete tournament (Optional)",
+        placeholderDeletePwd: "Password to delete (Master key retained)",
         placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
 
-        // Club Page
         clubTitle: "Club Records",
         clubDesc: "Select club to view historical member stats & standings",
         switchClubLabel: "Switch Club:",
@@ -624,7 +657,6 @@
         thCDiff: "Diff (+/-)",
         thCPFPA: "PF / PA",
 
-        // Live Tournament
         estPrefix: "Est.",
         hrsUnit: "Hrs",
         shareBtn: "Share / QR Code",
@@ -635,7 +667,6 @@
         lockBtn: "Lock View",
         forceEndBtn: "Force End Tournament",
 
-        // Leaderboard Columns
         thRank: "Rank",
         thPlayer: "Player Name",
         thWl: "W/L",
@@ -648,7 +679,6 @@
         tbRule3: "3rd Order: Points For (PF) ⬇️",
         tbRule4: "4th Order: Points Against (PA) ⬆️ (Lower is better)",
 
-        // Match Cards
         blueTeam: "🔵 Blue",
         redTeam: "🔴 Red",
         restingLabel: "Resting: ",
@@ -658,7 +688,6 @@
         scorePlaceholder: "Score",
         canceledGame: "Canceled (Not Played)",
 
-        // Modals & Toasts
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
         copyBtn: "Copy",
@@ -688,9 +717,6 @@
       STATE.theme = STATE.theme === "dark" ? "light" : "dark";
       localStorage.setItem("pb_theme", STATE.theme);
       applyThemeUI();
-      showToast(STATE.theme === "dark" 
-        ? (STATE.lang === "zh-TW" ? "已切換至【黑底】" : "Switched to Dark Mode")
-        : (STATE.lang === "zh-TW" ? "已切換至【白底】" : "Switched to Light Mode"), "info");
     };
 
     function applyThemeUI() {
@@ -737,11 +763,9 @@
       document.getElementById("t-nav-club").innerText = t("navClub");
       document.getElementById("t-nav-create").innerText = t("navCreate");
 
-      // Hub Page
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
       document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
 
-      // Create Form
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
       document.getElementById("t-label-club").innerHTML = `${t("labelClub")} <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
@@ -769,7 +793,6 @@
       document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
       document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
-      // Club Page
       document.getElementById("t-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("clubTitle")}`;
       document.getElementById("t-club-desc").innerText = t("clubDesc");
       document.getElementById("t-switch-club-label").innerText = t("switchClubLabel");
@@ -781,7 +804,6 @@
       document.getElementById("th-c-diff").innerText = t("thCDiff");
       document.getElementById("th-c-pfpa").innerText = t("thCPFPA");
 
-      // Placeholders
       document.getElementById("create-name").placeholder = t("placeholderName");
       document.getElementById("create-pin").placeholder = t("placeholderPin");
       document.getElementById("create-delete-pwd").placeholder = t("placeholderDeletePwd");
@@ -793,7 +815,6 @@
         scoringSel.options[1].text = t("optionSideout");
       }
 
-      // Live Tournament
       document.getElementById("t-est-prefix").innerText = t("estPrefix");
       document.getElementById("t-hrs-unit").innerText = t("hrsUnit");
       document.getElementById("t-schedule-title").innerHTML = `<i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
@@ -872,7 +893,7 @@
       if (pageName === "hub") {
         renderHubTournaments();
       } else if (pageName === "create") {
-        populateClubDatalist();
+        populateClubSelect();
       } else if (pageName === "club") {
         await initClubPage();
       }
@@ -884,13 +905,21 @@
       lucide.createIcons();
     };
 
-    window.toggleViewPwdInput = function (isPrivate) {
+    window.setVisibility = function (vis) {
+      document.getElementById("create-visibility").value = vis;
+      const btnPublic = document.getElementById("btn-vis-public");
+      const btnPrivate = document.getElementById("btn-vis-private");
       const pwdBox = document.getElementById("box-view-password");
-      if (isPrivate) {
-        pwdBox.classList.remove("hidden");
-      } else {
+
+      if (vis === "public") {
+        btnPublic.className = "mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
+        btnPrivate.className = "mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
         pwdBox.classList.add("hidden");
         document.getElementById("create-view-pwd").value = "";
+      } else {
+        btnPrivate.className = "mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
+        btnPublic.className = "mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
+        pwdBox.classList.remove("hidden");
       }
     };
 
@@ -1007,39 +1036,97 @@
       return list;
     }
 
-    async function populateClubDatalist() {
-      const allT = await fetchAllTournaments();
-      const clubSet = new Set();
-      allT.forEach(t => {
-        if (t.clubName && t.clubName.trim() !== "") {
-          clubSet.add(t.clubName.trim());
+    async function fetchAllClubs() {
+      let clubs = {};
+      if (STATE.db) {
+        try {
+          const snapshot = await get(ref(STATE.db, "clubs"));
+          if (snapshot.exists()) {
+            clubs = snapshot.val();
+          }
+        } catch (e) {
+          console.error("Fetch clubs error:", e);
         }
-      });
-
-      const datalist = document.getElementById("clubs-datalist");
-      if (datalist) {
-        datalist.innerHTML = Array.from(clubSet).map(c => `<option value="${c}">`).join("");
       }
+      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
+      STATE.allClubsCache = { ...localClubs, ...clubs };
+      return STATE.allClubsCache;
     }
 
-    window.onClubInputChange = function() {
-      const clubName = document.getElementById("create-club").value.trim();
-      const btnImport = document.getElementById("btn-import-club-roster");
-      const chipsBox = document.getElementById("club-roster-chips");
+    window.openCreateClubModal = function () {
+      document.getElementById("modal-create-club").classList.remove("hidden");
+    };
 
-      if (!clubName) {
+    window.closeCreateClubModal = function () {
+      document.getElementById("modal-create-club").classList.add("hidden");
+    };
+
+    window.handleCreateClubSubmit = async function (e) {
+      e.preventDefault();
+      const clubName = document.getElementById("club-new-name").value.trim();
+      const clubPwd = document.getElementById("club-new-pwd").value.trim();
+      const delPwd = document.getElementById("club-new-del-pwd").value.trim();
+
+      if (!clubName) return;
+
+      const clubObj = {
+        name: clubName,
+        password: clubPwd || null,
+        defaultDeletePassword: delPwd || null,
+        createdAt: new Date().toLocaleString("zh-TW")
+      };
+
+      if (STATE.db) {
+        try {
+          await set(ref(STATE.db, `clubs/${clubName}`), clubObj);
+        } catch (err) {
+          console.error("Save club DB error:", err);
+        }
+      }
+
+      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
+      localClubs[clubName] = clubObj;
+      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
+
+      showToast(STATE.lang === "zh-TW" ? `社團「${clubName}」建立成功！` : `Club ${clubName} created!`, "success");
+      closeCreateClubModal();
+      await fetchAllClubs();
+      populateClubSelect();
+    };
+
+    async function populateClubSelect() {
+      await fetchAllClubs();
+      const select = document.getElementById("create-club-select");
+      const clubsList = Object.keys(STATE.allClubsCache);
+
+      select.innerHTML = `<option value="">-- 無 (公開一般賽事) --</option>` +
+        clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
+    }
+
+    window.onClubSelectChange = function () {
+      const selectedClub = document.getElementById("create-club-select").value;
+      const btnImport = document.getElementById("btn-import-club-roster");
+      const delPwdInput = document.getElementById("create-delete-pwd");
+
+      if (!selectedClub) {
         btnImport.classList.add("hidden");
-        chipsBox.classList.add("hidden");
+        document.getElementById("club-roster-chips").classList.add("hidden");
+        delPwdInput.value = "";
         return;
       }
 
-      const clubPlayers = getPlayersFromClub(clubName);
+      const clubInfo = STATE.allClubsCache[selectedClub];
+      if (clubInfo && clubInfo.defaultDeletePassword) {
+        delPwdInput.value = clubInfo.defaultDeletePassword;
+      }
+
+      const clubPlayers = getPlayersFromClub(selectedClub);
       if (clubPlayers.length > 0) {
         btnImport.classList.remove("hidden");
         renderClubChips(clubPlayers);
       } else {
         btnImport.classList.add("hidden");
-        chipsBox.classList.add("hidden");
+        document.getElementById("club-roster-chips").classList.add("hidden");
       }
     };
 
@@ -1078,17 +1165,17 @@
     };
 
     window.importClubRoster = function() {
-      const clubName = document.getElementById("create-club").value.trim();
-      if (!clubName) return;
+      const selectedClub = document.getElementById("create-club-select").value;
+      if (!selectedClub) return;
 
-      const players = getPlayersFromClub(clubName);
+      const players = getPlayersFromClub(selectedClub);
       if (players.length === 0) return;
 
       const textarea = document.getElementById("create-players");
       textarea.value = players.join("\n");
       updatePlayerCountBadge();
       calculateTimeEstimate();
-      showToast(STATE.lang === "zh-TW" ? `已匯入社團「${clubName}」共 ${players.length} 位成員` : `Imported ${players.length} club members`, "success");
+      showToast(STATE.lang === "zh-TW" ? `已匯入社團「${selectedClub}」共 ${players.length} 位成員` : `Imported ${players.length} club members`, "success");
     };
 
     window.autoGeneratePlayers = function () {
@@ -1120,11 +1207,11 @@
       const btnFair = document.getElementById("btn-mode-fair");
       const btnMax = document.getElementById("btn-mode-max");
       if (mode === "fair") {
-        btnFair.className = btnFair.className.replace("mode-btn-inactive", "mode-btn-active");
-        btnMax.className = btnMax.className.replace("mode-btn-active", "mode-btn-inactive");
+        btnFair.className = "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
+        btnMax.className = "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
       } else {
-        btnMax.className = btnMax.className.replace("mode-btn-inactive", "mode-btn-active");
-        btnFair.className = btnFair.className.replace("mode-btn-active", "mode-btn-inactive");
+        btnMax.className = "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
+        btnFair.className = "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
       }
       calculateTimeEstimate();
     };
@@ -1184,8 +1271,8 @@
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
-      const clubName = document.getElementById("create-club").value.trim() || null;
-      const visibility = document.querySelector('input[name="create-visibility"]:checked').value;
+      const clubName = document.getElementById("create-club-select").value || null;
+      const visibility = document.getElementById("create-visibility").value;
       const rawViewPwd = document.getElementById("create-view-pwd").value.trim();
       const rawPin = document.getElementById("create-pin").value.trim();
       const rawDeletePwd = document.getElementById("create-delete-pwd").value.trim();
@@ -1346,7 +1433,7 @@
               <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
               </button>
-              <button onclick="deleteTournament('${tData.id}', '${tData.deletePassword}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
+              <button onclick="deleteTournament('${tData.id}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
@@ -1372,9 +1459,14 @@
       loadLiveTournament(id);
     };
 
-    window.deleteTournament = async function (id, deletePwd) {
+    window.deleteTournament = async function (id) {
       const MASTER_PIN = "19851108";
-      const hasCustomPwd = deletePwd && deletePwd !== "null" && deletePwd !== "undefined";
+      const tData = STATE.allTournamentsCache.find(t => t.id === id);
+      if (!tData) return;
+
+      const clubInfo = tData.clubName ? STATE.allClubsCache[tData.clubName] : null;
+      const clubDelPwd = clubInfo ? clubInfo.defaultDeletePassword : null;
+      const selfDelPwd = tData.deletePassword;
 
       const promptMsg = STATE.lang === "zh-TW" 
         ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入刪除密碼：`
@@ -1384,10 +1476,12 @@
       if (inputPwd === null) return;
       
       const cleanInput = inputPwd.trim();
-      const isCustomPwdCorrect = hasCustomPwd && cleanInput === String(deletePwd).trim();
+      
+      const isSelfPwdCorrect = selfDelPwd && cleanInput === String(selfDelPwd).trim();
+      const isClubPwdCorrect = clubDelPwd && cleanInput === String(clubDelPwd).trim();
       const isMasterPwdCorrect = cleanInput === MASTER_PIN;
 
-      if (!isCustomPwdCorrect && !isMasterPwdCorrect) {
+      if (!isSelfPwdCorrect && !isClubPwdCorrect && !isMasterPwdCorrect) {
         showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，刪除失敗！" : "❌ Incorrect Password!", "error");
         return;
       }
@@ -1408,29 +1502,47 @@
     };
 
     async function initClubPage() {
-      const allTournaments = await fetchAllTournaments();
-      const clubSet = new Set();
-
-      allTournaments.forEach(t => {
-        if (t.clubName && t.clubName.trim() !== "") {
-          clubSet.add(t.clubName.trim());
-        }
-      });
+      await fetchAllClubs();
+      await fetchAllTournaments();
 
       const select = document.getElementById("club-select");
-      if (clubSet.size === 0) {
-        select.innerHTML = `<option value="">${STATE.lang === "zh-TW" ? "尚無社團賽事" : "No Clubs Found"}</option>`;
-        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text">${STATE.lang === "zh-TW" ? "建立賽事時填寫「社團名稱」，即可在此查看社團成員歷史總勝率與累積戰績！" : "No club records available."}</td></tr>`;
+      const clubsList = Object.keys(STATE.allClubsCache);
+
+      if (clubsList.length === 0) {
+        select.innerHTML = `<option value="">${STATE.lang === "zh-TW" ? "尚無社團，請點擊【建立新社團】" : "No Clubs Found"}</option>`;
+        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text">${STATE.lang === "zh-TW" ? "點擊右上角【建立新社團】，建立後即可在此查看社團成員歷史累積戰績！" : "Click 'Create Club' to get started."}</td></tr>`;
         return;
       }
 
-      select.innerHTML = Array.from(clubSet).map(c => `<option value="${c}">${c}</option>`).join("");
+      select.innerHTML = clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
+      STATE.selectedClubName = select.value;
       renderClubLeaderboard();
     }
 
-    window.renderClubLeaderboard = function () {
+    window.verifyAndSwitchClub = function () {
       const select = document.getElementById("club-select");
-      const selectedClub = select.value;
+      const targetClub = select.value;
+      const clubInfo = STATE.allClubsCache[targetClub];
+
+      if (clubInfo && clubInfo.password) {
+        const inputPwd = prompt(STATE.lang === "zh-TW" ? `🔒 社團「${targetClub}」受密碼保護，請輸入檢視密碼：` : `🔒 Enter password for ${targetClub}:`);
+        if (inputPwd === null) {
+          select.value = STATE.selectedClubName; // 恢復選取
+          return;
+        }
+        if (inputPwd.trim() !== String(clubInfo.password).trim()) {
+          showToast(STATE.lang === "zh-TW" ? "❌ 社團密碼錯誤！" : "❌ Incorrect Club Password!", "error");
+          select.value = STATE.selectedClubName;
+          return;
+        }
+      }
+
+      STATE.selectedClubName = targetClub;
+      renderClubLeaderboard();
+    };
+
+    window.renderClubLeaderboard = function () {
+      const selectedClub = STATE.selectedClubName;
       if (!selectedClub) return;
 
       const clubTournaments = STATE.allTournamentsCache.filter(t => t.clubName && t.clubName.trim().toLowerCase() === selectedClub.toLowerCase());
@@ -1440,7 +1552,7 @@
         if (!tObj.matches) return;
 
         tObj.matches.forEach(m => {
-          if (m.completed && m.blueScore !== null && m.redScore !== null) {
+          if (m.completed && !m.canceled && m.blueScore !== null && m.redScore !== null) {
             const bs = m.blueScore;
             const rs = m.redScore;
             const blueWon = bs > rs;
