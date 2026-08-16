@@ -1,4 +1,7 @@
-
+從截圖中清楚看到，對戰賽程表裡面的藍隊、紅隊選手名稱跟欄位配置完全空白不見了！
+這是因為剛才在精簡排版時，CSS 樣式或 HTML 結構把選手名字的渲染區塊（m.blue 與 m.red）不小心漏掉了。
+我們立刻把對戰卡片的藍紅隊排版與選手名字補回來，並且確保在各種尺寸的手機上都能清晰、整齊地顯示。
+請複製以下修正後的完整程式碼：
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -66,10 +69,7 @@
     html.dark .mode-btn-inactive { border-color: #334155; background: transparent; color: #94a3b8; }
     html.light .mode-btn-inactive { border-color: #d6c7b2; color: #78716c; }
 
-    /* 手機頂部安全距離 */
-    .safe-top-header {
-      padding-top: env(safe-area-inset-top);
-    }
+    .safe-top-header { padding-top: env(safe-area-inset-top); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
@@ -88,7 +88,6 @@
         </div>
       </div>
 
-      <!-- 導覽按鈕群組：在手機上精簡尺寸，避免擁擠 -->
       <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
         <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
@@ -1579,20 +1578,20 @@
               <span class="${m.completed ? 'text-emerald-500' : 'sub-text'}">${m.completed ? '已完成' : '進行中'}</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 text-xs mb-2">
-              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                <span class="text-[10px] text-blue-400 font-bold block mb-0.5">🔵 藍隊</span>
-                <div class="font-semibold truncate">${m.blue.join(" & ")}</div>
+            <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
+              <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                <span class="text-[10px] text-blue-400 font-bold block mb-1">🔵 藍隊</span>
+                <div class="font-bold text-sm tracking-tight">${m.blue.join(" & ")}</div>
               </div>
-              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                <span class="text-[10px] text-rose-400 font-bold block mb-0.5">🔴 紅隊</span>
-                <div class="font-semibold truncate">${m.red.join(" & ")}</div>
+              <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                <span class="text-[10px] text-rose-400 font-bold block mb-1">🔴 紅隊</span>
+                <div class="font-bold text-sm tracking-tight">${m.red.join(" & ")}</div>
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="藍隊得分" class="input-bg border rounded-xl p-2 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="紅隊得分" class="input-bg border rounded-xl p-2 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="藍隊得分" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="紅隊得分" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
 
             ${(!isEnded && STATE.isAdminUnlocked) ? `
@@ -1655,7 +1654,7 @@
         });
       });
 
-      Object.values(stats.forEach ? Object.values(stats) : stats).forEach(s => {
+      Object.values(stats).forEach(s => {
         s.diff = s.pf - s.pa;
       });
 
