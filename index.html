@@ -1573,13 +1573,21 @@
 
     window.toggleAdminAuth = function () {
       const tObj = STATE.tournamentData;
-      if (STATE.isAdminUnlocked) STATE.isAdminUnlocked = false;
-      else {
+      if (!tObj) return;
+      if (STATE.isAdminUnlocked) {
+        STATE.isAdminUnlocked = false;
+        showToast("🔒 已重新鎖定賽事管理", "info");
+      } else {
         if (tObj.adminPin) {
           const input = prompt("請輸入賽事管理密碼：");
-          if (input !== tObj.adminPin && input !== "19851108") { showToast("❌ 密碼錯誤！", "error"); return; }
+          if (input === null) return;
+          if (input.trim() !== String(tObj.adminPin).trim() && input.trim() !== "19851108") {
+            showToast("❌ 密碼錯誤！", "error");
+            return;
+          }
         }
         STATE.isAdminUnlocked = true;
+        showToast("🔓 賽事管理已解鎖！", "success");
       }
       renderLiveUI(tObj);
     };
@@ -1598,6 +1606,7 @@
       STATE.tournamentData.status = "force_ended";
       STATE.tournamentData.matches.forEach(m => { if (!m.completed) m.canceled = true; });
       saveToLocalTournaments(STATE.tournamentData);
+      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
       renderLiveUI(STATE.tournamentData);
     };
 
@@ -1624,7 +1633,7 @@
         statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-emerald-500/10 text-emerald-500 border-emerald-500/30";
       }
 
-      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open" class="w-3.5 h-3.5"></i> 鎖定管理` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖賽事管理`;
+      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-open" class="w-3.5 h-3.5"></i> 鎖定管理` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖賽事管理`;
       
       const btnArchive = document.getElementById("btn-toggle-archive");
       const archiveBtnText = document.getElementById("archive-btn-text");
@@ -1789,7 +1798,7 @@
     function showToast(msg, type) {
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
-      toast.className = `px-4 py-2 rounded-xl border text-xs font-bold ${type === 'error' ? 'bg-rose-500/20 text-rose-500' : 'bg-emerald-500/20 text-emerald-500'}`;
+      toast.className = `px-4 py-2 rounded-xl border text-xs font-bold ${type === 'error' ? 'bg-rose-500/20 text-rose-500' : type === 'info' ? 'bg-sky-500/20 text-sky-400' : 'bg-emerald-500/20 text-emerald-500'}`;
       toast.innerText = msg;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
