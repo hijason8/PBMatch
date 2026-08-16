@@ -11,26 +11,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="PB Match" />
 
-  <!-- PWA Manifest Data (Data URI 格式，無需額外建立 manifest.json 檔案) -->
-  <link rel="manifest" href='data:application/manifest+json,{
-    "name": "PB Match",
-    "short_name": "PB Match",
-    "start_url": "./",
-    "display": "standalone",
-    "background_color": "#090d16",
-    "theme_color": "#10b981",
-    "icons": [
-      {
-        "src": "data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22128%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22><stop offset=%220%25%22 stop-color=%22%2310b981%22/><stop offset=%22100%25%22 stop-color=%22%23fbbf24%22/></linearGradient></defs><path fill=%22%23090d16%22 d=%22M160 128h192v64c0 53-43 96-96 96s-96-43-96-96v-64zm-32 32h-32c-17.7 0-32 14.3-32 32 0 35.3 28.7 64 64 64v-32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm256 0c17.7 0 32 14.3 32 32s-14.3 32-32 32v32c35.3 0 64-28.7 64-64 0-17.7-14.3-32-32-32h-32zm-144 160h32v64h64v32H144v-32h64v-64z%22/></svg>",
-        "sizes": "512x512",
-        "type": "image/svg+xml",
-        "purpose": "any maskable"
-      }
-    ]
-  }' />
-
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><rect width=%22512%22 height=%22512%22 rx=%22128%22 fill=%22url(%23g)%22/><defs><linearGradient id=%22g%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22><stop offset=%220%25%22 stop-color=%22%2310b981%22/><stop offset=%22100%25%22 stop-color=%22%23fbbf24%22/></linearGradient></defs><path fill=%22%23090d16%22 d=%22M160 128h192v64c0 53-43 96-96 96s-96-43-96-96v-64zm-32 32h-32c-17.7 0-32 14.3-32 32 0 35.3 28.7 64 64 64v-32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm256 0c17.7 0 32 14.3 32 32s-14.3 32-32 32v32c35.3 0 64-28.7 64-64 0-17.7-14.3-32-32-32h-32zm-144 160h32v64h64v32H144v-32h64v-64z%22/></svg>" />
+  <!-- PWA Manifest -->
+  <link id="manifest-link" rel="manifest" />
+  <link id="apple-icon-link" rel="apple-touch-icon" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -715,6 +698,7 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
+      initDynamicPwaIcon();
       applyThemeUI();
       initFirebase(DEFAULT_FIREBASE_CONFIG);
       applyLanguageUI();
@@ -722,6 +706,60 @@
       registerServiceWorker();
       lucide.createIcons();
     });
+
+    function initDynamicPwaIcon() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+
+      // Draw Gradient Background
+      const grad = ctx.createLinearGradient(0, 512, 512, 0);
+      grad.addColorStop(0, "#10b981");
+      grad.addColorStop(1, "#fbbf24");
+      
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, 512, 512, 128);
+      ctx.fill();
+
+      // Draw Trophy Icon
+      ctx.fillStyle = "#090d16";
+      ctx.beginPath();
+      ctx.rect(160, 128, 192, 64);
+      ctx.arc(256, 192, 96, 0, Math.PI, false);
+      ctx.fill();
+
+      ctx.fillRect(240, 288, 32, 64);
+      ctx.fillRect(192, 352, 128, 32);
+
+      const iconDataUrl = canvas.toDataURL("image/png");
+
+      const appleLink = document.getElementById("apple-icon-link");
+      if (appleLink) appleLink.href = iconDataUrl;
+
+      const manifestObj = {
+        name: "PB Match",
+        short_name: "PB Match",
+        start_url: "./",
+        display: "standalone",
+        background_color: "#090d16",
+        theme_color: "#10b981",
+        icons: [
+          {
+            src: iconDataUrl,
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable"
+          }
+        ]
+      };
+
+      const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/json" });
+      const manifestUrl = URL.createObjectURL(manifestBlob);
+      const manifestLink = document.getElementById("manifest-link");
+      if (manifestLink) manifestLink.href = manifestUrl;
+    }
 
     function registerServiceWorker() {
       if ('serviceWorker' in navigator) {
@@ -902,11 +940,11 @@
       }
     }
 
-    function initRouting() {
+    async function initRouting() {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
       if (tId) {
-        loadLiveTournament(tId);
+        await loadLiveTournament(tId);
       } else {
         navigateTo("hub");
       }
@@ -1660,6 +1698,9 @@
       document.getElementById("live-title").innerText = STATE.lang === "zh-TW" ? "賽事載入中..." : "Loading...";
       document.getElementById("live-id-badge").innerText = `ID: ${tId}`;
 
+      // 確保快取與 DB 均已取回資料後再做判定
+      await fetchAllTournaments();
+
       if (STATE.db) {
         if (STATE.dbUnsubscribe) STATE.dbUnsubscribe();
         const tRef = ref(STATE.db, `tournaments/${tId}`);
@@ -1683,7 +1724,8 @@
         STATE.tournamentData = local[tId];
         renderLiveUI(STATE.tournamentData);
       } else {
-        showToast(`Tournament ID ${tId} not found`, "error");
+        // 若找不到該賽事，回到大廳並移除 URL query string，不再產生錯誤洗洗面板
+        window.history.replaceState({}, "", window.location.pathname);
         navigateTo("hub");
       }
     }
@@ -2056,3 +2098,4 @@
   </script>
 </body>
 </html>
+
