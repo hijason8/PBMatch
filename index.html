@@ -85,6 +85,7 @@
       </div>
 
       <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        <!-- 前三個：UI / 系統操作類 -->
         <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
@@ -97,6 +98,10 @@
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
+        <!-- 中間分隔斜線 -->
+        <span class="sub-text opacity-40 px-0.5 select-none font-light text-sm">/</span>
+
+        <!-- 後三個：功能操作類 -->
         <button onclick="navigateTo('hub')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
           <span id="t-nav-hub" class="hidden md:inline">賽事大廳</span>
@@ -107,9 +112,9 @@
           <span id="t-nav-club" class="hidden md:inline">社團紀錄</span>
         </button>
 
-        <!-- 修正點 1: 簡化右側建立按鈕 Icon，呼應左側風格 -->
-        <button onclick="navigateTo('create')" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-emerald-500 hover:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="建立賽事">
-          <i data-lucide="plus" class="w-4 h-4"></i>
+        <button onclick="navigateTo('create')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="建立賽事">
+          <i data-lucide="plus" class="w-4 h-4 text-emerald-500"></i>
+          <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
         </button>
       </div>
     </div>
@@ -183,28 +188,15 @@
         </div>
 
         <div>
-          <label id="t-label-visibility" class="block text-xs sm:text-sm font-semibold mb-1">3. 賽事隱私</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" id="btn-vis-public" onclick="setVisibility('public')" class="mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
-              <span>🌐</span> <span id="t-vis-public-label">公開</span>
-            </button>
-            <button type="button" id="btn-vis-private" onclick="setVisibility('private')" class="mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
-              <span>🔒</span> <span id="t-vis-private-label">私密</span>
-            </button>
-          </div>
-          <input type="hidden" id="create-visibility" value="public" />
-        </div>
-
-        <div>
           <label id="t-label-mgmt-pwd" class="block text-xs sm:text-sm font-semibold mb-1">
-            4. 現場賽程管理密碼 (現場錄分用) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
+            3. 現場賽程管理密碼 (現場錄分用) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
           </label>
           <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="4 位數字，留空則現場無防護" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">5. 預計比賽總時間</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">4. 預計比賽總時間</label>
             <div class="relative">
               <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
@@ -212,14 +204,14 @@
           </div>
 
           <div>
-            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">6. 比賽場地數</label>
+            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">5. 比賽場地數</label>
             <input type="number" id="create-courts" min="1" max="20" value="1" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">7. 預估單局配時</label>
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">6. 預估單局配時</label>
             <div class="relative">
               <input type="number" id="create-game-mins" min="3" max="60" value="15" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
@@ -227,7 +219,7 @@
           </div>
 
           <div>
-            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">8. 計分賽制選擇</label>
+            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">7. 計分賽制選擇</label>
             <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="rally">落地得分制 (Rally)</option>
               <option value="sideout">發球得分制 (Side-out)</option>
@@ -237,11 +229,11 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">9. 每局目標分數</label>
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">8. 每局目標分數</label>
             <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
           <div>
-            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">10. 賽事模式</label>
+            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">9. 賽事模式</label>
             <div class="grid grid-cols-2 gap-1.5">
               <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-fair-title">平均局數</span>
@@ -256,7 +248,7 @@
 
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">11. 參賽選手名單</label>
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">10. 參賽選手名單</label>
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
 
@@ -302,7 +294,6 @@
           <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績</p>
         </div>
 
-        <!-- 修正點 2: 將社團下拉選單搬至與按鈕同一行 -->
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="openCreateClubModal()" id="t-btn-add-club-page" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold rounded-xl text-xs shrink-0">
             ➕ 建立新社團
@@ -357,7 +348,6 @@
           </div>
         </div>
 
-        <!-- 權限與操作按鈕群 -->
         <div class="flex flex-wrap items-center gap-2 shrink-0">
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖現場解分
@@ -367,7 +357,6 @@
             <i data-lucide="key" class="w-3.5 h-3.5"></i> 社團管理者解凍修改
           </button>
 
-          <!-- 修正點 3: 廢局按鈕改為直觀的刪除/廢局 -->
           <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢 (徹底刪除)
           </button>
@@ -615,17 +604,15 @@
         btnOpenCreateClub: "➕ 新增社團",
         labelClubAuth: "該社團受保護，請輸入社團使用密碼：",
         placeholderClubAuth: "輸入社團使用密碼",
-        labelVisibility: "3. 賽事隱私",
-        visPublic: "公開",
-        visPrivate: "私密",
-        labelMgmtPwd: "4. 現場賽程管理密碼 (現場錄分用)",
+        labelMgmtPwd: "3. 現場賽程管理密碼 (現場錄分用)",
         optionalTag: "(選填)",
-        labelDuration: "5. 預計比賽總時間",
-        labelCourts: "6. 比賽場地數",
-        labelGameMins: "7. 預估單局配時",
-        labelScoring: "8. 計分賽制選擇",
-        labelTarget: "9. 每局目標分數",
-        labelScheduleMode: "10. 賽事模式",
+        labelDuration: "4. 預計比賽總時間",
+        labelCourts: "5. 比賽場地數",
+        labelGameMins: "6. 預估單局配時",
+        labelScoring: "7. 計分賽制選擇",
+        labelTarget: "8. 每局目標分數",
+        labelScheduleMode: "9. 賽事模式",
+        labelPlayers: "10. 參賽選手名單",
         unitHours: "小時",
         unitMins: "分鐘",
         courtsUnit: "場地",
@@ -633,7 +620,6 @@
         optionSideout: "發球得分制 (Side-out)",
         modeFairTitle: "平均局數",
         modeMaxTitle: "最大局數",
-        labelPlayers: "11. 參賽選手名單",
         quickFillLabel: "快速帶入預設選手：",
         quickFillBtn: "⚡ 自動填入 A, B, C...",
         importClubRosterBtn: "👥 帶入社團成員",
@@ -716,17 +702,15 @@
         btnOpenCreateClub: "➕ Add Club",
         labelClubAuth: "Club protected, enter club use password:",
         placeholderClubAuth: "Enter club use password",
-        labelVisibility: "3. Privacy",
-        visPublic: "Public",
-        visPrivate: "Private",
-        labelMgmtPwd: "4. Mgmt Password (Field Score Input)",
+        labelMgmtPwd: "3. Mgmt Password (Field Score Input)",
         optionalTag: "(Optional)",
-        labelDuration: "5. Total Estimated Duration",
-        labelCourts: "6. Number of Courts",
-        labelGameMins: "7. Single Game Mins",
-        labelScoring: "8. Scoring System",
-        labelTarget: "9. Target Points",
-        labelScheduleMode: "10. Schedule Mode",
+        labelDuration: "4. Total Estimated Duration",
+        labelCourts: "5. Number of Courts",
+        labelGameMins: "6. Single Game Mins",
+        labelScoring: "7. Scoring System",
+        labelTarget: "8. Target Points",
+        labelScheduleMode: "9. Schedule Mode",
+        labelPlayers: "10. Player Roster",
         unitHours: "Hrs",
         unitMins: "Mins",
         courtsUnit: "Courts",
@@ -734,7 +718,6 @@
         optionSideout: "Side-out Scoring",
         modeFairTitle: "Average Games",
         modeMaxTitle: "Max Games",
-        labelPlayers: "11. Player Roster",
         quickFillLabel: "Quick Auto-fill Players:",
         quickFillBtn: "⚡ Auto Fill A, B, C...",
         importClubRosterBtn: "👥 Import Club Members",
@@ -932,9 +915,6 @@
       document.getElementById("t-label-club-auth").innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("labelClubAuth")}`;
       document.getElementById("create-club-auth-pwd").placeholder = t("placeholderClubAuth");
 
-      document.getElementById("t-label-visibility").innerText = t("labelVisibility");
-      document.getElementById("t-vis-public-label").innerText = t("visPublic");
-      document.getElementById("t-vis-private-label").innerText = t("visPrivate");
       document.getElementById("t-label-mgmt-pwd").innerHTML = `${t("labelMgmtPwd")} <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
@@ -1207,19 +1187,6 @@
       showToast("🔄 資料已重新載入同步！", "success");
     };
 
-    window.setVisibility = function (vis) {
-      document.getElementById("create-visibility").value = vis;
-      const btnPublic = document.getElementById("btn-vis-public");
-      const btnPrivate = document.getElementById("btn-vis-private");
-      if (vis === "public") {
-        btnPublic.className = "mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
-        btnPrivate.className = "mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
-      } else {
-        btnPrivate.className = "mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
-        btnPublic.className = "mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
-      }
-    };
-
     function getValidTotalGames(n, rawTargetGames) {
       if (n < 4) return 0;
       function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
@@ -1301,7 +1268,6 @@
       Object.values(localData).forEach(lt => {
         if (!list.some(t => t.id === lt.id)) list.push(lt);
       });
-      // 修正點 3: 自動徹底剔除狀態為作廢 (voided) 的賽事，不再顯示
       list = list.filter(tData => tData.status !== "voided");
       STATE.allTournamentsCache = list;
       return list;
@@ -1710,7 +1676,6 @@
       renderLiveUI(tObj);
     };
 
-    // 修正點 3: 流局作廢直接徹底刪除，不在歷史中留下記錄
     window.voidTournament = async function () {
       const tObj = STATE.tournamentData;
       if (!confirm("⚠️ 確定要將此賽事「流局作廢 (徹底刪除)」嗎？作廢後賽事資料將直接刪除，不進入歷史紀錄！")) return;
