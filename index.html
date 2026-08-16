@@ -2,7 +2,7 @@
 <html lang="zh-TW" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>PB Match</title>
   
   <meta name="description" content="PB Match 專業匹克球賽事管理系統" />
@@ -64,15 +64,19 @@
     .mode-btn-inactive { border-color: #cbd5e1; background: transparent; }
     html.dark .mode-btn-inactive { border-color: #334155; background: transparent; color: #94a3b8; }
     html.light .mode-btn-inactive { border-color: #d6c7b2; color: #78716c; }
+
+    /* iPhone 頂部安全距離支援 */
+    .safe-top-header {
+      padding-top: env(safe-area-inset-top);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
 
   <!-- HEADER / NAV -->
-  <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
-        <!-- 點擊 Logo 圖示 5 次或透過上帝模式入口，這裡在右側加了一個隱藏解鎖按鈕 -->
+  <header class="sticky top-0 z-40 glass-nav border-b transition-colors safe-top-header">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="navigateTo('hub')">
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
           <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
@@ -83,31 +87,31 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <div class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1">
         <!-- 上帝模式入口按鈕 -->
-        <button onclick="openGodMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm" title="上帝模式 (管理員專用)">
+        <button onclick="openGodMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式 (管理員專用)">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
+        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm shrink-0" title="切換黑/白底模式">
           <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm" title="切換語言 / Language">
+        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="切換語言 / Language">
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold">
+        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
           <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
         </button>
 
-        <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold">
+        <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0">
           <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
           <span id="t-nav-club" class="hidden sm:inline">社團紀錄</span>
         </button>
 
-        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
+        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95 shrink-0">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
           <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
         </button>
@@ -227,7 +231,7 @@
             <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">10. 賽事模式</label>
             <div class="grid grid-cols-2 gap-1.5">
               <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
-                <span id="t-mode-fair-title">平均</span>
+                <span id="t-mode-fair-title">平均局數</span>
               </button>
               <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-max-title">最大局數</span>
@@ -475,7 +479,7 @@
         <p id="t-modal-club-desc" class="text-xs sub-text mt-0.5">設定社團管理與使用密碼</p>
       </div>
 
-      <form onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
+      <form id="form-create-club" onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
         <div>
           <label id="t-modal-club-name-label" class="block font-semibold mb-1">社團名稱 *</label>
           <input type="text" id="club-new-name" required placeholder="例：週末輕鬆打" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-amber-500 focus:outline-none" />
@@ -593,7 +597,7 @@
         courtsUnit: "場地",
         optionRally: "落地得分制 (Rally)",
         optionSideout: "發球得分制 (Side-out)",
-        modeFairTitle: "平均賽事",
+        modeFairTitle: "平均局數",
         modeMaxTitle: "最大局數",
         labelPlayers: "11. 參賽選手名單",
         quickFillLabel: "快速帶入預設選手：",
@@ -657,7 +661,8 @@
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
-        copiedToast: "📋 專屬連結已複製！"
+        copiedToast: "📋 專屬連結已複製！",
+        godModePrompt: "維護密碼："
       },
       "en": {
         navHub: "Hub",
@@ -694,7 +699,7 @@
         courtsUnit: "Courts",
         optionRally: "Rally Scoring",
         optionSideout: "Side-out Scoring",
-        modeFairTitle: "Fair Play",
+        modeFairTitle: "Average Games",
         modeMaxTitle: "Max Games",
         labelPlayers: "11. Player Roster",
         quickFillLabel: "Quick Auto-fill Players:",
@@ -758,7 +763,8 @@
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
         copyBtn: "Copy",
-        copiedToast: "📋 Link copied to clipboard!"
+        copiedToast: "📋 Link copied to clipboard!",
+        godModePrompt: "Maintenance Password:"
       }
     };
 
@@ -1026,9 +1032,9 @@
       lucide.createIcons();
     };
 
-    // 上帝模式入口驗證
+    // 上帝模式入口驗證（已改為「維護密碼：」）
     window.openGodMode = async function () {
-      const input = prompt("🔐 請輸入最高管理員密碼 (上帝模式)：");
+      const input = prompt(t("godModePrompt"));
       if (input === null) return;
       if (input !== "19851108") {
         showToast("❌ 權限不足，密碼錯誤！", "error");
@@ -1037,12 +1043,10 @@
       navigateTo("godmode");
     };
 
-    // 上帝模式：渲染資料管理表格
     async function renderGodModeTables() {
       await fetchAllTournaments();
       await fetchAllClubs();
 
-      // 賽事表格
       const tContainer = document.getElementById("god-tournaments-table");
       const tournaments = STATE.allTournamentsCache;
       if (tournaments.length === 0) {
@@ -1074,7 +1078,6 @@
         `;
       }
 
-      // 社團表格
       const cContainer = document.getElementById("god-clubs-table");
       const clubs = Object.keys(STATE.allClubsCache);
       if (clubs.length === 0) {
@@ -1118,7 +1121,6 @@
       document.querySelectorAll('.c-checkbox').forEach(cb => cb.checked = master.checked);
     };
 
-    // 上帝模式：批量刪除賽事
     window.godDeleteSelectedTournaments = async function() {
       const selected = Array.from(document.querySelectorAll('.t-checkbox:checked')).map(cb => cb.value);
       if (selected.length === 0) {
@@ -1137,7 +1139,6 @@
       renderGodModeTables();
     };
 
-    // 上帝模式：批量刪除社團
     window.godDeleteSelectedClubs = async function() {
       const selected = Array.from(document.querySelectorAll('.c-checkbox:checked')).map(cb => cb.value);
       if (selected.length === 0) {
@@ -1283,6 +1284,7 @@
     window.openCreateClubModal = function () { document.getElementById("modal-create-club").classList.remove("hidden"); };
     window.closeCreateClubModal = function () { document.getElementById("modal-create-club").classList.add("hidden"); };
 
+    // 修復建立社團按鈕點擊無反應問題（改為表單正確送出與非同步處理）
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
       const clubName = document.getElementById("club-new-name").value.trim();
@@ -1291,7 +1293,13 @@
       if (!clubName) return;
 
       const clubObj = { name: clubName, password: pwdUse || null, deletePassword: pwdMgmt || null, createdAt: new Date().toLocaleString("zh-TW") };
-      if (STATE.db) await set(ref(STATE.db, `clubs/${clubName}`), clubObj);
+      if (STATE.db) {
+        try {
+          await set(ref(STATE.db, `clubs/${clubName}`), clubObj);
+        } catch (err) {
+          console.error("Firebase club save error:", err);
+        }
+      }
 
       const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
       localClubs[clubName] = clubObj;
@@ -1299,6 +1307,7 @@
 
       showToast("社團建立成功！", "success");
       closeCreateClubModal();
+      document.getElementById("form-create-club").reset();
       await populateClubSelect(clubName);
     };
 
@@ -1567,4 +1576,3 @@
   </script>
 </body>
 </html>
-
