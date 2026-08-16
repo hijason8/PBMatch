@@ -222,22 +222,12 @@
           <input type="text" id="create-name" required placeholder="例：0818 球賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
-        <!-- Optional Admin PIN -->
+        <!-- Admin PIN (Option) -->
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label id="t-label-pin-title" class="text-xs sm:text-sm font-semibold flex items-center gap-1.5">
-              <span>2. 管理員 PIN 碼防護</span>
-              <span id="t-optional-tag" class="text-[10px] sub-text font-normal">(選填)</span>
-            </label>
-            <label class="inline-flex items-center cursor-pointer">
-              <input type="checkbox" id="toggle-pin-enable" onchange="togglePinInput()" class="sr-only peer">
-              <div class="w-8 h-4.5 bg-stone-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-emerald-500 relative"></div>
-              <span id="t-enable-pin-text" class="ml-1.5 text-xs font-medium sub-text">啟用防竄改</span>
-            </label>
-          </div>
-          <div id="pin-input-container" class="hidden mt-1.5">
-            <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="請設定 4 位數 PIN 碼 (輸入/修改比分驗證用)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
-          </div>
+          <label id="t-label-pin-title" class="block text-xs sm:text-sm font-semibold mb-1">
+            2. 管理員 PIN 碼防護 <span id="t-optional-tag" class="text-[10px] sub-text font-normal">(選填)</span>
+          </label>
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="可設 4 位數字 PIN 碼，防止非相關人員修改比分" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <!-- Duration & Court Count Grid -->
@@ -493,7 +483,6 @@
         labelName: "1. 賽事名稱",
         labelPinTitle: "2. 管理員 PIN 碼防護",
         optionalTag: "(選填)",
-        enablePinText: "啟用防竄改",
         labelDuration: "3. 預計比賽總時間",
         labelCourts: "4. 比賽場地數",
         labelGameMins: "5. 預估單局配時",
@@ -516,7 +505,7 @@
 
         // Placeholders
         placeholderName: "例：0818 球賽",
-        placeholderPin: "請設定 4 位數 PIN 碼 (輸入/修改比分驗證用)",
+        placeholderPin: "可設 4 位數字 PIN 碼，防止非相關人員修改比分",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
         // Live Tournament
@@ -577,7 +566,6 @@
         labelName: "1. Tournament Name",
         labelPinTitle: "2. Admin PIN Protection",
         optionalTag: "(Optional)",
-        enablePinText: "Enable PIN Protection",
         labelDuration: "3. Total Estimated Duration",
         labelCourts: "4. Number of Courts",
         labelGameMins: "5. Single Game Mins",
@@ -600,7 +588,7 @@
 
         // Placeholders
         placeholderName: "e.g., 0818 Tournament",
-        placeholderPin: "Set 4-digit PIN for score protection",
+        placeholderPin: "Set 4-digit PIN for score protection (Optional)",
         placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
 
         // Live Tournament
@@ -650,9 +638,7 @@
       lucide.createIcons();
     });
 
-    // ----------------------------------------------------
     // POPSTATE BROWSER BACK BUTTON SUPPORT
-    // ----------------------------------------------------
     window.addEventListener("popstate", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
@@ -663,9 +649,7 @@
       }
     });
 
-    // ----------------------------------------------------
     // THEME SWITCHER
-    // ----------------------------------------------------
     window.toggleTheme = function () {
       STATE.theme = STATE.theme === "dark" ? "light" : "dark";
       localStorage.setItem("pb_theme", STATE.theme);
@@ -697,9 +681,7 @@
       lucide.createIcons();
     }
 
-    // ----------------------------------------------------
     // I18N LANGUAGE SWITCHER
-    // ----------------------------------------------------
     window.toggleLanguage = function () {
       STATE.lang = STATE.lang === "zh-TW" ? "en" : "zh-TW";
       localStorage.setItem("pb_lang", STATE.lang);
@@ -728,8 +710,7 @@
       // Create Form Page
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
-      document.getElementById("t-label-pin-title").innerHTML = `<span>${t("labelPinTitle")}</span> <span id="t-optional-tag" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
-      document.getElementById("t-enable-pin-text").innerText = t("enablePinText");
+      document.getElementById("t-label-pin-title").innerHTML = `${t("labelPinTitle")} <span id="t-optional-tag" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
       document.getElementById("t-label-courts").innerText = t("labelCourts");
@@ -791,9 +772,7 @@
       lucide.createIcons();
     }
 
-    // ----------------------------------------------------
     // FIREBASE INITIALIZATION
-    // ----------------------------------------------------
     function initFirebase(cfg) {
       try {
         if (!getApps().length) {
@@ -820,9 +799,7 @@
       }
     }
 
-    // ----------------------------------------------------
     // ROUTING & SPA NAVIGATION
-    // ----------------------------------------------------
     function initRouting() {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
@@ -867,7 +844,6 @@
       return Math.max(3, rawTargetGames);
     }
 
-    // Fisher-Yates Shuffle
     function shuffleArray(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -877,9 +853,7 @@
       return arr;
     }
 
-    // ----------------------------------------------------
     // INDIVIDUAL ROUND ROBIN ALGORITHM WITH COURTS
-    // ----------------------------------------------------
     function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair", courtsCount = 1) {
       const n = playersList.length;
       if (n < 4) return [];
@@ -950,23 +924,7 @@
       return matches;
     }
 
-    // ----------------------------------------------------
     // PAGE C: CREATE TOURNAMENT CONTROLLER
-    // ----------------------------------------------------
-    window.togglePinInput = function () {
-      const isChecked = document.getElementById("toggle-pin-enable").checked;
-      const container = document.getElementById("pin-input-container");
-      const pinInput = document.getElementById("create-pin");
-
-      if (isChecked) {
-        container.classList.remove("hidden");
-        pinInput.focus();
-      } else {
-        container.classList.add("hidden");
-        pinInput.value = "";
-      }
-    };
-
     window.autoGeneratePlayers = function () {
       const countInput = document.getElementById("auto-player-count");
       let count = parseInt(countInput.value) || 8;
@@ -1060,15 +1018,20 @@
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
-      const isPinEnabled = document.getElementById("toggle-pin-enable").checked;
       const rawPin = document.getElementById("create-pin").value.trim();
       
-      if (isPinEnabled && (!rawPin || !/^\d{4}$/.test(rawPin))) {
-        showToast(STATE.lang === "zh-TW" ? "請輸入有效的 4 位數字 PIN 碼！" : "Please enter a valid 4-digit PIN!", "error");
-        return;
+      let isPinEnabled = false;
+      let pin = null;
+
+      if (rawPin !== "") {
+        if (!/^\d{4}$/.test(rawPin)) {
+          showToast(STATE.lang === "zh-TW" ? "PIN 碼必須為 4 位數字！" : "PIN must be a 4-digit number!", "error");
+          return;
+        }
+        isPinEnabled = true;
+        pin = rawPin;
       }
 
-      const pin = isPinEnabled ? rawPin : null;
       const duration = parseFloat(document.getElementById("create-duration").value) || 2.0;
       const courtsCount = parseInt(document.getElementById("create-courts").value) || 1;
       const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
@@ -1126,9 +1089,7 @@
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
     }
 
-    // ----------------------------------------------------
     // PAGE B: HUB TOURNAMENTS RENDER & DELETE
-    // ----------------------------------------------------
     async function renderHubTournaments() {
       const container = document.getElementById("tournaments-list");
       container.innerHTML = `<div class="col-span-full text-center py-8 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
@@ -1257,9 +1218,7 @@
       renderHubTournaments();
     };
 
-    // ----------------------------------------------------
     // PAGE D: LIVE TOURNAMENT CONTROLLER
-    // ----------------------------------------------------
     async function loadLiveTournament(tId) {
       STATE.currentTournamentId = tId;
       navigateTo("live");
@@ -1427,9 +1386,7 @@
       }
     };
 
-    // ----------------------------------------------------
     // LEADERBOARD CALCULATOR
-    // ----------------------------------------------------
     function calculateLeaderboard(players, matches) {
       const stats = {};
       players.forEach(p => {
@@ -1515,9 +1472,7 @@
       lucide.createIcons();
     }
 
-    // ----------------------------------------------------
     // SHARE & QR CODE MODAL
-    // ----------------------------------------------------
     window.openShareModal = function () {
       const modal = document.getElementById("modal-share");
       const urlInput = document.getElementById("share-url-input");
@@ -1541,9 +1496,7 @@
       showToast(t("copiedToast"), "success");
     };
 
-    // ----------------------------------------------------
     // TOAST NOTIFICATIONS
-    // ----------------------------------------------------
     function showToast(msg, type = "info") {
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
