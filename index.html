@@ -374,20 +374,23 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <!-- 1. 模式切換按鈕 -->
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖現場解分
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 輸入模式
           </button>
           
           <button onclick="unlockSuperAdminAuth()" id="btn-super-admin-unlock" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="key" class="w-3.5 h-3.5"></i> 社團管理者解凍修改
           </button>
 
-          <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢 (徹底刪除)
+          <!-- 2. 結束並封存按鈕 -->
+          <button onclick="finishTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 結束並封存
           </button>
 
-          <button onclick="finishTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 結束並凍結戰績
+          <!-- 3. 流局作廢按鈕 -->
+          <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢 (徹底刪除)
           </button>
 
           <button onclick="openShareModal()" id="t-share-btn" class="px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
@@ -681,9 +684,9 @@
         scheduleTitle: "對戰賽程表",
         completedGamesBadge: "局完成",
         leaderboardTitle: "戰績排行",
-        unlockBtn: "解鎖現場解分",
-        lockBtn: "鎖定現場解分",
-        forceEndBtn: "結束並凍結戰績",
+        unlockBtn: "輸入模式",
+        lockBtn: "觀看模式",
+        forceEndBtn: "結束並封存",
         thRank: "名次",
         thPlayer: "選手名稱",
         thWl: "勝/敗",
@@ -699,6 +702,7 @@
         restingLabel: "本局輪空休息：",
         noResting: "無",
         saveScoreBtn: "儲存比分",
+        editScoreBtn: "修改比分",
         scorePlaceholder: "得分",
         canceledGame: "已單局流局 (作廢)",
         modalQrTitle: "賽事專屬 QR Code",
@@ -778,9 +782,9 @@
         scheduleTitle: "Match Schedule",
         completedGamesBadge: "Games Done",
         leaderboardTitle: "Live Standings",
-        unlockBtn: "Unlock Field Admin",
-        lockBtn: "Lock Field Admin",
-        forceEndBtn: "Finish & Lock Results",
+        unlockBtn: "Edit Mode",
+        lockBtn: "View Mode",
+        forceEndBtn: "Finish & Archive",
         thRank: "Rank",
         thPlayer: "Player Name",
         thWl: "W/L",
@@ -795,7 +799,8 @@
         redTeam: "🔴 Red",
         restingLabel: "Resting: ",
         noResting: "None",
-        saveScoreBtn: "Save",
+        saveScoreBtn: "Save Score",
+        editScoreBtn: "Edit Score",
         scorePlaceholder: "Score",
         canceledGame: "Match Voided",
         modalQrTitle: "Tournament QR Code",
@@ -1735,7 +1740,7 @@
 
       if (STATE.isAdminUnlocked) {
         STATE.isAdminUnlocked = false;
-        showToast("🔒 已重新鎖定現場解分", "info");
+        showToast("🔒 已切換至觀看模式", "info");
       } else {
         if (tObj.adminPin) {
           const input = prompt("請輸入本賽事管理密碼：");
@@ -1746,7 +1751,7 @@
           }
         }
         STATE.isAdminUnlocked = true;
-        showToast("🔓 現場解分權限已開啟！", "success");
+        showToast("🔓 已切換至輸入模式！", "success");
       }
       renderLiveUI(tObj);
     };
@@ -1782,7 +1787,7 @@
     };
 
     window.finishTournament = async function () {
-      if (!confirm("確定要結束並凍結本場賽事嗎？完賽後戰績將鎖定，現場管理員將無法再改分！")) return;
+      if (!confirm("確定要結束並封存本場賽事嗎？完賽後戰績將鎖定，現場管理員將無法再改分！")) return;
       
       STATE.tournamentData.status = "finished";
       saveToLocalTournaments(STATE.tournamentData);
@@ -1790,7 +1795,7 @@
       
       STATE.isAdminUnlocked = false;
       renderLiveUI(STATE.tournamentData);
-      showToast("🔒 賽事已成功完賽並凍結！", "success");
+      showToast("🔒 賽事已成功結束並封存！", "success");
     };
 
     function renderLiveUI(data) {
@@ -1824,7 +1829,10 @@
         lockedBanner.classList.add("hidden");
       }
 
-      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-open" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
+      // 按鈕文字改為： 觀看模式 / 輸入模式
+      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked 
+        ? `<i data-lucide="eye" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` 
+        : `<i data-lucide="edit-3" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
       
       const btnSuperUnlock = document.getElementById("btn-super-admin-unlock");
       if (isFinished && !STATE.isSuperAdminUnlocked) {
@@ -1835,15 +1843,7 @@
         btnSuperUnlock.classList.remove("flex");
       }
 
-      const btnVoid = document.getElementById("btn-toggle-void");
-      if (STATE.isAdminUnlocked && isActive) {
-        btnVoid.classList.remove("hidden");
-        btnVoid.classList.add("flex");
-      } else {
-        btnVoid.classList.add("hidden");
-        btnVoid.classList.remove("flex");
-      }
-
+      // 按鈕順序：結束並封存 (btnFinish) 在 流局作廢 (btnVoid) 之前
       const btnFinish = document.getElementById("btn-force-end");
       if (STATE.isAdminUnlocked && isActive) {
         btnFinish.classList.remove("hidden");
@@ -1851,6 +1851,15 @@
       } else {
         btnFinish.classList.add("hidden");
         btnFinish.classList.remove("flex");
+      }
+
+      const btnVoid = document.getElementById("btn-toggle-void");
+      if (STATE.isAdminUnlocked && isActive) {
+        btnVoid.classList.remove("hidden");
+        btnVoid.classList.add("flex");
+      } else {
+        btnVoid.classList.add("hidden");
+        btnVoid.classList.remove("flex");
       }
 
       const canEditScores = (STATE.isAdminUnlocked && isActive) || STATE.isSuperAdminUnlocked;
@@ -1895,8 +1904,8 @@
             ${canEdit ? `
               <div class="flex items-center gap-2 mt-2.5">
                 ${!isMatchVoided ? `
-                  <button onclick="saveMatchScore(${m.id})" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl py-2 text-xs transition shadow-sm">
-                    儲存比分
+                  <button onclick="saveMatchScore(${m.id})" class="flex-1 ${m.completed ? 'bg-amber-500 hover:bg-amber-400' : 'bg-emerald-500 hover:bg-emerald-400'} text-slate-950 font-bold rounded-xl py-2 text-xs transition shadow-sm">
+                    ${m.completed ? t("editScoreBtn") : t("saveScoreBtn")}
                   </button>
                   <button onclick="voidSingleMatch(${m.id})" class="px-3 bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 rounded-xl py-2 text-xs font-bold transition">
                     單局流局
@@ -2045,3 +2054,4 @@
   </script>
 </body>
 </html>
+
