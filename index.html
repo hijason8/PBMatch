@@ -145,16 +145,16 @@
         <div>
           <div class="flex items-center justify-between mb-1">
             <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">2. 所屬社團 / 俱樂部 <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">(選填)</span></label>
-            <button type="button" onclick="openCreateClubModal()" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">➕ 新增社團</button>
+            <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">➕ 新增社團</button>
           </div>
           <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
             <option value="">-- 無 (公開一般賽事) --</option>
           </select>
         </div>
 
-        <!-- 動態彈出：社團驗證密碼 -->
+        <!-- 社團密碼驗證框 -->
         <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
-          <label class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+          <label id="t-label-club-auth" class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受密碼保護，請輸入社團管理密碼：
           </label>
           <input type="password" id="create-club-auth-pwd" placeholder="輸入社團管理密碼驗證建立權限" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
@@ -294,9 +294,12 @@
           <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績</p>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button onclick="openCreateClubModal()" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold rounded-xl text-xs shrink-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openCreateClubModal()" id="t-btn-add-club-page" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold rounded-xl text-xs shrink-0">
             ➕ 建立新社團
+          </button>
+          <button onclick="deleteCurrentClub()" id="t-btn-delete-club" class="px-2.5 py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span id="t-delete-club-label">刪除社團</span>
           </button>
           <span id="t-switch-club-label" class="text-xs sub-text font-medium whitespace-nowrap">切換社團：</span>
           <select id="club-select" onchange="verifyAndSwitchClub()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-emerald-500 focus:outline-none min-w-[150px]"></select>
@@ -413,25 +416,25 @@
       </button>
 
       <div>
-        <h3 class="text-base font-bold font-display flex items-center gap-1.5">
+        <h3 id="t-modal-club-title" class="text-base font-bold font-display flex items-center gap-1.5">
           <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 建立新社團 / 俱樂部
         </h3>
-        <p class="text-xs sub-text mt-0.5">預先建立社團並設定管理與刪除密碼</p>
+        <p id="t-modal-club-desc" class="text-xs sub-text mt-0.5">預先建立社團並設定管理與刪除密碼</p>
       </div>
 
       <form onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block font-semibold mb-1">社團名稱 *</label>
-          <input type="text" id="club-new-name" required placeholder="例：台北匹克球會" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-amber-500 focus:outline-none" />
+          <label id="t-modal-club-name-label" class="block font-semibold mb-1">社團名稱 *</label>
+          <input type="text" id="club-new-name" required placeholder="例：週末輕鬆打" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">社團檢視 / 管理密碼 (選填)</label>
+          <label id="t-modal-club-pwd-label" class="block font-semibold mb-1">社團檢視 / 管理密碼 (選填)</label>
           <input type="password" id="club-new-pwd" maxlength="4" placeholder="4 位數字，切換至此社團需輸入" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">社團預設刪除賽事密碼 (選填)</label>
+          <label id="t-modal-club-del-label" class="block font-semibold mb-1">社團預設刪除賽事密碼 (選填)</label>
           <input type="password" id="club-new-del-pwd" placeholder="刪除此社團旗下賽事的密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
@@ -520,6 +523,9 @@
         createTitle: "建立新賽事",
         labelName: "1. 賽事名稱",
         labelClub: "2. 所屬社團 / 俱樂部",
+        btnOpenCreateClub: "➕ 新增社團",
+        labelClubAuth: "該社團受密碼保護，請輸入社團管理密碼：",
+        placeholderClubAuth: "輸入社團管理密碼驗證建立權限",
         labelVisibility: "3. 賽事公開層級與隱私",
         visPublic: "公開賽局",
         visPrivate: "社團專屬",
@@ -558,6 +564,8 @@
         clubTitle: "社團賽事紀錄",
         clubDesc: "選擇社團查看成員歷史總勝率與累積戰績",
         switchClubLabel: "切換社團：",
+        btnAddClubPage: "➕ 建立新社團",
+        btnDeleteClub: "刪除社團",
         thCRank: "排名",
         thCPlayer: "成員名稱",
         thCWinRate: "總勝率",
@@ -565,6 +573,16 @@
         thCPlayed: "總局數",
         thCDiff: "總淨勝分",
         thCPFPA: "總得分 / 失分",
+
+        modalClubTitle: "建立新社團 / 俱樂部",
+        modalClubDesc: "預先建立社團並設定管理與刪除密碼",
+        modalClubNameLabel: "社團名稱 *",
+        placeholderClubName: "例：週末輕鬆打",
+        modalClubPwdLabel: "社團檢視 / 管理密碼 (選填)",
+        placeholderClubPwd: "4 位數字，切換至此社團需輸入",
+        modalClubDelLabel: "社團預設刪除賽事密碼 (選填)",
+        placeholderClubDelPwd: "刪除此社團旗下賽事的密碼",
+        btnSubmitClub: "建立社團",
 
         estPrefix: "預估",
         hrsUnit: "小時",
@@ -621,6 +639,9 @@
         createTitle: "Create Tournament",
         labelName: "1. Tournament Name",
         labelClub: "2. Club / Group Name",
+        btnOpenCreateClub: "➕ Add Club",
+        labelClubAuth: "Club is password protected, enter club password:",
+        placeholderClubAuth: "Enter club password to verify access",
         labelVisibility: "3. Privacy & Access Level",
         visPublic: "Public Match",
         visPrivate: "Club Private",
@@ -659,6 +680,8 @@
         clubTitle: "Club Records",
         clubDesc: "Select club to view historical member stats & standings",
         switchClubLabel: "Switch Club:",
+        btnAddClubPage: "➕ Create Club",
+        btnDeleteClub: "Delete Club",
         thCRank: "Rank",
         thCPlayer: "Member Name",
         thCWinRate: "Win Rate",
@@ -666,6 +689,16 @@
         thCPlayed: "Total Games",
         thCDiff: "Diff (+/-)",
         thCPFPA: "PF / PA",
+
+        modalClubTitle: "Create New Club",
+        modalClubDesc: "Setup club with manage & delete passwords",
+        modalClubNameLabel: "Club Name *",
+        placeholderClubName: "e.g., Weekend Pickleball",
+        modalClubPwdLabel: "Club Access Password (Optional)",
+        placeholderClubPwd: "4 digits, required when switching to club",
+        modalClubDelLabel: "Default Delete Password (Optional)",
+        placeholderClubDelPwd: "Password to delete club tournaments",
+        btnSubmitClub: "Create Club",
 
         estPrefix: "Est.",
         hrsUnit: "Hrs",
@@ -845,6 +878,10 @@
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
       document.getElementById("t-label-club").innerHTML = `${t("labelClub")} <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
+      document.getElementById("t-btn-open-create-club").innerText = t("btnOpenCreateClub");
+      document.getElementById("t-label-club-auth").innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("labelClubAuth")}`;
+      document.getElementById("create-club-auth-pwd").placeholder = t("placeholderClubAuth");
+
       document.getElementById("t-label-visibility").innerText = t("labelVisibility");
       document.getElementById("t-vis-public-label").innerText = t("visPublic");
       document.getElementById("t-vis-private-label").innerText = t("visPrivate");
@@ -871,6 +908,8 @@
 
       document.getElementById("t-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("clubTitle")}`;
       document.getElementById("t-club-desc").innerText = t("clubDesc");
+      document.getElementById("t-btn-add-club-page").innerText = t("btnAddClubPage");
+      document.getElementById("t-delete-club-label").innerText = t("btnDeleteClub");
       document.getElementById("t-switch-club-label").innerText = t("switchClubLabel");
       document.getElementById("th-c-rank").innerText = t("thCRank");
       document.getElementById("th-c-player").innerText = t("thCPlayer");
@@ -879,6 +918,17 @@
       document.getElementById("th-c-played").innerText = t("thCPlayed");
       document.getElementById("th-c-diff").innerText = t("thCDiff");
       document.getElementById("th-c-pfpa").innerText = t("thCPFPA");
+
+      // Modal 語系
+      document.getElementById("t-modal-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("modalClubTitle")}`;
+      document.getElementById("t-modal-club-desc").innerText = t("modalClubDesc");
+      document.getElementById("t-modal-club-name-label").innerText = t("modalClubNameLabel");
+      document.getElementById("club-new-name").placeholder = t("placeholderClubName");
+      document.getElementById("t-modal-club-pwd-label").innerText = t("modalClubPwdLabel");
+      document.getElementById("club-new-pwd").placeholder = t("placeholderClubPwd");
+      document.getElementById("t-modal-club-del-label").innerText = t("modalClubDelLabel");
+      document.getElementById("club-new-del-pwd").placeholder = t("placeholderClubDelPwd");
+      document.getElementById("btn-submit-club").innerText = t("btnSubmitClub");
 
       document.getElementById("create-name").placeholder = t("placeholderName");
       document.getElementById("create-pin").placeholder = t("placeholderPin");
@@ -1137,12 +1187,12 @@
       document.getElementById("modal-create-club").classList.add("hidden");
     };
 
-    // 🌟 修復 1：建立社團即時同步，不需重新整理
+    // 🌟 建立社團：即時刷新選單並選取
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
       const submitBtn = document.getElementById("btn-submit-club");
       submitBtn.disabled = true;
-      submitBtn.innerText = "建立中...";
+      submitBtn.innerText = "Loading...";
 
       const clubName = document.getElementById("club-new-name").value.trim();
       const clubPwd = document.getElementById("club-new-pwd").value.trim();
@@ -1150,7 +1200,7 @@
 
       if (!clubName) {
         submitBtn.disabled = false;
-        submitBtn.innerText = "建立社團";
+        submitBtn.innerText = t("btnSubmitClub");
         return;
       }
 
@@ -1175,18 +1225,73 @@
 
       showToast(STATE.lang === "zh-TW" ? `社團「${clubName}」建立成功！` : `Club ${clubName} created!`, "success");
       
-      // 清空 Modal 欄位並關閉
       document.getElementById("club-new-name").value = "";
       document.getElementById("club-new-pwd").value = "";
       document.getElementById("club-new-del-pwd").value = "";
       closeCreateClubModal();
 
       submitBtn.disabled = false;
-      submitBtn.innerText = "建立社團";
+      submitBtn.innerText = t("btnSubmitClub");
 
-      // 即時重新抓取並更新所有下拉選單，自動幫使用者選擇剛建好的社團
+      // 重新載入並動態切換
       await fetchAllClubs();
-      await populateClubSelect(clubName);
+      
+      const createPage = document.getElementById("page-create");
+      const clubPage = document.getElementById("page-club");
+
+      if (!createPage.classList.contains("hidden")) {
+        await populateClubSelect(clubName);
+      } else if (!clubPage.classList.contains("hidden")) {
+        await initClubPage(clubName);
+      } else {
+        await populateClubSelect(clubName);
+      }
+    };
+
+    // 🌟 刪除當前選取的社團
+    window.deleteCurrentClub = async function () {
+      const currentClub = STATE.selectedClubName;
+      if (!currentClub) {
+        showToast(STATE.lang === "zh-TW" ? "請先選擇要刪除的社團！" : "Select a club to delete!", "warning");
+        return;
+      }
+
+      const clubInfo = STATE.allClubsCache[currentClub];
+      const MASTER_PIN = "19851108";
+
+      const promptMsg = STATE.lang === "zh-TW" 
+        ? `🗑️ 確定要刪除社團「${currentClub}」嗎？\n請輸入社團管理密碼：`
+        : `🗑️ Delete club "${currentClub}"?\nEnter club password:`;
+
+      const inputPwd = prompt(promptMsg);
+      if (inputPwd === null) return;
+
+      const cleanInput = inputPwd.trim();
+      const isClubPwdCorrect = clubInfo && clubInfo.password && cleanInput === String(clubInfo.password).trim();
+      const isNoPwdClub = clubInfo && !clubInfo.password;
+      const isMasterPwdCorrect = cleanInput === MASTER_PIN;
+
+      if (!isNoPwdClub && !isClubPwdCorrect && !isMasterPwdCorrect) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，無法刪除社團！" : "❌ Incorrect Password!", "error");
+        return;
+      }
+
+      if (STATE.db) {
+        try {
+          await remove(ref(STATE.db, `clubs/${currentClub}`));
+        } catch (e) {
+          console.error("Firebase delete club error:", e);
+        }
+      }
+
+      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
+      delete localClubs[currentClub];
+      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
+
+      showToast(STATE.lang === "zh-TW" ? `社團「${currentClub}」已成功刪除` : `Club ${currentClub} deleted`, "success");
+      
+      await fetchAllClubs();
+      await initClubPage();
     };
 
     async function populateClubSelect(autoSelectName = null) {
@@ -1203,7 +1308,6 @@
       }
     }
 
-    // 🌟 修復 2：選擇社團時動態展開密碼驗證框，保護社團權限
     window.onClubSelectChange = function () {
       const selectedClub = document.getElementById("create-club-select").value;
       const btnImport = document.getElementById("btn-import-club-roster");
@@ -1380,7 +1484,6 @@
       }
     };
 
-    // 🌟 修復 3：提交賽事時檢查社團管理密碼
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
@@ -1390,7 +1493,6 @@
       const rawPin = document.getElementById("create-pin").value.trim();
       const rawDeletePwd = document.getElementById("create-delete-pwd").value.trim();
 
-      // 驗證社團管理密碼
       if (clubName) {
         const clubInfo = STATE.allClubsCache[clubName];
         if (clubInfo && clubInfo.password) {
@@ -1626,20 +1728,29 @@
       renderHubTournaments();
     };
 
-    async function initClubPage() {
+    async function initClubPage(autoSelectName = null) {
       await fetchAllClubs();
       await fetchAllTournaments();
 
       const select = document.getElementById("club-select");
+      const btnDelete = document.getElementById("t-btn-delete-club");
       const clubsList = Object.keys(STATE.allClubsCache);
 
       if (clubsList.length === 0) {
-        select.innerHTML = `<option value="">${STATE.lang === "zh-TW" ? "尚無社團，請點擊【建立新社團】" : "No Clubs Found"}</option>`;
+        select.innerHTML = `<option value="">${STATE.lang === "zh-TW" ? "尚無社團" : "No Clubs Found"}</option>`;
         document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-6 text-center sub-text">${STATE.lang === "zh-TW" ? "點擊右上角【建立新社團】，建立後即可在此查看社團成員歷史累積戰績！" : "Click 'Create Club' to get started."}</td></tr>`;
+        STATE.selectedClubName = "";
+        btnDelete.classList.add("hidden");
         return;
       }
 
+      btnDelete.classList.remove("hidden");
       select.innerHTML = clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
+      
+      if (autoSelectName && STATE.allClubsCache[autoSelectName]) {
+        select.value = autoSelectName;
+      }
+
       STATE.selectedClubName = select.value;
       renderClubLeaderboard();
     }
@@ -2151,4 +2262,3 @@
   </script>
 </body>
 </html>
-
