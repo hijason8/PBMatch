@@ -65,7 +65,7 @@
     html.dark .mode-btn-inactive { border-color: #334155; background: transparent; color: #94a3b8; }
     html.light .mode-btn-inactive { border-color: #d6c7b2; color: #78716c; }
 
-    /* iPhone 頂部安全距離支援 */
+    /* 手機頂部安全距離 */
     .safe-top-header {
       padding-top: env(safe-area-inset-top);
     }
@@ -87,33 +87,33 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1">
-        <!-- 上帝模式入口按鈕 -->
-        <button onclick="openGodMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式 (管理員專用)">
+      <!-- 導覽按鈕群組：在手機上精簡尺寸，避免擁擠 -->
+      <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="上帝模式">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm shrink-0" title="切換黑/白底模式">
+        <button onclick="toggleTheme()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm shrink-0" title="切換模式">
           <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="切換語言 / Language">
+        <button onclick="toggleLanguage()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="切換語言">
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0">
+        <button onclick="navigateTo('hub')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
-          <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
+          <span id="t-nav-hub" class="hidden md:inline">賽事大廳</span>
         </button>
 
-        <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0">
+        <button onclick="navigateTo('club')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="社團紀錄">
           <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
-          <span id="t-nav-club" class="hidden sm:inline">社團紀錄</span>
+          <span id="t-nav-club" class="hidden md:inline">社團紀錄</span>
         </button>
 
-        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95 shrink-0">
+        <button onclick="navigateTo('create')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95 shrink-0" title="建立賽事">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
+          <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
         </button>
       </div>
     </div>
@@ -666,7 +666,7 @@
       },
       "en": {
         navHub: "Hub",
-        navClub: "Club Records",
+        navClub: "Clubs",
         navCreate: "Create",
         dbConnected: "Connected",
         hubTitle: "Tournament Hub",
@@ -1032,7 +1032,6 @@
       lucide.createIcons();
     };
 
-    // 上帝模式入口驗證（已改為「維護密碼：」）
     window.openGodMode = async function () {
       const input = prompt(t("godModePrompt"));
       if (input === null) return;
@@ -1284,7 +1283,6 @@
     window.openCreateClubModal = function () { document.getElementById("modal-create-club").classList.remove("hidden"); };
     window.closeCreateClubModal = function () { document.getElementById("modal-create-club").classList.add("hidden"); };
 
-    // 修復建立社團按鈕點擊無反應問題（改為表單正確送出與非同步處理）
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
       const clubName = document.getElementById("club-new-name").value.trim();
@@ -1294,11 +1292,7 @@
 
       const clubObj = { name: clubName, password: pwdUse || null, deletePassword: pwdMgmt || null, createdAt: new Date().toLocaleString("zh-TW") };
       if (STATE.db) {
-        try {
-          await set(ref(STATE.db, `clubs/${clubName}`), clubObj);
-        } catch (err) {
-          console.error("Firebase club save error:", err);
-        }
+        try { await set(ref(STATE.db, `clubs/${clubName}`), clubObj); } catch (err) { console.error(err); }
       }
 
       const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
@@ -1535,34 +1529,176 @@
 
     function renderLiveUI(data) {
       document.getElementById("live-title").innerText = data.name;
-      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open"></i> 鎖定管理` : `<i data-lucide="lock"></i> 解鎖賽事管理`;
+      document.getElementById("live-id-badge").innerText = `ID: ${data.id}`;
+      document.getElementById("live-players-count").innerText = `${data.players.length} 人`;
+      document.getElementById("live-courts-count").innerText = `${data.matches[0]?.court || 1} 場地`;
+      
+      const clubBadge = document.getElementById("live-club-badge");
+      if (data.clubName) {
+        clubBadge.innerText = `👥 ${data.clubName}`;
+        clubBadge.classList.remove("hidden");
+      } else {
+        clubBadge.classList.add("hidden");
+      }
+
+      const statusBadge = document.getElementById("live-status-badge");
+      if (data.status === "force_ended") {
+        statusBadge.innerText = t("statusForceEnded");
+        statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-rose-500/10 text-rose-500 border-rose-500/30";
+      } else {
+        statusBadge.innerText = t("statusActive");
+        statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-emerald-500/10 text-emerald-500 border-emerald-500/30";
+      }
+
+      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open" class="w-3.5 h-3.5"></i> 鎖定管理` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖賽事管理`;
+      
+      const btnEnd = document.getElementById("btn-force-end");
+      if (STATE.isAdminUnlocked && data.status !== "force_ended") {
+        btnEnd.classList.remove("hidden");
+        btnEnd.classList.add("flex");
+      } else {
+        btnEnd.classList.add("hidden");
+        btnEnd.classList.remove("flex");
+      }
+
       renderMatchesList(data.matches, data.status === "force_ended");
+      renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
     function renderMatchesList(matches, isEnded) {
-      document.getElementById("matches-container").innerHTML = matches.map(m => `
-        <div class="glass-card rounded-xl p-3 border">
-          <div class="text-xs font-bold mb-2">Game ${m.id}</div>
-          <div class="grid grid-cols-2 gap-2">
-            <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} class="input-bg border rounded p-2 text-center" />
-            <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} class="input-bg border rounded p-2 text-center" />
+      const container = document.getElementById("matches-container");
+      let completedCount = 0;
+
+      container.innerHTML = matches.map(m => {
+        if (m.completed) completedCount++;
+        return `
+          <div class="glass-card rounded-xl p-3 sm:p-4 border ${m.completed ? 'border-emerald-500/40' : ''}">
+            <div class="flex items-center justify-between text-xs mb-2 font-bold">
+              <span class="text-emerald-500">Game ${m.id} (場地 ${m.court})</span>
+              <span class="${m.completed ? 'text-emerald-500' : 'sub-text'}">${m.completed ? '已完成' : '進行中'}</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs mb-2">
+              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                <span class="text-[10px] text-blue-400 font-bold block mb-0.5">🔵 藍隊</span>
+                <div class="font-semibold truncate">${m.blue.join(" & ")}</div>
+              </div>
+              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                <span class="text-[10px] text-rose-400 font-bold block mb-0.5">🔴 紅隊</span>
+                <div class="font-semibold truncate">${m.red.join(" & ")}</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 items-center">
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="藍隊得分" class="input-bg border rounded-xl p-2 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} placeholder="紅隊得分" class="input-bg border rounded-xl p-2 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none" />
+            </div>
+
+            ${(!isEnded && STATE.isAdminUnlocked) ? `
+              <button onclick="saveMatchScore(${m.id})" class="mt-2.5 w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl py-2 text-xs transition shadow-sm">
+                儲存比分
+              </button>
+            ` : ''}
           </div>
-          ${(!isEnded && STATE.isAdminUnlocked) ? `<button onclick="saveMatchScore(${m.id})" class="mt-2 w-full bg-emerald-500 text-white rounded p-1 text-xs">儲存</button>` : ''}
-        </div>
-      `).join("");
+        `;
+      }).join("");
+
+      document.getElementById("completed-count").innerText = `${completedCount} / ${matches.length} 局完成`;
       lucide.createIcons();
     }
 
     window.saveMatchScore = async function (matchId) {
       const bs = parseInt(document.getElementById(`score-blue-${matchId}`).value);
       const rs = parseInt(document.getElementById(`score-red-${matchId}`).value);
+      if (isNaN(bs) || isNaN(rs)) {
+        showToast("請輸入雙方得分！", "error");
+        return;
+      }
       const idx = STATE.tournamentData.matches.findIndex(m => m.id === matchId);
       STATE.tournamentData.matches[idx].blueScore = bs;
       STATE.tournamentData.matches[idx].redScore = rs;
       STATE.tournamentData.matches[idx].completed = true;
+
+      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
       saveToLocalTournaments(STATE.tournamentData);
       renderLiveUI(STATE.tournamentData);
-      showToast("比分已儲存", "success");
+      showToast("比分已儲存！", "success");
+    };
+
+    function calculateLeaderboard(players, matches) {
+      const stats = {};
+      players.forEach(p => {
+        stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
+      });
+
+      matches.forEach(m => {
+        if (!m.completed) return;
+        const bs = m.blueScore;
+        const rs = m.redScore;
+        const bWin = bs > rs;
+
+        m.blue.forEach(p => {
+          if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
+          stats[p].played++;
+          stats[p].pf += bs;
+          stats[p].pa += rs;
+          if (bWin) stats[p].wins++; else stats[p].losses++;
+        });
+
+        m.red.forEach(p => {
+          if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
+          stats[p].played++;
+          stats[p].pf += rs;
+          stats[p].pa += bs;
+          if (!bWin) stats[p].wins++; else stats[p].losses++;
+        });
+      });
+
+      Object.values(stats.forEach ? Object.values(stats) : stats).forEach(s => {
+        s.diff = s.pf - s.pa;
+      });
+
+      return Object.values(stats).sort((a, b) => {
+        if (b.wins !== a.wins) return b.wins - a.wins;
+        if (b.diff !== a.diff) return b.diff - a.diff;
+        if (b.pf !== a.pf) return b.pf - a.pf;
+        return a.pa - b.pa;
+      });
+    }
+
+    function renderLeaderboardTable(ranking) {
+      const tbody = document.getElementById("leaderboard-tbody");
+      if (ranking.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center sub-text">尚無戰績</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = ranking.map((r, idx) => `
+        <tr class="hover:bg-stone-500/5">
+          <td class="py-2.5 px-2 text-center font-bold font-mono">${idx + 1}</td>
+          <td class="py-2.5 px-2 font-semibold truncate max-w-[120px]">${r.name}</td>
+          <td class="py-2.5 px-1.5 text-center font-mono">${r.wins}/${r.losses}</td>
+          <td class="py-2.5 px-1.5 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
+          <td class="py-2.5 px-2 text-center font-mono sub-text">${r.pf}/${r.pa}</td>
+        </tr>
+      `).join("");
+    }
+
+    window.openShareModal = function () {
+      const url = window.location.href;
+      document.getElementById("share-url-input").value = url;
+      document.getElementById("share-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+      document.getElementById("modal-share").classList.remove("hidden");
+    };
+
+    window.closeShareModal = function () {
+      document.getElementById("modal-share").classList.add("hidden");
+    };
+
+    window.copyShareUrl = function () {
+      const input = document.getElementById("share-url-input");
+      input.select();
+      navigator.clipboard.writeText(input.value);
+      showToast(t("copiedToast"), "success");
     };
 
     function showToast(msg, type) {
@@ -1576,3 +1712,4 @@
   </script>
 </body>
 </html>
+
