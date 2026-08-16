@@ -72,6 +72,7 @@
   <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
       <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
+        <!-- 點擊 Logo 圖示 5 次或透過上帝模式入口，這裡在右側加了一個隱藏解鎖按鈕 -->
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
           <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
@@ -83,6 +84,11 @@
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- 上帝模式入口按鈕 -->
+        <button onclick="openGodMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm" title="上帝模式 (管理員專用)">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        </button>
+
         <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
           <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
@@ -91,12 +97,12 @@
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="賽事大廳">
+        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
           <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
         </button>
 
-        <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="社團賽事紀錄">
+        <button onclick="navigateTo('club')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold">
           <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
           <span id="t-nav-club" class="hidden sm:inline">社團紀錄</span>
         </button>
@@ -152,7 +158,6 @@
           </select>
         </div>
 
-        <!-- 社團驗證框（僅在社團有設定密碼時顯示） -->
         <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
           <label id="t-label-club-auth" class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受保護，請輸入社團使用密碼：
@@ -175,7 +180,7 @@
 
         <div>
           <label id="t-label-mgmt-pwd" class="block text-xs sm:text-sm font-semibold mb-1">
-            4. 賽事管理密碼 (建立賽事、過程修改、結束賽事) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
+            4. 賽事管理密碼 (建立、修改、結束賽事) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
           </label>
           <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="4 位數字，留空則無人能管理" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
@@ -389,6 +394,68 @@
               <li>第 4 順位：總失分 (PA / Points Against) ⬆️ (較低者優先)</li>
             </ol>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE F: GOD MODE / ADMIN CONSOLE -->
+    <section id="page-godmode" class="hidden space-y-6 max-w-4xl mx-auto">
+      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-rose-500">
+            <i data-lucide="shield-alert" class="w-6 h-6"></i> 上帝模式 - 系統資料庫控制台
+          </h2>
+          <p class="text-xs sub-text mt-0.5">最高管理員專用：一鍵勾選刪除異常資料與清除快取</p>
+        </div>
+        <button onclick="navigateTo('hub')" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold">返回大廳</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="glass-card rounded-2xl p-4 space-y-3 border border-rose-500/30">
+          <h3 class="font-bold text-sm text-rose-400 flex items-center gap-1.5">
+            <i data-lucide="database" class="w-4 h-4"></i> 本機與快取維護
+          </h3>
+          <p class="text-xs sub-text">清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。</p>
+          <button onclick="godClearLocalStorage()" class="w-full py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition">
+            🧹 清除所有本機快取 (LocalStorage)
+          </button>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 space-y-3 border border-amber-500/30">
+          <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i> 資料強制重整
+          </h3>
+          <p class="text-xs sub-text">強制從雲端重新拉取最新的社團與賽事清單。</p>
+          <button onclick="godRefreshData()" class="w-full py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
+            🔄 強制重新載入雲端與本地資料
+          </button>
+        </div>
+      </div>
+
+      <!-- 批量管理賽事與社團 -->
+      <div class="space-y-4 pt-2">
+        <div class="glass-card rounded-2xl p-4 space-y-3 border">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-sm flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i> 所有賽事列表 (勾選批量管理)
+            </h3>
+            <button onclick="godDeleteSelectedTournaments()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
+              🗑️ 刪除勾選的賽事
+            </button>
+          </div>
+          <div id="god-tournaments-table" class="overflow-x-auto text-xs"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 space-y-3 border">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-sm flex items-center gap-1.5">
+              <i data-lucide="users" class="w-4 h-4 text-amber-500"></i> 所有社團列表 (勾選批量管理)
+            </h3>
+            <button onclick="godDeleteSelectedClubs()" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
+              🗑️ 刪除勾選的社團
+            </button>
+          </div>
+          <div id="god-clubs-table" class="overflow-x-auto text-xs"></div>
         </div>
       </div>
     </section>
@@ -741,14 +808,7 @@
         display: "standalone",
         background_color: "#090d16",
         theme_color: "#10b981",
-        icons: [
-          {
-            src: iconDataUrl,
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable"
-          }
-        ]
+        icons: [{ src: iconDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
       };
 
       const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/json" });
@@ -773,11 +833,8 @@
     window.addEventListener("popstate", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
-      if (tId) {
-        loadLiveTournament(tId);
-      } else {
-        navigateTo("hub");
-      }
+      if (tId) loadLiveTournament(tId);
+      else navigateTo("hub");
     });
 
     window.toggleTheme = function () {
@@ -813,9 +870,7 @@
       localStorage.setItem("pb_lang", STATE.lang);
       applyLanguageUI();
       applyThemeUI();
-      if (STATE.tournamentData) {
-        renderLiveUI(STATE.tournamentData);
-      }
+      if (STATE.tournamentData) renderLiveUI(STATE.tournamentData);
       renderHubTournaments();
       showToast(STATE.lang === "zh-TW" ? "已切換至 繁體中文" : "Switched to English", "info");
     };
@@ -925,42 +980,32 @@
 
     function initFirebase(cfg) {
       try {
-        if (!getApps().length) {
-          STATE.firebaseApp = initializeApp(cfg);
-        } else {
-          STATE.firebaseApp = getApp();
-        }
+        if (!getApps().length) STATE.firebaseApp = initializeApp(cfg);
+        else STATE.firebaseApp = getApp();
         STATE.db = getDatabase(STATE.firebaseApp);
-        updateDbStatusBadge(true, t("dbConnected"));
+        updateDbStatusBadge(true);
       } catch (err) {
         console.error("Firebase init error:", err);
-        updateDbStatusBadge(false, "離線");
+        updateDbStatusBadge(false);
       }
     }
 
     function updateDbStatusBadge(isOnline) {
       const hubSpan = document.getElementById("brand-hub-text");
       if (hubSpan) {
-        if (isOnline) {
-          hubSpan.className = "text-emerald-500 dark:text-emerald-400 transition-colors duration-300";
-        } else {
-          hubSpan.className = "text-rose-500 dark:text-rose-400 transition-colors duration-300 font-extrabold";
-        }
+        hubSpan.className = isOnline ? "text-emerald-500 dark:text-emerald-400 transition-colors duration-300" : "text-rose-500 dark:text-rose-400 transition-colors duration-300 font-extrabold";
       }
     }
 
     async function initRouting() {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
-      if (tId) {
-        await loadLiveTournament(tId);
-      } else {
-        navigateTo("hub");
-      }
+      if (tId) await loadLiveTournament(tId);
+      else navigateTo("hub");
     }
 
     window.navigateTo = async function (pageName) {
-      const pages = ["hub", "create", "live", "club"];
+      const pages = ["hub", "create", "live", "club", "godmode"];
       pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
         if (el) el.classList.add("hidden");
@@ -969,13 +1014,10 @@
       const target = document.getElementById(`page-${pageName}`);
       if (target) target.classList.remove("hidden");
 
-      if (pageName === "hub") {
-        renderHubTournaments();
-      } else if (pageName === "create") {
-        await populateClubSelect();
-      } else if (pageName === "club") {
-        await initClubPage();
-      }
+      if (pageName === "hub") renderHubTournaments();
+      else if (pageName === "create") await populateClubSelect();
+      else if (pageName === "club") await initClubPage();
+      else if (pageName === "godmode") await renderGodModeTables();
 
       if (pageName !== "live" && STATE.dbUnsubscribe) {
         STATE.dbUnsubscribe();
@@ -984,11 +1026,153 @@
       lucide.createIcons();
     };
 
+    // 上帝模式入口驗證
+    window.openGodMode = async function () {
+      const input = prompt("🔐 請輸入最高管理員密碼 (上帝模式)：");
+      if (input === null) return;
+      if (input !== "19851108") {
+        showToast("❌ 權限不足，密碼錯誤！", "error");
+        return;
+      }
+      navigateTo("godmode");
+    };
+
+    // 上帝模式：渲染資料管理表格
+    async function renderGodModeTables() {
+      await fetchAllTournaments();
+      await fetchAllClubs();
+
+      // 賽事表格
+      const tContainer = document.getElementById("god-tournaments-table");
+      const tournaments = STATE.allTournamentsCache;
+      if (tournaments.length === 0) {
+        tContainer.innerHTML = `<p class="sub-text text-center py-3">目前無任何賽事資料</p>`;
+      } else {
+        tContainer.innerHTML = `
+          <table class="w-full text-left">
+            <thead class="card-inner sub-text border-b">
+              <tr>
+                <th class="p-2 w-10"><input type="checkbox" id="select-all-t" onclick="toggleSelectAllT(this)"></th>
+                <th class="p-2">ID</th>
+                <th class="p-2">名稱</th>
+                <th class="p-2">社團</th>
+                <th class="p-2">建立時間</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              ${tournaments.map(t => `
+                <tr class="hover:bg-stone-500/5">
+                  <td class="p-2"><input type="checkbox" class="t-checkbox" value="${t.id}"></td>
+                  <td class="p-2 font-mono">${t.id}</td>
+                  <td class="p-2 font-semibold">${t.name}</td>
+                  <td class="p-2">${t.clubName || '無'}</td>
+                  <td class="p-2 sub-text">${t.createdAt || ''}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      // 社團表格
+      const cContainer = document.getElementById("god-clubs-table");
+      const clubs = Object.keys(STATE.allClubsCache);
+      if (clubs.length === 0) {
+        cContainer.innerHTML = `<p class="sub-text text-center py-3">目前無任何社團資料</p>`;
+      } else {
+        cContainer.innerHTML = `
+          <table class="w-full text-left">
+            <thead class="card-inner sub-text border-b">
+              <tr>
+                <th class="p-2 w-10"><input type="checkbox" id="select-all-c" onclick="toggleSelectAllC(this)"></th>
+                <th class="p-2">社團名稱</th>
+                <th class="p-2">使用密碼</th>
+                <th class="p-2">管理密碼</th>
+                <th class="p-2">建立時間</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              ${clubs.map(cName => {
+                const c = STATE.allClubsCache[cName];
+                return `
+                  <tr class="hover:bg-stone-500/5">
+                    <td class="p-2"><input type="checkbox" class="c-checkbox" value="${cName}"></td>
+                    <td class="p-2 font-semibold text-amber-500">${cName}</td>
+                    <td class="p-2 font-mono">${c.password || '無'}</td>
+                    <td class="p-2 font-mono">${c.deletePassword || '無'}</td>
+                    <td class="p-2 sub-text">${c.createdAt || ''}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    window.toggleSelectAllT = function(master) {
+      document.querySelectorAll('.t-checkbox').forEach(cb => cb.checked = master.checked);
+    };
+    window.toggleSelectAllC = function(master) {
+      document.querySelectorAll('.c-checkbox').forEach(cb => cb.checked = master.checked);
+    };
+
+    // 上帝模式：批量刪除賽事
+    window.godDeleteSelectedTournaments = async function() {
+      const selected = Array.from(document.querySelectorAll('.t-checkbox:checked')).map(cb => cb.value);
+      if (selected.length === 0) {
+        showToast("請先勾選要刪除的賽事！", "warning");
+        return;
+      }
+      if (!confirm(`⚠️ 確定要永久刪除勾選的 ${selected.length} 場賽事嗎？`)) return;
+
+      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      for (const id of selected) {
+        delete local[id];
+        if (STATE.db) await remove(ref(STATE.db, `tournaments/${id}`));
+      }
+      localStorage.setItem("pb_tournaments", JSON.stringify(local));
+      showToast("已成功刪除選定的賽事！", "success");
+      renderGodModeTables();
+    };
+
+    // 上帝模式：批量刪除社團
+    window.godDeleteSelectedClubs = async function() {
+      const selected = Array.from(document.querySelectorAll('.c-checkbox:checked')).map(cb => cb.value);
+      if (selected.length === 0) {
+        showToast("請先勾選要刪除的社團！", "warning");
+        return;
+      }
+      if (!confirm(`⚠️ 確定要永久刪除勾選的 ${selected.length} 個社團嗎？`)) return;
+
+      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
+      for (const cName of selected) {
+        delete localClubs[cName];
+        if (STATE.db) await remove(ref(STATE.db, `clubs/${cName}`));
+      }
+      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
+      showToast("已成功刪除選定的社團！", "success");
+      renderGodModeTables();
+    };
+
+    window.godClearLocalStorage = function() {
+      if (!confirm("⚠️ 確定要清除所有瀏覽器快取 (LocalStorage) 嗎？")) return;
+      localStorage.clear();
+      showToast("🧹 本機快取已完全清空！", "success");
+      setTimeout(() => window.location.reload(), 1000);
+    };
+
+    window.godRefreshData = async function() {
+      await fetchAllTournaments();
+      await fetchAllClubs();
+      showToast("🔄 資料已重新載入同步！", "success");
+    };
+
     window.setVisibility = function (vis) {
       document.getElementById("create-visibility").value = vis;
       const btnPublic = document.getElementById("btn-vis-public");
       const btnPrivate = document.getElementById("btn-vis-private");
-
       if (vis === "public") {
         btnPublic.className = "mode-btn-active py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
         btnPrivate.className = "mode-btn-inactive py-2.5 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5";
@@ -1007,9 +1191,7 @@
       return blocks * blockSize;
     }
 
-    function getMaxTotalGames(rawTargetGames) {
-      return Math.max(3, rawTargetGames);
-    }
+    function getMaxTotalGames(rawTargetGames) { return Math.max(3, rawTargetGames); }
 
     function shuffleArray(array) {
       const arr = [...array];
@@ -1023,13 +1205,9 @@
     function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair", courtsCount = 1) {
       const n = playersList.length;
       if (n < 4) return [];
-
       const totalMinutes = durationHours * 60;
       const rawTargetGames = Math.floor((totalMinutes / estMinsPerGame) * courtsCount);
-
-      const totalRounds = scheduleMode === "max"
-        ? getMaxTotalGames(rawTargetGames)
-        : getValidTotalGames(n, rawTargetGames);
+      const totalRounds = scheduleMode === "max" ? getMaxTotalGames(rawTargetGames) : getValidTotalGames(n, rawTargetGames);
 
       const gamesPlayed = {};
       const partneredCount = {};
@@ -1040,10 +1218,8 @@
       });
 
       const matches = [];
-
       for (let r = 1; r <= totalRounds; r++) {
         const sorted = shuffleArray([...playersList]).sort((a, b) => gamesPlayed[a] - gamesPlayed[b]);
-
         const active = sorted.slice(0, 4);
         const resting = sorted.slice(4);
 
@@ -1055,15 +1231,9 @@
 
         let bestCombo = combinations[0];
         let minScore = Infinity;
-
         combinations.forEach(combo => {
-          const bScore = partneredCount[combo.blue[0]][combo.blue[1]];
-          const rScore = partneredCount[combo.red[0]][combo.red[1]];
-          const score = bScore + rScore;
-          if (score < minScore) {
-            minScore = score;
-            bestCombo = combo;
-          }
+          const score = partneredCount[combo.blue[0]][combo.blue[1]] + partneredCount[combo.red[0]][combo.red[1]];
+          if (score < minScore) { minScore = score; bestCombo = combo; }
         });
 
         bestCombo.blue.concat(bestCombo.red).forEach(p => gamesPlayed[p]++);
@@ -1072,22 +1242,12 @@
         partneredCount[bestCombo.red[0]][bestCombo.red[1]]++;
         partneredCount[bestCombo.red[1]][bestCombo.red[0]]++;
 
-        const courtNumber = ((r - 1) % courtsCount) + 1;
-
         matches.push({
-          id: r,
-          roundName: `Game ${r}`,
-          court: courtNumber,
-          blue: bestCombo.blue,
-          red: bestCombo.red,
-          resting: resting,
-          blueScore: null,
-          redScore: null,
-          completed: false,
-          canceled: false
+          id: r, roundName: `Game ${r}`, court: ((r - 1) % courtsCount) + 1,
+          blue: bestCombo.blue, red: bestCombo.red, resting,
+          blueScore: null, redScore: null, completed: false, canceled: false
         });
       }
-
       return matches;
     }
 
@@ -1096,12 +1256,8 @@
       if (STATE.db) {
         try {
           const snapshot = await get(ref(STATE.db, "tournaments"));
-          if (snapshot.exists()) {
-            list = Object.values(snapshot.val());
-          }
-        } catch (e) {
-          console.error("Fetch error:", e);
-        }
+          if (snapshot.exists()) list = Object.values(snapshot.val());
+        } catch (e) { console.error("Fetch error:", e); }
       }
       const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
       Object.values(localData).forEach(lt => {
@@ -1116,79 +1272,53 @@
       if (STATE.db) {
         try {
           const snapshot = await get(ref(STATE.db, "clubs"));
-          if (snapshot.exists()) {
-            clubs = snapshot.val();
-          }
-        } catch (e) {
-          console.error("Fetch clubs error:", e);
-        }
+          if (snapshot.exists()) clubs = snapshot.val();
+        } catch (e) { console.error("Fetch clubs error:", e); }
       }
       const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
       STATE.allClubsCache = { ...localClubs, ...clubs };
       return STATE.allClubsCache;
     }
 
-    window.openCreateClubModal = function () {
-      document.getElementById("modal-create-club").classList.remove("hidden");
-    };
-
-    window.closeCreateClubModal = function () {
-      document.getElementById("modal-create-club").classList.add("hidden");
-    };
+    window.openCreateClubModal = function () { document.getElementById("modal-create-club").classList.remove("hidden"); };
+    window.closeCreateClubModal = function () { document.getElementById("modal-create-club").classList.add("hidden"); };
 
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
       const clubName = document.getElementById("club-new-name").value.trim();
       const pwdUse = document.getElementById("club-new-pwd2").value.trim();
       const pwdMgmt = document.getElementById("club-new-pwd1").value.trim();
-
       if (!clubName) return;
 
-      const clubObj = {
-        name: clubName,
-        password: pwdUse || null,
-        deletePassword: pwdMgmt || null,
-        createdAt: new Date().toLocaleString("zh-TW")
-      };
-
+      const clubObj = { name: clubName, password: pwdUse || null, deletePassword: pwdMgmt || null, createdAt: new Date().toLocaleString("zh-TW") };
       if (STATE.db) await set(ref(STATE.db, `clubs/${clubName}`), clubObj);
 
       const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
       localClubs[clubName] = clubObj;
       localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
 
-      showToast(t("success"), "success");
+      showToast("社團建立成功！", "success");
       closeCreateClubModal();
-      await fetchAllClubs();
       await populateClubSelect(clubName);
     };
 
     window.deleteCurrentClub = async function () {
       const currentClub = STATE.selectedClubName;
       if (!currentClub) return;
-
       const clubInfo = STATE.allClubsCache[currentClub];
-      const MASTER_PIN = "19851108";
 
-      const inputPwd = prompt(t("modalClubPwd1Label"));
+      const inputPwd = prompt("請輸入社團管理密碼：");
       if (inputPwd === null) return;
-
-      const cleanInput = inputPwd.trim();
-      const clubMgmtPwd = clubInfo ? clubInfo.deletePassword : null;
-      const isMgmtCorrect = clubMgmtPwd && cleanInput === String(clubMgmtPwd).trim();
-      const isMaster = cleanInput === MASTER_PIN;
-
-      if (!isMgmtCorrect && !isMaster) {
-        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤！" : "❌ Incorrect Password!", "error");
+      if (inputPwd.trim() !== String(clubInfo?.deletePassword || "").trim() && inputPwd.trim() !== "19851108") {
+        showToast("❌ 密碼錯誤！", "error");
         return;
       }
 
       if (STATE.db) await remove(ref(STATE.db, `clubs/${currentClub}`));
-
       const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
       delete localClubs[currentClub];
       localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
-      
+      showToast("社團已刪除", "success");
       await initClubPage();
     };
 
@@ -1205,10 +1335,9 @@
       const selectedClub = document.getElementById("create-club-select").value;
       const authBox = document.getElementById("box-club-auth-pwd");
       const clubInfo = STATE.allClubsCache[selectedClub];
-      
       if (clubInfo && clubInfo.password) authBox.classList.remove("hidden");
       else authBox.classList.add("hidden");
-      
+
       const clubPlayers = getPlayersFromClub(selectedClub);
       if (clubPlayers.length > 0) {
         document.getElementById("btn-import-club-roster").classList.remove("hidden");
@@ -1248,42 +1377,32 @@
 
     window.importClubRoster = function() {
       const selectedClub = document.getElementById("create-club-select").value;
-      const players = getPlayersFromClub(selectedClub);
-      document.getElementById("create-players").value = players.join("\n");
+      document.getElementById("create-players").value = getPlayersFromClub(selectedClub).join("\n");
       updatePlayerCountBadge();
       calculateTimeEstimate();
     };
 
     window.autoGeneratePlayers = function () {
       const count = parseInt(document.getElementById("auto-player-count").value) || 8;
-      const names = Array.from({length: count}, (_, i) => `選手 ${String.fromCharCode(65 + i)}`);
-      document.getElementById("create-players").value = names.join("\n");
+      document.getElementById("create-players").value = Array.from({length: count}, (_, i) => `選手 ${String.fromCharCode(65 + i)}`).join("\n");
       updatePlayerCountBadge();
       calculateTimeEstimate();
     };
 
     window.setScheduleMode = function (mode) {
       document.getElementById("create-schedule-mode").value = mode;
-      const btnFair = document.getElementById("btn-mode-fair");
-      const btnMax = document.getElementById("btn-mode-max");
-      if (mode === "fair") {
-        btnFair.className = "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
-        btnMax.className = "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
-      } else {
-        btnMax.className = "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
-        btnFair.className = "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
-      }
+      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
+      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
       calculateTimeEstimate();
     };
 
     window.onScoringTypeChange = function () {
-      const scoringType = document.getElementById("create-scoring-type").value;
-      document.getElementById("create-game-mins").value = scoringType === "sideout" ? 18 : 12;
+      document.getElementById("create-game-mins").value = document.getElementById("create-scoring-type").value === "sideout" ? 18 : 12;
     };
 
     window.updatePlayerCountBadge = function () {
       const players = document.getElementById("create-players").value.split("\n").filter(Boolean);
-      document.getElementById("player-count-badge").innerText = `${players.length} ${t("playersBadge")}`;
+      document.getElementById("player-count-badge").innerText = `${players.length} 位選手`;
     };
 
     window.calculateTimeEstimate = function () {
@@ -1292,11 +1411,10 @@
       const courts = parseInt(document.getElementById("create-courts").value) || 1;
       const mins = parseInt(document.getElementById("create-game-mins").value) || 15;
       const mode = document.getElementById("create-schedule-mode").value || "fair";
-      
       if (players.length < 4) return;
       const target = Math.floor(((dur * 60) / mins) * courts);
       const totalGames = mode === "max" ? getMaxTotalGames(target) : getValidTotalGames(players.length, target);
-      document.getElementById("time-estimate-text").innerHTML = `${courts} 場地: <strong class="text-emerald-500">${totalGames} 局賽程</strong>，每人約 ${Math.round(totalGames * 4 / players.length)} 場。`;
+      document.getElementById("time-estimate-text").innerHTML = `${courts} 場地: <strong class="text-emerald-500">${totalGames} 局賽程</strong>`;
     };
 
     window.handleCreateTournament = async function (e) {
@@ -1304,8 +1422,7 @@
       const name = document.getElementById("create-name").value.trim();
       const clubName = document.getElementById("create-club-select").value || null;
       const pin = document.getElementById("create-pin").value.trim();
-      
-      // 驗證社團使用密碼
+
       if (clubName) {
         const clubInfo = STATE.allClubsCache[clubName];
         if (clubInfo && clubInfo.password) {
@@ -1321,60 +1438,102 @@
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
       const matches = generateRoundRobinSchedule(players, 2.0, 15, "fair", 1);
 
-      const tObj = {
-        id: tournamentId, name, clubName,
-        adminPin: pin || null,
-        status: "active",
-        createdAt: new Date().toLocaleString("zh-TW"),
-        players, matches
-      };
-
+      const tObj = { id: tournamentId, name, clubName, adminPin: pin || null, status: "active", createdAt: new Date().toLocaleString("zh-TW"), players, matches };
       if (STATE.db) await set(ref(STATE.db, `tournaments/${tournamentId}`), tObj);
       saveToLocalTournaments(tObj);
       window.history.pushState({}, "", `?t=${tournamentId}`);
       loadLiveTournament(tournamentId);
     };
 
-    // 結束賽事（保留結果）
-    window.forceEndTournament = async function () {
-      if (!confirm("確定要結束賽事嗎？")) return;
-      STATE.tournamentData.status = "force_ended";
-      STATE.tournamentData.matches.forEach(m => { if (!m.completed) m.canceled = true; });
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      renderLiveUI(STATE.tournamentData);
+    function saveToLocalTournaments(tObj) {
+      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      local[tObj.id] = tObj;
+      localStorage.setItem("pb_tournaments", JSON.stringify(local));
+    }
+
+    async function renderHubTournaments() {
+      const container = document.getElementById("tournaments-list");
+      container.innerHTML = `<div class="col-span-full text-center py-8 sub-text">Loading...</div>`;
+      const list = await fetchAllTournaments();
+      if (list.length === 0) {
+        container.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-8 text-center"><h3 class="text-base font-bold">目前尚無賽事記錄</h3></div>`;
+        return;
+      }
+      container.innerHTML = list.map(tData => `
+        <div class="glass-card rounded-xl p-4 space-y-3 border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between"><span class="font-mono text-xs text-emerald-500">${tData.id}</span></div>
+            <h3 class="text-base font-bold mt-1">${tData.name}</h3>
+          </div>
+          <button onclick="enterTournament('${tData.id}')" class="w-full bg-emerald-500/10 text-emerald-500 py-2 rounded-xl text-xs font-bold">進入賽事</button>
+        </div>
+      `).join("");
+    }
+
+    window.enterTournament = function (id) {
+      window.history.pushState({}, "", `?t=${id}`);
+      loadLiveTournament(id);
     };
+
+    async function initClubPage() {
+      await fetchAllClubs();
+      await fetchAllTournaments();
+      const select = document.getElementById("club-select");
+      const clubsList = Object.keys(STATE.allClubsCache);
+      if (clubsList.length === 0) {
+        select.innerHTML = `<option value="">尚無社團</option>`;
+        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td colspan="7" class="p-4 text-center sub-text">尚無資料</td></tr>`;
+        return;
+      }
+      select.innerHTML = clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
+      STATE.selectedClubName = select.value;
+    }
+
+    window.verifyAndSwitchClub = function () {
+      STATE.selectedClubName = document.getElementById("club-select").value;
+    };
+
+    async function loadLiveTournament(tId) {
+      STATE.currentTournamentId = tId;
+      STATE.isAdminUnlocked = false;
+      navigateTo("live");
+      await fetchAllTournaments();
+      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      STATE.tournamentData = local[tId] || null;
+      if (STATE.tournamentData) renderLiveUI(STATE.tournamentData);
+    }
 
     window.toggleAdminAuth = function () {
       const tObj = STATE.tournamentData;
-      if (STATE.isAdminUnlocked) {
-        STATE.isAdminUnlocked = false;
-      } else {
+      if (STATE.isAdminUnlocked) STATE.isAdminUnlocked = false;
+      else {
         if (tObj.adminPin) {
           const input = prompt("請輸入賽事管理密碼：");
-          if (input !== tObj.adminPin && input !== "19851108") {
-            showToast("❌ 密碼錯誤！", "error");
-            return;
-          }
+          if (input !== tObj.adminPin && input !== "19851108") { showToast("❌ 密碼錯誤！", "error"); return; }
         }
         STATE.isAdminUnlocked = true;
       }
       renderLiveUI(tObj);
     };
 
+    window.forceEndTournament = async function () {
+      if (!confirm("確定要結束賽事嗎？")) return;
+      STATE.tournamentData.status = "force_ended";
+      STATE.tournamentData.matches.forEach(m => { if (!m.completed) m.canceled = true; });
+      saveToLocalTournaments(STATE.tournamentData);
+      renderLiveUI(STATE.tournamentData);
+    };
+
     function renderLiveUI(data) {
-      STATE.tournamentData = data;
       document.getElementById("live-title").innerText = data.name;
-      const btnAdmin = document.getElementById("btn-toggle-admin");
-      btnAdmin.innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open"></i> ${t("lockBtn")}` : `<i data-lucide="lock"></i> ${t("unlockBtn")}`;
+      document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open"></i> 鎖定管理` : `<i data-lucide="lock"></i> 解鎖賽事管理`;
       renderMatchesList(data.matches, data.status === "force_ended");
-      renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
     function renderMatchesList(matches, isEnded) {
-      const container = document.getElementById("matches-container");
-      container.innerHTML = matches.map(m => `
-        <div class="glass-card rounded-xl p-3 border ${m.completed ? 'border-emerald-500/40' : ''}">
-          <div class="flex items-center justify-between text-xs mb-2 font-bold"><span>Game ${m.id}</span></div>
+      document.getElementById("matches-container").innerHTML = matches.map(m => `
+        <div class="glass-card rounded-xl p-3 border">
+          <div class="text-xs font-bold mb-2">Game ${m.id}</div>
           <div class="grid grid-cols-2 gap-2">
             <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} class="input-bg border rounded p-2 text-center" />
             <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" ${!STATE.isAdminUnlocked || isEnded ? 'disabled' : ''} class="input-bg border rounded p-2 text-center" />
@@ -1392,14 +1551,15 @@
       STATE.tournamentData.matches[idx].blueScore = bs;
       STATE.tournamentData.matches[idx].redScore = rs;
       STATE.tournamentData.matches[idx].completed = true;
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}/matches`), STATE.tournamentData.matches);
+      saveToLocalTournaments(STATE.tournamentData);
       renderLiveUI(STATE.tournamentData);
+      showToast("比分已儲存", "success");
     };
 
     function showToast(msg, type) {
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
-      toast.className = `px-4 py-2 rounded-xl border ${type === 'error' ? 'bg-rose-500/20 text-rose-500' : 'bg-emerald-500/20 text-emerald-500'}`;
+      toast.className = `px-4 py-2 rounded-xl border text-xs font-bold ${type === 'error' ? 'bg-rose-500/20 text-rose-500' : 'bg-emerald-500/20 text-emerald-500'}`;
       toast.innerText = msg;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
