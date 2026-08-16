@@ -131,7 +131,24 @@
         </button>
       </div>
 
-      <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+      <!-- 進行中的賽事區 -->
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
+          <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> 進行中 / 常用賽事
+        </h3>
+        <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+      </div>
+
+      <!-- 已封存賽事區 -->
+      <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
+        <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
+          <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
+            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> 已封存的歷史賽事 (<span id="archived-count">0</span>)
+          </h3>
+          <span id="archive-arrow" class="text-xs sub-text">▼ 展開</span>
+        </div>
+        <div id="archived-list" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+      </div>
     </section>
 
     <!-- PAGE C: CREATE TOURNAMENT -->
@@ -339,6 +356,9 @@
         <div class="flex flex-wrap items-center gap-2 shrink-0">
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖賽事管理
+          </button>
+          <button onclick="toggleArchiveTournament()" id="btn-toggle-archive" class="hidden px-3 py-2 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
+            <i data-lucide="archive" class="w-3.5 h-3.5"></i> <span id="archive-btn-text">封存賽事</span>
           </button>
           <button onclick="forceEndTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="power" class="w-3.5 h-3.5"></i> 結束賽事
@@ -1437,7 +1457,7 @@
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
       const matches = generateRoundRobinSchedule(players, 2.0, 15, "fair", 1);
 
-      const tObj = { id: tournamentId, name, clubName, adminPin: pin || null, status: "active", createdAt: new Date().toLocaleString("zh-TW"), players, matches };
+      const tObj = { id: tournamentId, name, clubName, adminPin: pin || null, status: "active", archived: false, createdAt: new Date().toLocaleString("zh-TW"), players, matches };
       if (STATE.db) await set(ref(STATE.db, `tournaments/${tournamentId}`), tObj);
       saveToLocalTournaments(tObj);
       window.history.pushState({}, "", `?t=${tournamentId}`);
@@ -1451,30 +1471,72 @@
     }
 
     async function renderHubTournaments() {
-      const container = document.getElementById("tournaments-list");
-      container.innerHTML = `<div class="col-span-full text-center py-8 sub-text">Loading...</div>`;
+      const activeContainer = document.getElementById("tournaments-list");
+      const archivedContainer = document.getElementById("archived-list");
+      const archivedSection = document.getElementById("archived-section");
+      
+      activeContainer.innerHTML = `<div class="col-span-full text-center py-4 sub-text">Loading...</div>`;
       const list = await fetchAllTournaments();
-      if (list.length === 0) {
-        container.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-8 text-center"><h3 class="text-base font-bold">目前尚無賽事記錄</h3></div>`;
-        return;
-      }
-      container.innerHTML = list.map(tData => `
-        <div class="glass-card rounded-xl p-4 space-y-3 border flex flex-col justify-between">
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-mono font-bold text-emerald-500">${tData.id}</span>
-              ${tData.clubName ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-[10px]">👥 ${tData.clubName}</span>` : '<span class="px-2 py-0.5 rounded card-inner sub-text text-[10px]">一般公開</span>'}
+
+      const activeList = list.filter(t => !t.archived);
+      const archivedList = list.filter(t => t.archived);
+
+      if (activeList.length === 0) {
+        activeContainer.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-6 text-center sub-text text-xs">目前無進行中的賽事記錄</div>`;
+      } else {
+        activeContainer.innerHTML = activeList.map(tData => `
+          <div class="glass-card rounded-xl p-4 space-y-3 border flex flex-col justify-between">
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-mono font-bold text-emerald-500">${tData.id}</span>
+                ${tData.clubName ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-[10px]">👥 ${tData.clubName}</span>` : '<span class="px-2 py-0.5 rounded card-inner sub-text text-[10px]">一般公開</span>'}
+              </div>
+              <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
+              <div class="flex items-center gap-3 text-xs sub-text pt-1">
+                <span>👥 ${tData.players?.length || 0} 人參賽</span>
+                <span>⚔️ ${tData.matches?.length || 0} 局賽程</span>
+              </div>
             </div>
-            <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-            <div class="flex items-center gap-3 text-xs sub-text pt-1">
-              <span>👥 ${tData.players?.length || 0} 人參賽</span>
-              <span>⚔️ ${tData.matches?.length || 0} 局賽程</span>
-            </div>
+            <button onclick="enterTournament('${tData.id}')" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 py-2.5 rounded-xl text-xs font-bold transition">進入賽事</button>
           </div>
-          <button onclick="enterTournament('${tData.id}')" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 py-2.5 rounded-xl text-xs font-bold transition">進入賽事</button>
-        </div>
-      `).join("");
+        `).join("");
+      }
+
+      if (archivedList.length > 0) {
+        archivedSection.classList.remove("hidden");
+        document.getElementById("archived-count").innerText = archivedList.length;
+        archivedContainer.innerHTML = archivedList.map(tData => `
+          <div class="glass-card rounded-xl p-4 space-y-3 border opacity-75 hover:opacity-100 transition flex flex-col justify-between">
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-mono font-bold text-amber-500">${tData.id} (已封存)</span>
+                ${tData.clubName ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-[10px]">👥 ${tData.clubName}</span>` : ''}
+              </div>
+              <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
+              <div class="flex items-center gap-3 text-xs sub-text pt-1">
+                <span>👥 ${tData.players?.length || 0} 人參賽</span>
+                <span>📅 ${tData.createdAt || ''}</span>
+              </div>
+            </div>
+            <button onclick="enterTournament('${tData.id}')" class="w-full card-inner hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 py-2.5 rounded-xl text-xs font-bold transition border">查看封存戰績</button>
+          </div>
+        `).join("");
+      } else {
+        archivedSection.classList.add("hidden");
+      }
     }
+
+    window.toggleArchivedList = function() {
+      const list = document.getElementById("archived-list");
+      const arrow = document.getElementById("archive-arrow");
+      if (list.classList.contains("hidden")) {
+        list.classList.remove("hidden");
+        arrow.innerText = "▲ 收合";
+      } else {
+        list.classList.add("hidden");
+        arrow.innerText = "▼ 展開";
+      }
+    };
 
     window.enterTournament = function (id) {
       window.history.pushState({}, "", `?t=${id}`);
@@ -1522,6 +1584,15 @@
       renderLiveUI(tObj);
     };
 
+    window.toggleArchiveTournament = async function () {
+      const tObj = STATE.tournamentData;
+      tObj.archived = !tObj.archived;
+      saveToLocalTournaments(tObj);
+      if (STATE.db) await set(ref(STATE.db, `tournaments/${tObj.id}`), tObj);
+      renderLiveUI(tObj);
+      showToast(tObj.archived ? "📦 賽事已封存！" : "📂 賽事已取消封存！", "success");
+    };
+
     window.forceEndTournament = async function () {
       if (!confirm("確定要結束賽事嗎？")) return;
       STATE.tournamentData.status = "force_ended";
@@ -1555,6 +1626,17 @@
 
       document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-keyhole-open" class="w-3.5 h-3.5"></i> 鎖定管理` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖賽事管理`;
       
+      const btnArchive = document.getElementById("btn-toggle-archive");
+      const archiveBtnText = document.getElementById("archive-btn-text");
+      if (STATE.isAdminUnlocked) {
+        btnArchive.classList.remove("hidden");
+        btnArchive.classList.add("flex");
+        archiveBtnText.innerText = data.archived ? "取消封存" : "封存賽事";
+      } else {
+        btnArchive.classList.add("hidden");
+        btnArchive.classList.remove("flex");
+      }
+
       const btnEnd = document.getElementById("btn-force-end");
       if (STATE.isAdminUnlocked && data.status !== "force_ended") {
         btnEnd.classList.remove("hidden");
@@ -1690,7 +1772,7 @@
       const url = window.location.href;
       document.getElementById("share-url-input").value = url;
       document.getElementById("share-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
-      document.getElementById("modal-share").classList.add("hidden");
+      document.getElementById("modal-share").classList.remove("hidden");
     };
 
     window.closeShareModal = function () {
