@@ -107,9 +107,9 @@
           <span id="t-nav-club" class="hidden md:inline">社團紀錄</span>
         </button>
 
-        <button onclick="navigateTo('create')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95 shrink-0" title="建立賽事">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
+        <!-- 修正點 1: 簡化右側建立按鈕 Icon，呼應左側風格 -->
+        <button onclick="navigateTo('create')" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-emerald-500 hover:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="建立賽事">
+          <i data-lucide="plus" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
@@ -294,14 +294,15 @@
 
     <!-- PAGE E: CLUB RECORDS -->
     <section id="page-club" class="hidden space-y-4 sm:space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-300 dark:border-slate-800 pb-3">
+      <div class="flex flex-col space-y-3 border-b border-stone-300 dark:border-slate-800 pb-3">
         <div>
           <h2 id="t-club-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
             <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 社團賽事紀錄
           </h2>
-          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績 (自動扣除流局賽事)</p>
+          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績</p>
         </div>
 
+        <!-- 修正點 2: 將社團下拉選單搬至與按鈕同一行 -->
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="openCreateClubModal()" id="t-btn-add-club-page" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold rounded-xl text-xs shrink-0">
             ➕ 建立新社團
@@ -309,8 +310,11 @@
           <button onclick="deleteCurrentClub()" id="t-btn-delete-club" class="px-2.5 py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span id="t-delete-club-label">刪除社團</span>
           </button>
-          <span id="t-switch-club-label" class="text-xs sub-text font-medium whitespace-nowrap">切換社團：</span>
-          <select id="club-select" onchange="verifyAndSwitchClub()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-emerald-500 focus:outline-none min-w-[150px]"></select>
+
+          <div class="flex items-center gap-1.5 shrink-0 ml-auto sm:ml-0">
+            <span id="t-switch-club-label" class="text-xs sub-text font-medium whitespace-nowrap">切換社團：</span>
+            <select id="club-select" onchange="verifyAndSwitchClub()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-emerald-500 focus:outline-none min-w-[140px]"></select>
+          </div>
         </div>
       </div>
 
@@ -355,22 +359,19 @@
 
         <!-- 權限與操作按鈕群 -->
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-          <!-- 現場賽事管理解鎖 -->
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 解鎖現場解分
           </button>
           
-          <!-- 社群最高管理者解凍權限 -->
           <button onclick="unlockSuperAdminAuth()" id="btn-super-admin-unlock" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="key" class="w-3.5 h-3.5"></i> 社群管理者解凍修改
+            <i data-lucide="key" class="w-3.5 h-3.5"></i> 社團管理者解凍修改
           </button>
 
-          <!-- 現場賽事作廢 (流局) (進行中才可用) -->
+          <!-- 修正點 3: 廢局按鈕改為直觀的刪除/廢局 -->
           <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="ban" class="w-3.5 h-3.5"></i> 賽事作廢 (流局)
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢 (徹底刪除)
           </button>
 
-          <!-- 結束並凍結賽事 (進行中才可用) -->
           <button onclick="finishTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 結束並凍結戰績
           </button>
@@ -381,7 +382,6 @@
         </div>
       </div>
 
-      <!-- 提示條：若完賽已被凍結或流局 -->
       <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold flex items-center justify-between">
         <span class="flex items-center gap-1.5"><i data-lucide="lock" class="w-4 h-4"></i> 本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
         <span class="text-[11px] sub-text">如需修正請點擊右上方「社群管理者解凍修改」</span>
@@ -470,7 +470,6 @@
         </div>
       </div>
 
-      <!-- 批量管理賽事與社團 -->
       <div class="space-y-4 pt-2">
         <div class="glass-card rounded-2xl p-4 space-y-3 border">
           <div class="flex items-center justify-between">
@@ -580,8 +579,8 @@
       currentTournamentId: null,
       tournamentData: null,
       dbUnsubscribe: null,
-      isAdminUnlocked: false,       // 現場賽事管理員解鎖
-      isSuperAdminUnlocked: false,  // 社團最高管理者解鎖
+      isAdminUnlocked: false,
+      isSuperAdminUnlocked: false,
       allTournamentsCache: [],
       allClubsCache: {},
       selectedClubName: "",
@@ -1163,15 +1162,19 @@
       }
       if (!confirm(`⚠️ 確定要永久刪除勾選的 ${selected.length} 場賽事嗎？`)) return;
 
+      deleteLocalAndCloudTournaments(selected);
+      showToast("已成功刪除選定的賽事！", "success");
+      renderGodModeTables();
+    };
+
+    async function deleteLocalAndCloudTournaments(tournamentIds) {
       const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-      for (const id of selected) {
+      for (const id of tournamentIds) {
         delete local[id];
         if (STATE.db) await remove(ref(STATE.db, `tournaments/${id}`));
       }
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
-      showToast("已成功刪除選定的賽事！", "success");
-      renderGodModeTables();
-    };
+    }
 
     window.godDeleteSelectedClubs = async function() {
       const selected = Array.from(document.querySelectorAll('.c-checkbox:checked')).map(cb => cb.value);
@@ -1298,6 +1301,8 @@
       Object.values(localData).forEach(lt => {
         if (!list.some(t => t.id === lt.id)) list.push(lt);
       });
+      // 修正點 3: 自動徹底剔除狀態為作廢 (voided) 的賽事，不再顯示
+      list = list.filter(tData => tData.status !== "voided");
       STATE.allTournamentsCache = list;
       return list;
     }
@@ -1503,7 +1508,7 @@
       const list = await fetchAllTournaments();
 
       const activeList = list.filter(tData => tData.status === "active" || !tData.status);
-      const historyList = list.filter(tData => tData.status === "finished" || tData.status === "voided");
+      const historyList = list.filter(tData => tData.status === "finished");
 
       if (activeList.length === 0) {
         activeContainer.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-6 text-center sub-text text-xs">目前無進行中的賽事記錄</div>`;
@@ -1533,10 +1538,8 @@
           <div class="glass-card rounded-xl p-4 space-y-3 border opacity-80 hover:opacity-100 transition flex flex-col justify-between">
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-mono font-bold ${tData.status === 'voided' ? 'text-rose-500' : 'text-slate-400'}">${tData.id}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tData.status === 'voided' ? 'bg-rose-500/10 text-rose-500' : 'bg-slate-500/10 text-slate-400'}">
-                  ${tData.status === 'voided' ? '🚫 流局作廢' : '🔒 已完賽 (凍結)'}
-                </span>
+                <span class="font-mono font-bold text-slate-400">${tData.id}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-500/10 text-slate-400">🔒 已完賽 (凍結)</span>
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
               <div class="flex items-center gap-3 text-xs sub-text pt-1">
@@ -1587,7 +1590,6 @@
       }
       select.value = STATE.selectedClubName;
 
-      // 篩選出該社團「非作廢 (status !== voided)」的完賽/進行中賽事
       const clubTournaments = STATE.allTournamentsCache.filter(tData => 
         tData.clubName && 
         tData.clubName.trim().toLowerCase() === STATE.selectedClubName.toLowerCase() && 
@@ -1632,7 +1634,7 @@
 
       const tbody = document.getElementById("club-leaderboard-tbody");
       if (ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center sub-text">社團尚無有效的比賽戰績 (已自動扣除流局賽事)</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center sub-text">社團尚無有效的比賽戰績</td></tr>`;
         return;
       }
 
@@ -1665,7 +1667,6 @@
       if (STATE.tournamentData) renderLiveUI(STATE.tournamentData);
     }
 
-    // 現場賽事管理員解鎖 (僅允許在進行中時登入填寫比分)
     window.toggleAdminAuth = function () {
       const tObj = STATE.tournamentData;
       if (!tObj) return;
@@ -1688,7 +1689,6 @@
       renderLiveUI(tObj);
     };
 
-    // 社團最高管理者解凍權限
     window.unlockSuperAdminAuth = function () {
       const tObj = STATE.tournamentData;
       if (!tObj) return;
@@ -1706,23 +1706,20 @@
 
       STATE.isSuperAdminUnlocked = true;
       STATE.isAdminUnlocked = true;
-      showToast("🔓 社團最高權限已解凍！可修改或解凍本賽事", "success");
+      showToast("🔓 社團最高權限已解凍！可修改本賽事", "success");
       renderLiveUI(tObj);
     };
 
-    // 現場管理員：將賽事標記為「流局作廢」
+    // 修正點 3: 流局作廢直接徹底刪除，不在歷史中留下記錄
     window.voidTournament = async function () {
       const tObj = STATE.tournamentData;
-      if (!confirm("⚠️ 確定要將此賽事標記為「流局 / 作廢」嗎？作廢後成績將徹底從個人與社團勝率中排除！")) return;
+      if (!confirm("⚠️ 確定要將此賽事「流局作廢 (徹底刪除)」嗎？作廢後賽事資料將直接刪除，不進入歷史紀錄！")) return;
 
-      tObj.status = "voided";
-      saveToLocalTournaments(tObj);
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${tObj.id}`), tObj);
-      renderLiveUI(tObj);
-      showToast("🚫 賽事已作廢流局！不計入任何勝率", "info");
+      await deleteLocalAndCloudTournaments([tObj.id]);
+      showToast("🗑️ 賽事已成功作廢刪除！", "info");
+      navigateTo("hub");
     };
 
-    // 現場管理員：點擊「結束並凍結戰績」
     window.finishTournament = async function () {
       if (!confirm("確定要結束並凍結本場賽事嗎？完賽後戰績將鎖定，現場管理員將無法再改分！")) return;
       
@@ -1730,7 +1727,7 @@
       saveToLocalTournaments(STATE.tournamentData);
       if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
       
-      STATE.isAdminUnlocked = false; // 強制關閉現場寫入權限
+      STATE.isAdminUnlocked = false;
       renderLiveUI(STATE.tournamentData);
       showToast("🔒 賽事已成功完賽並凍結！", "success");
     };
@@ -1750,17 +1747,12 @@
       }
 
       const isFinished = data.status === "finished";
-      const isVoided = data.status === "voided";
       const isActive = data.status === "active" || !data.status;
 
       const statusBadge = document.getElementById("live-status-badge");
       const lockedBanner = document.getElementById("notice-locked-banner");
 
-      if (isVoided) {
-        statusBadge.innerText = t("statusVoided");
-        statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-rose-500/10 text-rose-500 border-rose-500/30";
-        lockedBanner.classList.add("hidden");
-      } else if (isFinished) {
+      if (isFinished) {
         statusBadge.innerText = t("statusFinished");
         statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-slate-500/10 text-slate-400 border-slate-500/30";
         if (!STATE.isSuperAdminUnlocked) lockedBanner.classList.remove("hidden");
@@ -1771,11 +1763,10 @@
         lockedBanner.classList.add("hidden");
       }
 
-      // 按鈕顯示邏輯
       document.getElementById("btn-toggle-admin").innerHTML = STATE.isAdminUnlocked ? `<i data-lucide="lock-open" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` : `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
       
       const btnSuperUnlock = document.getElementById("btn-super-admin-unlock");
-      if ((isFinished || isVoided) && !STATE.isSuperAdminUnlocked) {
+      if (isFinished && !STATE.isSuperAdminUnlocked) {
         btnSuperUnlock.classList.remove("hidden");
         btnSuperUnlock.classList.add("flex");
       } else {
@@ -1801,11 +1792,10 @@
         btnFinish.classList.remove("flex");
       }
 
-      // 是否可輸入比分：必須（已解鎖現場權限 且 賽事為進行中）或是（已解鎖社團最高權限）
       const canEditScores = (STATE.isAdminUnlocked && isActive) || STATE.isSuperAdminUnlocked;
 
       renderMatchesList(data.matches, canEditScores);
-      renderLeaderboardTable(isVoided ? [] : calculateLeaderboard(data.players, data.matches));
+      renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
     function renderMatchesList(matches, canEdit) {
@@ -1852,7 +1842,7 @@
                   </button>
                 ` : `
                   <button onclick="restoreSingleMatch(${m.id})" class="w-full bg-slate-500/20 hover:bg-slate-500/30 text-slate-200 border border-slate-500/30 rounded-xl py-2 text-xs font-bold transition">
-                    恢复本局比赛
+                    恢復本局比賽
                   </button>
                 `}
               </div>
@@ -1951,7 +1941,7 @@
     function renderLeaderboardTable(ranking) {
       const tbody = document.getElementById("leaderboard-tbody");
       if (ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center sub-text">賽事已作廢或尚無戰績</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center sub-text">尚無戰績</td></tr>`;
         return;
       }
       tbody.innerHTML = ranking.map((r, idx) => `
