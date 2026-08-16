@@ -1,5 +1,3 @@
-好的！已經為你將賽事卡片上的「🎾」圖示替換為匹克球風格的黃色實心圓點「🟡」，避免使用網球圖示。
-以下是完整的 HTML / JavaScript 程式碼：
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -227,15 +225,23 @@
         <!-- Admin PIN (Option) -->
         <div>
           <label id="t-label-pin-title" class="block text-xs sm:text-sm font-semibold mb-1">
-            2. 管理員 PIN 碼防護 <span id="t-optional-tag" class="text-[10px] sub-text font-normal">(選填)</span>
+            2. 管理員 PIN 碼 (修改比分用) <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">(選填)</span>
           </label>
-          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="可設 4 位數字 PIN 碼，防止非相關人員修改比分" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" placeholder="4 位數字，預防非相關人員修改比分" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+        </div>
+
+        <!-- Delete Password (Option) -->
+        <div>
+          <label id="t-label-delete-pwd-title" class="block text-xs sm:text-sm font-semibold mb-1">
+            3. 刪除賽事密碼 <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">(選填)</span>
+          </label>
+          <input type="password" id="create-delete-pwd" placeholder="可自訂刪除賽事密碼 (留空則僅能使用最高權限密碼)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <!-- Duration & Court Count Grid -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">3. 預計比賽總時間</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">4. 預計比賽總時間</label>
             <div class="relative">
               <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
@@ -243,7 +249,7 @@
           </div>
 
           <div>
-            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">4. 比賽場地數</label>
+            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">5. 比賽場地數</label>
             <input type="number" id="create-courts" min="1" max="20" value="1" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
         </div>
@@ -251,7 +257,7 @@
         <!-- Single Game Mins & Scoring Mode Grid -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">5. 預估單局配時</label>
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">6. 預估單局配時</label>
             <div class="relative">
               <input type="number" id="create-game-mins" min="3" max="60" value="15" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
@@ -259,7 +265,7 @@
           </div>
 
           <div>
-            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">6. 計分賽制選擇</label>
+            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">7. 計分賽制選擇</label>
             <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="rally">落地得分制 (Rally)</option>
               <option value="sideout">發球得分制 (Side-out)</option>
@@ -270,11 +276,11 @@
         <!-- Target Score & Schedule Mode Selector -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">7. 每局目標分數</label>
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">8. 每局目標分數</label>
             <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
           </div>
           <div>
-            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">8. 賽事模式</label>
+            <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">9. 賽事模式</label>
             <div class="grid grid-cols-2 gap-1.5">
               <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-2 py-2 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-fair-title">平均</span>
@@ -290,7 +296,7 @@
         <!-- Player List with Quick Auto-fill -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">9. 參賽選手名單</label>
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">10. 參賽選手名單</label>
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
 
@@ -328,7 +334,6 @@
           <div class="flex items-center gap-2 flex-wrap">
             <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight">賽事載入中...</h2>
             <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
-            <span id="admin-mode-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-stone-500/10 text-stone-500 border border-stone-500/20">👁️ 觀看模式</span>
           </div>
           <!-- Info Badges Row -->
           <div class="flex flex-wrap items-center gap-2 text-[11px] mt-2">
@@ -488,14 +493,15 @@
         // Create Form
         createTitle: "建立新賽事",
         labelName: "1. 賽事名稱",
-        labelPinTitle: "2. 管理員 PIN 碼防護",
+        labelPinTitle: "2. 管理員 PIN 碼 (修改比分用)",
+        labelDeletePwdTitle: "3. 刪除賽事密碼",
         optionalTag: "(選填)",
-        labelDuration: "3. 預計比賽總時間",
-        labelCourts: "4. 比賽場地數",
-        labelGameMins: "5. 預估單局配時",
-        labelScoring: "6. 計分賽制選擇",
-        labelTarget: "7. 每局目標分數",
-        labelScheduleMode: "8. 賽事模式",
+        labelDuration: "4. 預計比賽總時間",
+        labelCourts: "5. 比賽場地數",
+        labelGameMins: "6. 預估單局配時",
+        labelScoring: "7. 計分賽制選擇",
+        labelTarget: "8. 每局目標分數",
+        labelScheduleMode: "9. 賽事模式",
         unitHours: "小時",
         unitMins: "分鐘",
         courtsUnit: "場地",
@@ -503,7 +509,7 @@
         optionSideout: "發球得分制 (Side-out)",
         modeFairTitle: "平均賽事",
         modeMaxTitle: "最大局數",
-        labelPlayers: "9. 參賽選手名單",
+        labelPlayers: "10. 參賽選手名單",
         quickFillLabel: "快速帶入預設選手：",
         quickFillBtn: "⚡ 自動填入 A, B, C...",
         playersBadge: "位選手",
@@ -512,7 +518,8 @@
 
         // Placeholders
         placeholderName: "例：0818 球賽",
-        placeholderPin: "可設 4 位數字 PIN 碼，防止非相關人員修改比分",
+        placeholderPin: "4 位數字，預防非相關人員修改比分",
+        placeholderDeletePwd: "可自訂刪除賽事密碼 (留空則僅能使用最高權限密碼)",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
 
         // Live Tournament
@@ -571,14 +578,15 @@
         // Create Form
         createTitle: "Create Tournament",
         labelName: "1. Tournament Name",
-        labelPinTitle: "2. Admin PIN Protection",
+        labelPinTitle: "2. Admin PIN (Score Edit)",
+        labelDeletePwdTitle: "3. Delete Password",
         optionalTag: "(Optional)",
-        labelDuration: "3. Total Estimated Duration",
-        labelCourts: "4. Number of Courts",
-        labelGameMins: "5. Single Game Mins",
-        labelScoring: "6. Scoring System",
-        labelTarget: "7. Target Points",
-        labelScheduleMode: "8. Schedule Mode",
+        labelDuration: "4. Total Estimated Duration",
+        labelCourts: "5. Number of Courts",
+        labelGameMins: "6. Single Game Mins",
+        labelScoring: "7. Scoring System",
+        labelTarget: "8. Target Points",
+        labelScheduleMode: "9. Schedule Mode",
         unitHours: "Hrs",
         unitMins: "Mins",
         courtsUnit: "Courts",
@@ -586,7 +594,7 @@
         optionSideout: "Side-out Scoring",
         modeFairTitle: "Fair Play",
         modeMaxTitle: "Max Games",
-        labelPlayers: "9. Player Roster",
+        labelPlayers: "10. Player Roster",
         quickFillLabel: "Quick Auto-fill Players:",
         quickFillBtn: "⚡ Auto Fill A, B, C...",
         playersBadge: "Players",
@@ -595,7 +603,8 @@
 
         // Placeholders
         placeholderName: "e.g., 0818 Tournament",
-        placeholderPin: "Set 4-digit PIN for score protection (Optional)",
+        placeholderPin: "4 digits PIN to prevent score tampering",
+        placeholderDeletePwd: "Password to delete tournament (Optional)",
         placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
 
         // Live Tournament
@@ -717,7 +726,8 @@
       // Create Form Page
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
-      document.getElementById("t-label-pin-title").innerHTML = `${t("labelPinTitle")} <span id="t-optional-tag" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
+      document.getElementById("t-label-pin-title").innerHTML = `${t("labelPinTitle")} <span id="t-optional-tag-1" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
+      document.getElementById("t-label-delete-pwd-title").innerHTML = `${t("labelDeletePwdTitle")} <span id="t-optional-tag-2" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
       document.getElementById("t-label-courts").innerText = t("labelCourts");
@@ -737,6 +747,7 @@
       // Placeholders
       document.getElementById("create-name").placeholder = t("placeholderName");
       document.getElementById("create-pin").placeholder = t("placeholderPin");
+      document.getElementById("create-delete-pwd").placeholder = t("placeholderDeletePwd");
       document.getElementById("create-players").placeholder = t("placeholderPlayers");
 
       const scoringSel = document.getElementById("create-scoring-type");
@@ -1025,13 +1036,14 @@
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
       const rawPin = document.getElementById("create-pin").value.trim();
+      const rawDeletePwd = document.getElementById("create-delete-pwd").value.trim();
       
       let isPinEnabled = false;
       let pin = null;
 
       if (rawPin !== "") {
         if (!/^\d{4}$/.test(rawPin)) {
-          showToast(STATE.lang === "zh-TW" ? "PIN 码必須為 4 位數字！" : "PIN must be a 4-digit number!", "error");
+          showToast(STATE.lang === "zh-TW" ? "PIN 碼必須為 4 位數字！" : "PIN must be 4 digits!", "error");
           return;
         }
         isPinEnabled = true;
@@ -1062,6 +1074,7 @@
         name: name,
         adminPin: pin,
         hasPinProtection: isPinEnabled,
+        deletePassword: rawDeletePwd !== "" ? rawDeletePwd : null,
         durationHours: duration,
         courtsCount: courtsCount,
         scoringType: scoringType,
@@ -1172,7 +1185,7 @@
               <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
               </button>
-              <button onclick="deleteTournament('${tData.id}', '${tData.adminPin}', ${tData.hasPinProtection})" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
+              <button onclick="deleteTournament('${tData.id}', '${tData.deletePassword}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
@@ -1188,25 +1201,26 @@
       loadLiveTournament(id);
     };
 
-    window.deleteTournament = async function (id, pin, hasPin) {
+    window.deleteTournament = async function (id, deletePwd) {
       const MASTER_PIN = "19851108";
+      const hasCustomPwd = deletePwd && deletePwd !== "null" && deletePwd !== "undefined";
 
-      if (hasPin && pin) {
-        const promptMsg = STATE.lang === "zh-TW" 
-          ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n本賽事受 PIN 碼保護，請輸入 4 位數 PIN 碼：`
-          : `🗑️ Delete tournament (${id})?\nEnter 4-digit Admin PIN:`;
+      const promptMsg = STATE.lang === "zh-TW" 
+        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入刪除密碼：`
+        : `🗑️ Delete tournament (${id})?\nEnter delete password:`;
 
-        const inputPin = prompt(promptMsg);
-        if (inputPin === null) return;
-        
-        const cleanInput = inputPin.trim();
-        if (cleanInput !== String(pin).trim() && cleanInput !== MASTER_PIN) {
-          showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符，無法刪除！" : "❌ PIN Incorrect!", "error");
-          return;
-        }
-      } else {
-        const confirmMsg = STATE.lang === "zh-TW" ? `確定要刪除賽事 (${id}) 嗎？` : `Delete tournament (${id})?`;
-        if (!confirm(confirmMsg)) return;
+      const inputPwd = prompt(promptMsg);
+      if (inputPwd === null) return;
+      
+      const cleanInput = inputPwd.trim();
+      
+      // 驗證：可輸入自訂刪除密碼 或 最高權限密碼 19851108
+      const isCustomPwdCorrect = hasCustomPwd && cleanInput === String(deletePwd).trim();
+      const isMasterPwdCorrect = cleanInput === MASTER_PIN;
+
+      if (!isCustomPwdCorrect && !isMasterPwdCorrect) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，刪除失敗！" : "❌ Incorrect Password!", "error");
+        return;
       }
 
       if (STATE.db) {
@@ -1220,7 +1234,7 @@
       delete local[id];
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
 
-      showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已成功刪除` : `Tournament ${id} deleted`, "success");
+      showToast(STATE.lang === "zh-TW" ? `賽事已刪除` : `Tournament deleted`, "success");
       renderHubTournaments();
     };
 
@@ -1261,29 +1275,31 @@
       }
     }
 
-    // 切換管理員解鎖 / 觀看模式
+    // 切換管理員解鎖 / 觀看模式 (修正按鈕圖示與邏輯)
     window.toggleAdminAuth = function () {
       const tObj = STATE.tournamentData;
       if (!tObj) return;
 
       if (STATE.isAdminUnlocked) {
+        // 已解鎖狀態下點擊 -> 切換回觀看模式 (上鎖)
         STATE.isAdminUnlocked = false;
-        showToast(STATE.lang === "zh-TW" ? "已切換為【觀看模式】" : "Switched to View Mode", "info");
+        showToast(STATE.lang === "zh-TW" ? "已切換為觀看模式" : "Switched to View Mode", "info");
         renderLiveUI(tObj);
         return;
       }
 
+      // 未解鎖狀態下點擊 -> 要求驗證 PIN 碼 (解鎖)
       if (tObj.hasPinProtection && tObj.adminPin) {
-        const inputPin = prompt(STATE.lang === "zh-TW" ? "🔒 本賽事已受 PIN 碼保護，請輸入 4 位數管理員 PIN 碼解鎖修改權限：" : "🔒 Enter 4-digit PIN to unlock:");
+        const inputPin = prompt(STATE.lang === "zh-TW" ? "請輸入管理員 PIN 碼解鎖修改權限：" : "Enter Admin PIN to unlock:");
         if (inputPin === null) return;
         if (inputPin.trim() !== String(tObj.adminPin).trim() && inputPin.trim() !== "19851108") {
-          showToast(STATE.lang === "zh-TW" ? "❌ PIN 碼錯誤，解鎖失敗！" : "❌ Incorrect PIN!", "error");
+          showToast(STATE.lang === "zh-TW" ? "❌ PIN 碼錯誤！" : "❌ Incorrect PIN!", "error");
           return;
         }
       }
 
       STATE.isAdminUnlocked = true;
-      showToast(STATE.lang === "zh-TW" ? "🔓 解鎖成功！已進入管理員計分模式" : "Unlocked! Admin Edit Mode Active", "success");
+      showToast(STATE.lang === "zh-TW" ? "🔓 解鎖成功！可編輯比分" : "Unlocked! Score editing enabled", "success");
       renderLiveUI(tObj);
     };
 
@@ -1306,18 +1322,15 @@
       document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}分)`;
       document.getElementById("live-courts-count").innerText = `${data.courtsCount || 1} ${t("courtsUnit")}`;
 
-      const badge = document.getElementById("admin-mode-badge");
       const btn = document.getElementById("btn-toggle-admin");
 
       if (STATE.isAdminUnlocked) {
-        badge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30";
-        badge.innerText = STATE.lang === "zh-TW" ? "✏️ 管理員模式" : "✏️ Edit Mode";
-        btn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "鎖定為觀看模式" : "Lock View"}`;
-        btn.className = "px-3 py-2 rounded-xl bg-stone-500/15 hover:bg-stone-500/25 text-stone-600 dark:text-stone-300 border border-stone-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm";
+        // 已解鎖狀態：按鈕顯示解鎖圖示 (🔓)，提示點擊可上鎖
+        btn.innerHTML = `<i data-lucide="lock-keyhole-open" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "鎖定為觀看模式" : "Lock View"}`;
+        btn.className = "px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm";
       } else {
-        badge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold bg-stone-500/10 text-stone-500 border border-stone-500/20";
-        badge.innerText = STATE.lang === "zh-TW" ? "👁️ 觀看模式" : "👁️ View Mode";
-        btn.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "解鎖修改比分" : "Unlock Edit"}`;
+        // 上鎖狀態：按鈕顯示上鎖圖示 (🔒)，提示點擊可解鎖
+        btn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "解鎖修改比分" : "Unlock Edit"}`;
         btn.className = "px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm";
       }
 
