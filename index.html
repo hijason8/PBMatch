@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
+  <title>PB Match - 匹克球個人雙打輪播賽事管理系統</title>
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
-  <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
+  <meta name="description" content="PB Match 專業匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
+  <meta name="keywords" content="PB Match, Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
 
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -156,7 +156,7 @@
         </div>
         <div>
           <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
-            Pickleball<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
+            PB<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Match</span>
           </h1>
           <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
         </div>
@@ -561,7 +561,7 @@
       },
 
       "en": {
-        appSubtitle: "Pickleball Hub",
+        appSubtitle: "PB Match",
         navHub: "Hub",
         navCreate: "Create",
         dbConnected: "Connected",
@@ -1214,7 +1214,6 @@
       
       const cleanInput = inputPwd.trim();
       
-      // 驗證：可輸入自訂刪除密碼 或 最高權限密碼 19851108
       const isCustomPwdCorrect = hasCustomPwd && cleanInput === String(deletePwd).trim();
       const isMasterPwdCorrect = cleanInput === MASTER_PIN;
 
@@ -1275,20 +1274,18 @@
       }
     }
 
-    // 切換管理員解鎖 / 觀看模式 (修正按鈕圖示與邏輯)
+    // 切換管理員解鎖 / 觀看模式
     window.toggleAdminAuth = function () {
       const tObj = STATE.tournamentData;
       if (!tObj) return;
 
       if (STATE.isAdminUnlocked) {
-        // 已解鎖狀態下點擊 -> 切換回觀看模式 (上鎖)
         STATE.isAdminUnlocked = false;
         showToast(STATE.lang === "zh-TW" ? "已切換為觀看模式" : "Switched to View Mode", "info");
         renderLiveUI(tObj);
         return;
       }
 
-      // 未解鎖狀態下點擊 -> 要求驗證 PIN 碼 (解鎖)
       if (tObj.hasPinProtection && tObj.adminPin) {
         const inputPin = prompt(STATE.lang === "zh-TW" ? "請輸入管理員 PIN 碼解鎖修改權限：" : "Enter Admin PIN to unlock:");
         if (inputPin === null) return;
@@ -1325,11 +1322,9 @@
       const btn = document.getElementById("btn-toggle-admin");
 
       if (STATE.isAdminUnlocked) {
-        // 已解鎖狀態：按鈕顯示解鎖圖示 (🔓)，提示點擊可上鎖
         btn.innerHTML = `<i data-lucide="lock-keyhole-open" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "鎖定為觀看模式" : "Lock View"}`;
         btn.className = "px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm";
       } else {
-        // 上鎖狀態：按鈕顯示上鎖圖示 (🔒)，提示點擊可解鎖
         btn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${STATE.lang === "zh-TW" ? "解鎖修改比分" : "Unlock Edit"}`;
         btn.className = "px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm";
       }
@@ -1578,4 +1573,3 @@
   </script>
 </body>
 </html>
-
