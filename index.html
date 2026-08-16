@@ -152,6 +152,14 @@
           </select>
         </div>
 
+        <!-- 動態彈出：社團驗證密碼 -->
+        <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
+          <label class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受密碼保護，請輸入社團管理密碼：
+          </label>
+          <input type="password" id="create-club-auth-pwd" placeholder="輸入社團管理密碼驗證建立權限" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+        </div>
+
         <div>
           <label id="t-label-visibility" class="block text-xs sm:text-sm font-semibold mb-1">3. 賽事公開層級與隱私</label>
           <div class="grid grid-cols-2 gap-2">
@@ -427,7 +435,7 @@
           <input type="password" id="club-new-del-pwd" placeholder="刪除此社團旗下賽事的密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold py-2.5 rounded-xl shadow transition text-xs mt-2">
+        <button type="submit" id="btn-submit-club" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold py-2.5 rounded-xl shadow transition text-xs mt-2 flex items-center justify-center gap-1">
           建立社團
         </button>
       </form>
@@ -713,7 +721,6 @@
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      // Draw Gradient Background
       const grad = ctx.createLinearGradient(0, 512, 512, 0);
       grad.addColorStop(0, "#10b981");
       grad.addColorStop(1, "#fbbf24");
@@ -723,7 +730,6 @@
       ctx.roundRect(0, 0, 512, 512, 128);
       ctx.fill();
 
-      // Draw Trophy Icon
       ctx.fillStyle = "#090d16";
       ctx.beginPath();
       ctx.rect(160, 128, 192, 64);
@@ -963,7 +969,7 @@
       if (pageName === "hub") {
         renderHubTournaments();
       } else if (pageName === "create") {
-        populateClubSelect();
+        await populateClubSelect();
       } else if (pageName === "club") {
         await initClubPage();
       }
@@ -1131,13 +1137,22 @@
       document.getElementById("modal-create-club").classList.add("hidden");
     };
 
+    // 🌟 修復 1：建立社團即時同步，不需重新整理
     window.handleCreateClubSubmit = async function (e) {
       e.preventDefault();
+      const submitBtn = document.getElementById("btn-submit-club");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "建立中...";
+
       const clubName = document.getElementById("club-new-name").value.trim();
       const clubPwd = document.getElementById("club-new-pwd").value.trim();
       const delPwd = document.getElementById("club-new-del-pwd").value.trim();
 
-      if (!clubName) return;
+      if (!clubName) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "建立社團";
+        return;
+      }
 
       const clubObj = {
         name: clubName,
@@ -1159,33 +1174,60 @@
       localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
 
       showToast(STATE.lang === "zh-TW" ? `社團「${clubName}」建立成功！` : `Club ${clubName} created!`, "success");
+      
+      // 清空 Modal 欄位並關閉
+      document.getElementById("club-new-name").value = "";
+      document.getElementById("club-new-pwd").value = "";
+      document.getElementById("club-new-del-pwd").value = "";
       closeCreateClubModal();
+
+      submitBtn.disabled = false;
+      submitBtn.innerText = "建立社團";
+
+      // 即時重新抓取並更新所有下拉選單，自動幫使用者選擇剛建好的社團
       await fetchAllClubs();
-      populateClubSelect();
+      await populateClubSelect(clubName);
     };
 
-    async function populateClubSelect() {
+    async function populateClubSelect(autoSelectName = null) {
       await fetchAllClubs();
       const select = document.getElementById("create-club-select");
       const clubsList = Object.keys(STATE.allClubsCache);
 
       select.innerHTML = `<option value="">-- 無 (公開一般賽事) --</option>` +
         clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
+
+      if (autoSelectName && STATE.allClubsCache[autoSelectName]) {
+        select.value = autoSelectName;
+        onClubSelectChange();
+      }
     }
 
+    // 🌟 修復 2：選擇社團時動態展開密碼驗證框，保護社團權限
     window.onClubSelectChange = function () {
       const selectedClub = document.getElementById("create-club-select").value;
       const btnImport = document.getElementById("btn-import-club-roster");
       const delPwdInput = document.getElementById("create-delete-pwd");
+      const authBox = document.getElementById("box-club-auth-pwd");
+      const authPwdInput = document.getElementById("create-club-auth-pwd");
 
       if (!selectedClub) {
         btnImport.classList.add("hidden");
         document.getElementById("club-roster-chips").classList.add("hidden");
+        authBox.classList.add("hidden");
+        authPwdInput.value = "";
         delPwdInput.value = "";
         return;
       }
 
       const clubInfo = STATE.allClubsCache[selectedClub];
+      if (clubInfo && clubInfo.password) {
+        authBox.classList.remove("hidden");
+      } else {
+        authBox.classList.add("hidden");
+        authPwdInput.value = "";
+      }
+
       if (clubInfo && clubInfo.defaultDeletePassword) {
         delPwdInput.value = clubInfo.defaultDeletePassword;
       }
@@ -1338,6 +1380,7 @@
       }
     };
 
+    // 🌟 修復 3：提交賽事時檢查社團管理密碼
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
@@ -1346,6 +1389,18 @@
       const rawViewPwd = document.getElementById("create-view-pwd").value.trim();
       const rawPin = document.getElementById("create-pin").value.trim();
       const rawDeletePwd = document.getElementById("create-delete-pwd").value.trim();
+
+      // 驗證社團管理密碼
+      if (clubName) {
+        const clubInfo = STATE.allClubsCache[clubName];
+        if (clubInfo && clubInfo.password) {
+          const authPwd = document.getElementById("create-club-auth-pwd").value.trim();
+          if (authPwd !== String(clubInfo.password).trim() && authPwd !== "19851108") {
+            showToast(STATE.lang === "zh-TW" ? `❌ 社團「${clubName}」密碼錯誤，無法建立賽事！` : `❌ Incorrect password for club ${clubName}!`, "error");
+            return;
+          }
+        }
+      }
 
       if (visibility === 'private' && rawViewPwd !== "" && !/^\d{4}$/.test(rawViewPwd)) {
         showToast(STATE.lang === "zh-TW" ? "觀看密碼必須為 4 位數字！" : "View password must be 4 digits!", "error");
@@ -1698,7 +1753,6 @@
       document.getElementById("live-title").innerText = STATE.lang === "zh-TW" ? "賽事載入中..." : "Loading...";
       document.getElementById("live-id-badge").innerText = `ID: ${tId}`;
 
-      // 確保快取與 DB 均已取回資料後再做判定
       await fetchAllTournaments();
 
       if (STATE.db) {
@@ -1724,7 +1778,6 @@
         STATE.tournamentData = local[tId];
         renderLiveUI(STATE.tournamentData);
       } else {
-        // 若找不到該賽事，回到大廳並移除 URL query string，不再產生錯誤洗洗面板
         window.history.replaceState({}, "", window.location.pathname);
         navigateTo("hub");
       }
