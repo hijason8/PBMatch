@@ -196,7 +196,7 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">4. 預計比賽總時間 (上限 8 小時)</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">4. 預計比賽總時間</label>
             <div class="relative">
               <input type="number" id="create-duration" min="0.5" max="8" step="0.5" value="2.0" required inputmode="decimal"
                      onkeydown="preventInvalidNumberChars(event, true)" 
@@ -207,7 +207,7 @@
           </div>
 
           <div>
-            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">5. 比賽場地數 (上限 12)</label>
+            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">5. 比賽場地數</label>
             <input type="number" id="create-courts" min="1" max="12" value="1" required inputmode="numeric"
                    onkeydown="preventInvalidNumberChars(event, false)" 
                    oninput="clampNumberInput(this, 1, 12); calculateTimeEstimate();" 
@@ -217,7 +217,7 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">6. 預估單局配時 (上限 30 分鐘)</label>
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">6. 預估單局配時</label>
             <div class="relative">
               <input type="number" id="create-game-mins" min="3" max="30" value="15" required inputmode="numeric"
                      onkeydown="preventInvalidNumberChars(event, false)" 
@@ -238,7 +238,7 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">8. 每局獲勝目標分數 (上限 50)</label>
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">8. 每局獲勝目標分數</label>
             <input type="number" id="create-target-score" min="1" max="50" value="15" required inputmode="numeric"
                    onkeydown="preventInvalidNumberChars(event, false)" 
                    oninput="clampNumberInput(this, 1, 50); calculateTimeEstimate();" 
@@ -264,8 +264,9 @@
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
           </div>
 
+          <!-- 預設代號區 -->
           <div class="flex flex-wrap items-center gap-2 mb-2 bg-stone-100 dark:bg-slate-900/60 p-2 rounded-xl border border-stone-200 dark:border-slate-800">
-            <span id="t-quick-fill-label" class="text-xs sub-text font-medium whitespace-nowrap">⚡ 快速帶入預設選手：</span>
+            <span id="t-quick-fill-label" class="text-xs sub-text font-medium whitespace-nowrap">使用代號ABC：</span>
             <input type="number" id="auto-player-count" min="4" max="64" value="8" inputmode="numeric"
                    onkeydown="preventInvalidNumberChars(event, false)"
                    oninput="clampNumberInput(this, 4, 64)"
@@ -278,11 +279,19 @@
             </button>
           </div>
 
+          <!-- 社團成員標籤區 -->
           <div id="club-roster-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2 rounded-xl border card-inner text-xs">
-            <span id="t-chips-hint" class="sub-text text-[11px] w-full mb-0.5">點擊快速加入成員：</span>
+            <span id="t-chips-hint" class="sub-text text-[11px] w-full mb-0.5">點擊快速加入社團成員：</span>
             <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
           </div>
 
+          <!-- 歷史輸入選手紀錄點選區 -->
+          <div id="history-player-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2 rounded-xl border card-inner text-xs">
+            <span class="sub-text text-[11px] w-full mb-0.5">點擊選擇歷史過往選手：</span>
+            <div id="history-chips-container" class="flex flex-wrap gap-1.5"></div>
+          </div>
+
+          <label class="block text-xs sub-text font-semibold mb-1">或 手動輸入選手名稱：</label>
           <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="請在此手動輸入選手姓名，每行一位：&#10;選手 A&#10;選手 B&#10;選手 C&#10;選手 D" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
         </div>
 
@@ -374,7 +383,6 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0">
-          <!-- 1. 模式切換按鈕 (未完賽時顯示) -->
           <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> 輸入模式
           </button>
@@ -383,12 +391,10 @@
             <i data-lucide="key" class="w-3.5 h-3.5"></i> 社團管理者解凍修改
           </button>
 
-          <!-- 2. 結束並封存按鈕 -->
           <button onclick="finishTournament()" id="btn-force-end" class="hidden px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 結束並封存
           </button>
 
-          <!-- 3. 流局作廢按鈕 -->
           <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢 (徹底刪除)
           </button>
@@ -399,7 +405,6 @@
         </div>
       </div>
 
-      <!-- 完賽鎖定提示框：清晰雙行結構 -->
       <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold space-y-1">
         <div class="flex items-center gap-1.5">
           <i data-lucide="lock" class="w-4 h-4 shrink-0"></i>
@@ -638,11 +643,11 @@
         placeholderClubAuth: "輸入社團使用密碼",
         labelMgmtPwd: "3. 本賽事管理密碼",
         optionalTag: "(選填)",
-        labelDuration: "4. 預計比賽總時間 (上限 8 小時)",
-        labelCourts: "5. 比賽場地數 (上限 12)",
-        labelGameMins: "6. 預估單局配時 (上限 30 分鐘)",
+        labelDuration: "4. 預計比賽總時間",
+        labelCourts: "5. 比賽場地數",
+        labelGameMins: "6. 預估單局配時",
         labelScoring: "7. 計分賽制選擇",
-        labelTarget: "8. 每局獲勝目標分數 (上限 50)",
+        labelTarget: "8. 每局獲勝目標分數",
         labelScheduleMode: "9. 賽事模式",
         labelPlayers: "10. 參賽選手名單",
         unitHours: "小時",
@@ -652,10 +657,10 @@
         optionSideout: "發球得分制 (Side-out)",
         modeFairTitle: "平均局數",
         modeMaxTitle: "最大局數",
-        quickFillLabel: "⚡ 快速帶入預設選手：",
+        quickFillLabel: "使用代號ABC：",
         quickFillBtn: "帶入預設 (A, B, C...)",
         importClubRosterBtn: "👥 帶入社團成員",
-        chipsHint: "點擊快速加入成員：",
+        chipsHint: "點擊快速加入社團成員：",
         playersBadge: "位選手",
         timeCalcTitle: "賽程數與時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
@@ -736,11 +741,11 @@
         placeholderClubAuth: "Enter club use password",
         labelMgmtPwd: "3. Tournament Password",
         optionalTag: "(Optional)",
-        labelDuration: "4. Total Estimated Duration (Max 8 Hrs)",
-        labelCourts: "5. Number of Courts (Max 12)",
-        labelGameMins: "6. Single Game Mins (Max 30 Mins)",
+        labelDuration: "4. Total Estimated Duration",
+        labelCourts: "5. Number of Courts",
+        labelGameMins: "6. Single Game Mins",
         labelScoring: "7. Scoring System",
-        labelTarget: "8. Target Points (Max 50)",
+        labelTarget: "8. Target Points",
         labelScheduleMode: "9. Schedule Mode",
         labelPlayers: "10. Player Roster",
         unitHours: "Hrs",
@@ -750,10 +755,10 @@
         optionSideout: "Side-out Scoring",
         modeFairTitle: "Average Games",
         modeMaxTitle: "Max Games",
-        quickFillLabel: "⚡ Quick Fill Default:",
+        quickFillLabel: "Use Codes ABC:",
         quickFillBtn: "Fill Default (A, B...)",
         importClubRosterBtn: "👥 Import Club Members",
-        chipsHint: "Click to add member:",
+        chipsHint: "Click to add club member:",
         playersBadge: "Players",
         timeCalcTitle: "Estimate & Player Match Count:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
@@ -825,14 +830,12 @@
       lucide.createIcons();
     });
 
-    // 數字輸入防呆過濾：阻擋非數字字元
     window.preventInvalidNumberChars = function(e, allowDecimal = false) {
       if (['e', 'E', '+', '-'].includes(e.key) || (!allowDecimal && e.key === '.')) {
         e.preventDefault();
       }
     };
 
-    // 數值範圍自動校正
     window.clampNumberInput = function(el, min, max) {
       if (el.value === '') return;
       let val = parseFloat(el.value);
@@ -1078,7 +1081,10 @@
       if (target) target.classList.remove("hidden");
 
       if (pageName === "hub") renderHubTournaments();
-      else if (pageName === "create") await populateClubSelect();
+      else if (pageName === "create") {
+        await populateClubSelect();
+        renderHistoryPlayerChips();
+      }
       else if (pageName === "club") await initClubPage();
       else if (pageName === "godmode") await renderGodModeTables();
 
@@ -1417,6 +1423,31 @@
       return Array.from(playersSet);
     }
 
+    async function renderHistoryPlayerChips() {
+      await fetchAllTournaments();
+      const allPlayersSet = new Set();
+      STATE.allTournamentsCache.forEach(tData => {
+        if (tData.players && tData.status !== "voided") {
+          tData.players.forEach(p => {
+            if (p && !p.startsWith("選手 ")) allPlayersSet.add(p);
+          });
+        }
+      });
+
+      const historyPlayers = Array.from(allPlayersSet);
+      const containerBox = document.getElementById("history-player-chips");
+      const container = document.getElementById("history-chips-container");
+
+      if (historyPlayers.length > 0) {
+        containerBox.classList.remove("hidden");
+        container.innerHTML = historyPlayers.map(p => `
+          <button type="button" onclick="addSinglePlayerFromChip('${p}')" class="px-2 py-0.5 rounded-md card-inner border hover:border-emerald-500 text-xs transition">+ ${p}</button>
+        `).join("");
+      } else {
+        containerBox.classList.add("hidden");
+      }
+    }
+
     function renderClubChips(players) {
       document.getElementById("club-roster-chips").classList.remove("hidden");
       document.getElementById("club-chips-container").innerHTML = players.map(p => `
@@ -1698,7 +1729,6 @@
         `).join("");
       }
 
-      // 社團歷史賽事封存列表
       const historySection = document.getElementById("club-history-tournaments-section");
       const historyListContainer = document.getElementById("club-history-tournaments-list");
       const historyCountSpan = document.getElementById("club-history-count");
@@ -1833,7 +1863,6 @@
         lockedBanner.classList.add("hidden");
       }
 
-      // 完賽後隱藏「輸入模式/觀看模式」按鈕
       const btnToggleAdmin = document.getElementById("btn-toggle-admin");
       if (isFinished) {
         btnToggleAdmin.classList.add("hidden");
@@ -1855,7 +1884,6 @@
         btnSuperUnlock.classList.remove("flex");
       }
 
-      // 按鈕順序：結束並封存 (btnFinish) 在 流局作廢 (btnVoid) 之前
       const btnFinish = document.getElementById("btn-force-end");
       if (STATE.isAdminUnlocked && isActive) {
         btnFinish.classList.remove("hidden");
