@@ -238,15 +238,16 @@
           </div>
           <div>
             <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">8. 賽事模式</label>
+            <!-- 按鈕精簡為：平均 / 最大 / 自由，單行不斷字 -->
             <div class="grid grid-cols-3 gap-1">
-              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center">
-                <span id="t-mode-fair-title">平均局數</span>
+              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
+                <span id="t-mode-fair-title">平均</span>
               </button>
-              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center">
-                <span id="t-mode-max-title">最大局數</span>
+              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
+                <span id="t-mode-max-title">最大</span>
               </button>
-              <button type="button" id="btn-mode-free" onclick="setScheduleMode('free')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center">
-                <span id="t-mode-free-title">自由模式</span>
+              <button type="button" id="btn-mode-free" onclick="setScheduleMode('free')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
+                <span id="t-mode-free-title">自由</span>
               </button>
             </div>
             <input type="hidden" id="create-schedule-mode" value="fair" />
@@ -371,22 +372,22 @@
       </div>
     </section>
 
-    <!-- PAGE D: LIVE TOURNAMENT VIEW (重構三列層次化資訊區) -->
+    <!-- PAGE D: LIVE TOURNAMENT VIEW (三列層次化資訊區) -->
     <section id="page-live" class="hidden space-y-4 sm:space-y-6">
       <div class="glass-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-emerald-500 space-y-3">
-        <!-- 第一列：標題、識別、狀態標籤、關鍵操作快捷鍵 -->
+        <!-- 第一列：極簡橫排（手機不折行）: [pp] [ID] [進行中] [選手] [🔗 QR] -->
         <div class="flex flex-wrap items-center gap-2">
           <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight mr-1">賽事載入中...</h2>
           <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
           <span id="live-club-badge" class="hidden px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[11px] font-bold">👥 ---</span>
-          <span id="live-status-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold border">---</span>
+          <span id="live-status-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold border">進行中</span>
           
           <button onclick="openManagePlayersModal()" class="px-2.5 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-[11px] font-bold">
-            選手名單
+            選手
           </button>
           
           <button onclick="openShareModal()" class="px-2.5 py-0.5 rounded-md card-inner border transition text-[11px] font-bold flex items-center gap-1">
-            <i data-lucide="share-2" class="w-3 h-3 text-emerald-500"></i> 分享 / QR
+            <i data-lucide="share-2" class="w-3 h-3 text-emerald-500"></i> QR
           </button>
         </div>
 
@@ -596,7 +597,6 @@
 
       <div id="modal-players-list-container" class="max-h-52 overflow-y-auto space-y-2 text-xs"></div>
 
-      <!-- 自由模式時，支援現場追加新選手 -->
       <div id="box-add-player-live" class="pt-2 border-t border-stone-300/30 dark:border-slate-800 space-y-2">
         <span class="sub-text text-[11px] block">陸續到場？新增新成員：</span>
         <div class="flex items-center gap-2">
@@ -631,13 +631,13 @@
           <div class="p-2.5 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第一隊</span>
             <div id="free-team-1-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
-            <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
+            <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
           </div>
 
           <div class="p-2.5 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第二隊</span>
             <div id="free-team-2-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
-            <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
+            <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
           </div>
         </div>
 
@@ -728,7 +728,7 @@
         hubArchived: "已完賽紀錄",
         createNewBtn: "建立新賽事",
         statusFinished: "🔒 已完賽 (戰績凍結)",
-        statusActive: "⚡ 進行中",
+        statusActive: "進行中",
         statusVoided: "🚫 已作廢 (流局)",
         enterTournament: "進入賽事",
         playersCountLabel: "人參賽",
@@ -752,9 +752,9 @@
         courtsUnit: "場地",
         optionRally: "落地得分制 (Rally)",
         optionSideout: "發球得分制 (Side-out)",
-        modeFairTitle: "平均局數",
-        modeMaxTitle: "最大局數",
-        modeFreeTitle: "自由模式",
+        modeFairTitle: "平均",
+        modeMaxTitle: "最大",
+        modeFreeTitle: "自由",
         quickFillLabel: "自動代號生成，人數：",
         autoPlayerPlaceholder: "人數",
         chipsHint: "點擊該社團成員：",
@@ -789,7 +789,7 @@
         btnCancelClub: "放棄創建",
         estPrefix: "預估",
         hrsUnit: "小時",
-        shareBtn: "分享 / QR Code",
+        shareBtn: "QR",
         scheduleTitle: "對戰賽程表",
         completedGamesBadge: "局完成",
         leaderboardTitle: "戰績排行",
@@ -843,7 +843,7 @@
         hubArchived: "Archived Records",
         createNewBtn: "Create Tournament",
         statusFinished: "🔒 Finished (Locked)",
-        statusActive: "⚡ Active",
+        statusActive: "Active",
         statusVoided: "🚫 Voided",
         enterTournament: "Enter View",
         playersCountLabel: "Players",
@@ -867,9 +867,9 @@
         courtsUnit: "Courts",
         optionRally: "Rally Scoring",
         optionSideout: "Side-out Scoring",
-        modeFairTitle: "Average",
-        modeMaxTitle: "Max Games",
-        modeFreeTitle: "Free Mode",
+        modeFairTitle: "Fair",
+        modeMaxTitle: "Max",
+        modeFreeTitle: "Free",
         quickFillLabel: "Auto Code Gen, Count:",
         autoPlayerPlaceholder: "Count",
         chipsHint: "Click Club Member:",
@@ -904,7 +904,7 @@
         btnCancelClub: "Cancel",
         estPrefix: "Est.",
         hrsUnit: "Hrs",
-        shareBtn: "Share / QR Code",
+        shareBtn: "QR",
         scheduleTitle: "Match Schedule",
         completedGamesBadge: "Games Done",
         leaderboardTitle: "Live Standings",
@@ -1579,7 +1579,7 @@
     }
 
     function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair", courtsCount = 1) {
-      if (scheduleMode === "free") return []; // 自由模式預設不生成對戰
+      if (scheduleMode === "free") return [];
 
       const n = playersList.length;
       if (n < 4) return [];
@@ -1767,11 +1767,12 @@
       return Array.from(playersSet);
     }
 
+    /* 切換賽事模式按鈕與細節說明連動 */
     window.setScheduleMode = function (mode) {
       document.getElementById("create-schedule-mode").value = mode;
-      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center";
-      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center";
-      document.getElementById("btn-mode-free").className = mode === "free" ? "mode-btn-active px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-[11px] font-bold transition text-center";
+      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
+      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
+      document.getElementById("btn-mode-free").className = mode === "free" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
 
       const durationBox = document.getElementById("row-duration-courts");
       const scoringBox = document.getElementById("row-scoring-target");
@@ -1795,7 +1796,7 @@
       const mode = document.getElementById("create-schedule-mode").value || "fair";
 
       if (mode === "free") {
-        document.getElementById("time-estimate-text").innerHTML = `<span class="text-amber-500 font-bold">💡 自由模式：</span>系統不預先生成對戰表，進入賽事後自由「新增一局」記錄比分。`;
+        document.getElementById("time-estimate-text").innerHTML = `<span class="text-amber-500 font-bold">💡 自由模式說明：</span>不預先生成對戰表，進入賽事後可由現場自由「新增一局」選擇 4 人排牌與記錄比分。`;
         return;
       }
 
@@ -1804,7 +1805,9 @@
       const mins = parseInt(document.getElementById("create-game-mins").value) || 15;
 
       if (activePlayerTags.length < 4) {
-        document.getElementById("time-estimate-text").innerHTML = "請至少加入 4 位選手標籤以試算總局數與每人參賽數。";
+        document.getElementById("time-estimate-text").innerHTML = mode === "max" 
+          ? `<span class="text-purple-400 font-bold">💡 最大局數說明：</span>請加入至少 4 位選手標籤，系統將依預估總時間生成最大場次的對戰賽程。` 
+          : `<span class="text-emerald-500 font-bold">💡 平均局數說明：</span>請加入至少 4 位選手標籤，系統將精確計算並平均分配每位選手的出場局數。`;
         return;
       }
 
@@ -1817,7 +1820,7 @@
       document.getElementById("time-estimate-text").innerHTML = `
         <div class="grid grid-cols-2 gap-2 text-xs pt-1">
           <div class="p-2 rounded-lg card-inner border">
-            <span class="sub-text text-[10px] block">預估賽程總局數</span>
+            <span class="sub-text text-[10px] block">${mode === 'max' ? '最大化總局數' : '預估賽程總局數'}</span>
             <strong class="text-emerald-500 text-sm font-mono">${totalGames} 局</strong> (${courts} 場地)
           </div>
           <div class="p-2 rounded-lg card-inner border">
@@ -2160,10 +2163,10 @@
       const durationBox = document.getElementById("box-live-duration");
       
       if (isFreeMode) {
-        modeBadge.innerText = "自由模式";
+        modeBadge.innerText = "自由";
         durationBox.classList.add("hidden");
       } else {
-        modeBadge.innerText = data.scheduleMode === "max" ? "最大局數" : "平均局數";
+        modeBadge.innerText = data.scheduleMode === "max" ? "最大" : "平均";
         durationBox.classList.remove("hidden");
       }
 
@@ -2245,7 +2248,7 @@
       renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
-    /* 對戰卡片去隊伍化、人名垂直斷行、輸入框留白極簡版面 */
+    /* 對戰卡片：第一人名尾端補上 / ，輸入框預設顯示淡灰色 0 */
     function renderMatchesList(matches, canEdit) {
       const container = document.getElementById("matches-container");
       let completedCount = 0;
@@ -2269,24 +2272,24 @@
               </span>
             </div>
 
-            <!-- 人名垂直斷行，去藍紅隊標籤 -->
+            <!-- 第一列末尾補上 / 符號，明確引導隊友組合 -->
             <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
               <div class="p-2.5 rounded-xl card-inner border">
                 <div class="font-bold text-sm tracking-tight leading-snug">
-                  ${m.blue[0]}<br />${m.blue[1]}
+                  ${m.blue[0]} /<br />${m.blue[1]}
                 </div>
               </div>
               <div class="p-2.5 rounded-xl card-inner border">
                 <div class="font-bold text-sm tracking-tight leading-snug">
-                  ${m.red[0]}<br />${m.red[1]}
+                  ${m.red[0]} /<br />${m.red[1]}
                 </div>
               </div>
             </div>
 
-            <!-- 輸入框保持完全空白 -->
+            <!-- 輸入框預設以淡灰色 0 呈現 -->
             <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
 
             ${canEdit ? `
