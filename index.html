@@ -132,7 +132,6 @@
             <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
         </div>
-        <!-- 已移除重複多餘的電腦版右側「建立新賽事」按鈕 -->
       </div>
 
       <div class="space-y-3">
@@ -625,15 +624,15 @@
         <div id="free-match-players-selection" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-2 input-bg border rounded-xl"></div>
 
         <div class="grid grid-cols-2 gap-3 pt-2">
-          <div class="p-2.5 rounded-xl card-inner border space-y-1">
+          <div class="p-2 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第一隊</span>
-            <div id="free-team-1-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
+            <div id="free-team-1-display" class="font-bold min-h-[32px] text-xs space-y-1">未選擇</div>
             <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
           </div>
 
-          <div class="p-2.5 rounded-xl card-inner border space-y-1">
+          <div class="p-2 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第二隊</span>
-            <div id="free-team-2-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
+            <div id="free-team-2-display" class="font-bold min-h-[32px] text-xs space-y-1">未選擇</div>
             <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
           </div>
         </div>
@@ -1541,7 +1540,6 @@
       renderGodModeTables();
     };
 
-    /* 修正：清除快取後清空網址列 ?t=... 參數並重導至首頁 (page-hub) */
     window.godClearLocalStorage = function() {
       if (!confirm("⚠️ 確定要清除所有瀏覽器快取 (LocalStorage) 嗎？")) return;
       localStorage.clear();
@@ -2272,7 +2270,7 @@
       renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
-    /* 對戰卡片：一隊恢復雙獨立儲存格、分數字體放大至 text-xl，支援 0 分儲存 */
+    /* 對戰卡片：單隊拆分為兩個獨立上下呈現的文字儲存格，乾淨不擁擠 */
     function renderMatchesList(matches, canEdit) {
       const container = document.getElementById("matches-container");
       let completedCount = 0;
@@ -2296,19 +2294,28 @@
               </span>
             </div>
 
-            <!-- 一隊恢復兩個獨立儲存格結構 -->
+            <!-- 改為：隊伍卡片內部的獨立雙儲存格，視覺清晰乾淨 -->
             <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
-              <div class="p-2 rounded-xl card-inner border space-y-1">
-                <div class="font-bold truncate text-xs sm:text-sm">${m.blue[0]}</div>
-                <div class="font-bold truncate text-xs sm:text-sm">${m.blue[1]}</div>
+              <div class="p-1.5 sm:p-2 rounded-xl card-inner border space-y-1">
+                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
+                  ${m.blue[0]}
+                </div>
+                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
+                  ${m.blue[1]}
+                </div>
               </div>
-              <div class="p-2 rounded-xl card-inner border space-y-1">
-                <div class="font-bold truncate text-xs sm:text-sm">${m.red[0]}</div>
-                <div class="font-bold truncate text-xs sm:text-sm">${m.red[1]}</div>
+
+              <div class="p-1.5 sm:p-2 rounded-xl card-inner border space-y-1">
+                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-amber-600 dark:text-amber-400">
+                  ${m.red[0]}
+                </div>
+                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-amber-600 dark:text-amber-400">
+                  ${m.red[1]}
+                </div>
               </div>
             </div>
 
-            <!-- 比分輸入框：字體放大至 text-xl，視覺更清楚 -->
+            <!-- 比分輸入框：醒目大字體 text-xl -->
             <div class="grid grid-cols-2 gap-2 items-center">
               <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
               <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
@@ -2366,8 +2373,8 @@
       const team1 = freeMatchSelectedPlayers.slice(0, 2);
       const team2 = freeMatchSelectedPlayers.slice(2, 4);
 
-      document.getElementById("free-team-1-display").innerText = team1.length > 0 ? team1.join("\n") : "未選擇";
-      document.getElementById("free-team-2-display").innerText = team2.length > 0 ? team2.join("\n") : "未選擇";
+      document.getElementById("free-team-1-display").innerHTML = team1.length > 0 ? team1.map(name => `<div class="p-1 px-2 rounded input-bg border">${name}</div>`).join("") : "未選擇";
+      document.getElementById("free-team-2-display").innerHTML = team2.length > 0 ? team2.map(name => `<div class="p-1 px-2 rounded input-bg border">${name}</div>`).join("") : "未選擇";
     }
 
     window.toggleFreeMatchPlayer = function(name) {
