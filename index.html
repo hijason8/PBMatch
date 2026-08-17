@@ -1577,7 +1577,7 @@
       return arr;
     }
 
-    /* 重構賽程排程演算法：確保 100% 精確產生足額的 totalRounds 場賽事 */
+    /* 精確生成演算法：確保 100% 產生足額的 totalRounds 場賽事 */
     function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair", courtsCount = 1) {
       if (scheduleMode === "free") return [];
 
@@ -1597,12 +1597,10 @@
 
       const matches = [];
       for (let r = 1; r <= totalRounds; r++) {
-        // 先依照場次少者優先挑選 4 人
         const sorted = shuffleArray([...playersList]).sort((a, b) => gamesPlayed[a] - gamesPlayed[b]);
         const active = sorted.slice(0, 4);
         const resting = sorted.slice(4);
 
-        // 3 種對戰組合評分
         const combinations = [
           { blue: [active[0], active[1]], red: [active[2], active[3]] },
           { blue: [active[0], active[2]], red: [active[1], active[3]] },
@@ -1616,7 +1614,6 @@
           if (score < minScore) { minScore = score; bestCombo = combo; }
         });
 
-        // 累加場次與同隊紀錄
         bestCombo.blue.concat(bestCombo.red).forEach(p => gamesPlayed[p]++);
         partneredCount[bestCombo.blue[0]][bestCombo.blue[1]]++;
         partneredCount[bestCombo.blue[1]][bestCombo.blue[0]]++;
@@ -2183,7 +2180,6 @@
       showToast("🔒 賽事已成功結束並封存！", "success");
     };
 
-    /* 重新佈局 Live UI 標籤結構 */
     function renderLiveUI(data) {
       document.getElementById("live-title").innerText = data.name;
       document.getElementById("live-id-badge").innerText = `ID: ${data.id}`;
@@ -2202,7 +2198,6 @@
         durationBox.classList.remove("hidden");
       }
 
-      // 第二行第一個：社團標籤（背景 unified card-inner border）
       const clubBadge = document.getElementById("live-club-badge");
       if (data.clubName) {
         clubBadge.innerText = `🚩 ${data.clubName}`;
@@ -2215,7 +2210,6 @@
       const isActive = data.status === "active" || !data.status;
       const isClubMatch = !!data.clubName;
 
-      // 第一行：狀態標籤（進行中 / 已完賽）
       const statusBadge = document.getElementById("live-status-badge");
       const lockedBanner = document.getElementById("notice-locked-banner");
 
@@ -2230,7 +2224,6 @@
         lockedBanner.classList.add("hidden");
       }
 
-      // 第三列（分隔線下方）：按鈕列
       const btnToggleAdmin = document.getElementById("btn-toggle-admin");
       if (isFinished) {
         btnToggleAdmin.classList.add("hidden");
@@ -2283,7 +2276,6 @@
       renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
-    /* 對戰卡片：雙獨立儲存格 */
     function renderMatchesList(matches, canEdit) {
       const container = document.getElementById("matches-container");
       let completedCount = 0;
@@ -2307,7 +2299,6 @@
               </span>
             </div>
 
-            <!-- 隊伍內雙獨立文字盒 -->
             <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
               <div class="p-1.5 sm:p-2 rounded-xl card-inner border space-y-1">
                 <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
@@ -2328,7 +2319,6 @@
               </div>
             </div>
 
-            <!-- 比分輸入框：大字體 text-xl -->
             <div class="grid grid-cols-2 gap-2 items-center">
               <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
               <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
@@ -2358,7 +2348,6 @@
       lucide.createIcons();
     }
 
-    /* 自由模式手動新增一局 */
     window.openAddFreeMatchModal = function() {
       freeMatchSelectedPlayers = [];
       renderFreeMatchPlayerChips();
@@ -2553,5 +2542,39 @@
     };
 
     window.closeShareModal = function () {
-      document.getElementById("modal-share"
+      document.getElementById("modal-share").classList.add("hidden");
+    };
 
+    window.copyShareUrl = function () {
+      const input = document.getElementById("share-url-input");
+      input.select();
+      document.execCommand("copy");
+      showToast(t("copiedToast"), "success");
+    };
+
+    function showToast(msg, type = "info") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      
+      let borderBg = "bg-slate-900 border-slate-700 text-slate-100";
+      if (type === "success") borderBg = "bg-emerald-950 border-emerald-500 text-emerald-200";
+      else if (type === "error") borderBg = "bg-rose-950 border-rose-500 text-rose-200";
+      else if (type === "warning") borderBg = "bg-amber-950 border-amber-500 text-amber-200";
+
+      toast.className = `p-3 rounded-xl border shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${borderBg}`;
+      toast.innerHTML = `<span>${msg}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
