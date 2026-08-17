@@ -102,7 +102,6 @@
           <i data-lucide="download" class="w-4 h-4"></i>
         </button>
 
-        <!-- 中間分隔斜線 -->
         <span class="sub-text opacity-40 px-0.5 select-none font-light text-sm">/</span>
 
         <!-- 功能操作類 -->
@@ -255,43 +254,61 @@
           </div>
         </div>
 
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
+        <!-- 全新：參賽選手標籤畫布區塊 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
             <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">9. 參賽選手名單</label>
-            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
+            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400 font-mono">目前共 0 位</span>
           </div>
 
-          <!-- 自動代號生成區 -->
-          <div class="flex items-center gap-2 mb-2 bg-stone-100 dark:bg-slate-900/60 p-2.5 rounded-xl border border-stone-200 dark:border-slate-800">
-            <span id="t-quick-fill-label" class="text-xs sub-text font-medium whitespace-nowrap">自動代號生成，人數：</span>
-            <input type="number" id="auto-player-count" min="4" max="64" value="8" inputmode="numeric"
-                   onkeydown="preventInvalidNumberChars(event, false)"
-                   oninput="clampNumberInput(this, 4, 64); autoGeneratePlayers();"
-                   placeholder="人數" class="w-16 input-bg border rounded-lg p-1 text-xs text-center font-mono focus:border-emerald-500 focus:outline-none" />
+          <!-- 主標籤展示區 (單一真理源) -->
+          <div id="player-tags-container" class="min-h-[100px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
+            <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-6 pointer-events-none">請透過下方選項點選社團成員、手動新增或產生臨時代號</span>
           </div>
 
-          <!-- 社團成員選擇區 -->
-          <div id="club-roster-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2.5 rounded-xl border card-inner text-xs">
-            <span id="t-chips-hint" class="sub-text text-[11px] w-full mb-0.5">點擊該社團成員：</span>
-            <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
-          </div>
+          <!-- 三大加入管道區塊 -->
+          <div class="space-y-2 pt-1">
+            <!-- 管道 1: 社團成員選擇 -->
+            <div id="box-club-members" class="hidden p-2.5 rounded-xl card-inner border space-y-1.5">
+              <span class="sub-text text-[11px] font-semibold block">👥 點選現有成員：</span>
+              <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
+            </div>
 
-          <!-- 歷史輸入選手紀錄點選區 -->
-          <div id="history-player-chips" class="hidden flex-wrap gap-1.5 mb-2 p-2.5 rounded-xl border card-inner text-xs">
-            <span id="t-history-hint" class="sub-text text-[11px] w-full mb-0.5">點擊選擇歷史過往選手：</span>
-            <div id="history-chips-container" class="flex flex-wrap gap-1.5"></div>
-          </div>
+            <!-- 管道 2: 手動成員名稱 -->
+            <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
+              <span class="sub-text text-[11px] font-semibold block">✏️ 手動成員名稱：</span>
+              <div class="flex items-center gap-2">
+                <input type="text" id="input-manual-player" placeholder="輸入姓名或貼上多行姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
+                <button type="button" onclick="addManualPlayer()" class="px-3 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition shrink-0">
+                  + 加入
+                </button>
+              </div>
+            </div>
 
-          <!-- 手動輸入區 -->
-          <label id="t-manual-input-title" class="block text-xs sub-text font-semibold mb-1">手動輸入，每行一人：</label>
-          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+            <!-- 管道 3: 新增臨時名稱 -->
+            <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
+              <span class="sub-text text-[11px] font-semibold block">⚡ 新增臨時名稱：</span>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="addSingleGuestPlayer()" class="px-3 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
+                  + 1 位臨打
+                </button>
+
+                <div class="flex items-center gap-1.5 ml-auto">
+                  <input type="number" id="auto-gen-count" min="4" max="64" value="8" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
+                  <button type="button" onclick="batchGenerateABCPlayers()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">
+                    批量生成選手 A~Z
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
           <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
             <i data-lucide="calculator" class="w-3.5 h-3.5"></i> 賽程數與時間預估試算：
           </div>
-          <p id="time-estimate-text" class="sub-text text-[11px]">請先輸入參賽選手名單。</p>
+          <p id="time-estimate-text" class="sub-text text-[11px]">請先加入參賽選手標籤。</p>
         </div>
 
         <!-- 底部按鈕區 -->
@@ -313,7 +330,7 @@
           <h2 id="t-club-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
             <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 社團賽事紀錄
           </h2>
-          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員歷史總勝率與累積戰績</p>
+          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員累積數據與歷史紀錄</p>
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
@@ -602,6 +619,9 @@
 
     let deferredPrompt = null; 
 
+    // 全域參賽選手標籤陣列 (Single Source of Truth)
+    let activePlayerTags = [];
+
     const STATE = {
       firebaseApp: null,
       db: null,
@@ -799,7 +819,6 @@
         thCPlayer: "Member",
         thCWinRate: "Win %",
         thCWL: "W/L",
-        thCPlayed: "Games",
         thCDiff: "Diff",
         thCPFPA: "PF/PA",
         modalClubTitle: "Create New Club",
@@ -1031,11 +1050,6 @@
       document.getElementById("t-mode-fair-title").innerText = t("modeFairTitle");
       document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
-      document.getElementById("t-quick-fill-label").innerText = t("quickFillLabel");
-      document.getElementById("auto-player-count").placeholder = t("autoPlayerPlaceholder");
-      document.getElementById("t-chips-hint").innerText = t("chipsHint");
-      document.getElementById("t-history-hint").innerText = t("historyHint");
-      document.getElementById("t-manual-input-title").innerText = t("manualInputTitle");
       document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="calculator" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
       document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
       document.getElementById("t-btn-cancel-create").innerText = t("cancelBtn");
@@ -1065,7 +1079,6 @@
       document.getElementById("t-btn-cancel-club").innerText = t("btnCancelClub");
 
       document.getElementById("create-name").placeholder = t("placeholderName");
-      document.getElementById("create-players").placeholder = t("placeholderPlayers");
 
       const scoringSel = document.getElementById("create-scoring-type");
       if (scoringSel) {
@@ -1116,7 +1129,7 @@
       const installBtn = document.getElementById("btn-install-pwa");
       if(installBtn) installBtn.title = t("installAppTooltip");
 
-      updatePlayerCountBadge();
+      renderPlayerTags();
       calculateTimeEstimate();
       lucide.createIcons();
     }
@@ -1160,8 +1173,8 @@
       if (pageName === "hub") renderHubTournaments();
       else if (pageName === "create") {
         await populateClubSelect();
-        renderHistoryPlayerChips();
-        autoGeneratePlayers();
+        activePlayerTags = []; // 清空預設標籤，空白佈告
+        renderPlayerTags();
       }
       else if (pageName === "club") await initClubPage();
       else if (pageName === "godmode") await renderGodModeTables();
@@ -1171,6 +1184,70 @@
         STATE.dbUnsubscribe = null;
       }
       lucide.createIcons();
+    };
+
+    /* --- 全新：選手標籤核心邏輯 (Single Source of Truth) --- */
+    function renderPlayerTags() {
+      const container = document.getElementById("player-tags-container");
+      const badge = document.getElementById("player-count-badge");
+      badge.innerText = `目前共 ${activePlayerTags.length} 位`;
+
+      if (activePlayerTags.length === 0) {
+        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-6 pointer-events-none">請透過下方選項點選社團成員、手動新增或產生臨時代號</span>`;
+      } else {
+        container.innerHTML = activePlayerTags.map((p, idx) => `
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold shadow-sm animate-fadeIn">
+            ${p}
+            <button type="button" onclick="removePlayerTag(${idx})" class="hover:text-rose-500 transition text-emerald-500/60 font-normal">✕</button>
+          </span>
+        `).join("");
+      }
+
+      onClubSelectChange(); // 更新社團 Chip 的已選狀態
+      calculateTimeEstimate();
+    }
+
+    window.removePlayerTag = function(idx) {
+      activePlayerTags.splice(idx, 1);
+      renderPlayerTags();
+    };
+
+    window.addManualPlayer = function() {
+      const input = document.getElementById("input-manual-player");
+      const rawText = input.value.trim();
+      if (!rawText) return;
+
+      const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      lines.forEach(name => {
+        if (!activePlayerTags.includes(name)) {
+          activePlayerTags.push(name);
+        }
+      });
+
+      input.value = "";
+      renderPlayerTags();
+    };
+
+    window.addSingleGuestPlayer = function() {
+      let count = 1;
+      while (activePlayerTags.includes(`臨打 ${count}`)) {
+        count++;
+      }
+      activePlayerTags.push(`臨打 ${count}`);
+      renderPlayerTags();
+    };
+
+    window.batchGenerateABCPlayers = function() {
+      const count = parseInt(document.getElementById("auto-gen-count").value) || 8;
+      activePlayerTags = Array.from({length: count}, (_, i) => `選手 ${String.fromCharCode(65 + i)}`);
+      renderPlayerTags();
+    };
+
+    window.toggleClubMemberTag = function(memberName) {
+      const idx = activePlayerTags.indexOf(memberName);
+      if (idx >= 0) activePlayerTags.splice(idx, 1);
+      else activePlayerTags.push(memberName);
+      renderPlayerTags();
     };
 
     window.openGodMode = async function () {
@@ -1485,19 +1562,28 @@
       const authBox = document.getElementById("box-club-auth-pwd");
       const clubInfo = STATE.allClubsCache[selectedClub];
       
-      // 控制密碼框是否出現的完美防呆
       if (clubInfo && clubInfo.password) {
         authBox.classList.remove("hidden");
-        document.getElementById("create-club-auth-pwd").value = "";
       } else {
         authBox.classList.add("hidden");
       }
 
       const clubPlayers = getPlayersFromClub(selectedClub);
+      const membersBox = document.getElementById("box-club-members");
+      const membersContainer = document.getElementById("club-chips-container");
+
       if (selectedClub && clubPlayers.length > 0) {
-        renderClubChips(clubPlayers);
+        membersBox.classList.remove("hidden");
+        membersContainer.innerHTML = clubPlayers.map(p => {
+          const isSelected = activePlayerTags.includes(p);
+          return `
+            <button type="button" onclick="toggleClubMemberTag('${p}')" class="px-2.5 py-1 rounded-xl border text-xs font-semibold transition flex items-center gap-1 ${isSelected ? 'bg-emerald-500 text-slate-950 border-emerald-500 font-bold' : 'card-inner hover:border-emerald-500'}}">
+              ${isSelected ? '✓ ' : '+ '}${p}
+            </button>
+          `;
+        }).join("");
       } else {
-        document.getElementById("club-roster-chips").classList.add("hidden");
+        membersBox.classList.add("hidden");
       }
     };
 
@@ -1512,55 +1598,6 @@
       return Array.from(playersSet);
     }
 
-    async function renderHistoryPlayerChips() {
-      await fetchAllTournaments();
-      const allPlayersSet = new Set();
-      STATE.allTournamentsCache.forEach(tData => {
-        if (tData.players && tData.status !== "voided") {
-          tData.players.forEach(p => {
-            if (p && !p.startsWith("選手 ")) allPlayersSet.add(p);
-          });
-        }
-      });
-
-      const historyPlayers = Array.from(allPlayersSet);
-      const containerBox = document.getElementById("history-player-chips");
-      const container = document.getElementById("history-chips-container");
-
-      if (historyPlayers.length > 0) {
-        containerBox.classList.remove("hidden");
-        container.innerHTML = historyPlayers.map(p => `
-          <button type="button" onclick="addSinglePlayerFromChip('${p}')" class="px-2 py-0.5 rounded-md card-inner border hover:border-emerald-500 text-xs transition">+ ${p}</button>
-        `).join("");
-      } else {
-        containerBox.classList.add("hidden");
-      }
-    }
-
-    function renderClubChips(players) {
-      document.getElementById("club-roster-chips").classList.remove("hidden");
-      document.getElementById("club-chips-container").innerHTML = players.map(p => `
-        <button type="button" onclick="addSinglePlayerFromChip('${p}')" class="px-2 py-0.5 rounded-md card-inner border hover:border-emerald-500 text-xs transition">+ ${p}</button>
-      `).join("");
-    }
-
-    window.addSinglePlayerFromChip = function(playerName) {
-      const textarea = document.getElementById("create-players");
-      const currentList = textarea.value.split("\n").filter(Boolean);
-      if (!currentList.includes(playerName)) {
-        textarea.value = [...currentList, playerName].join("\n");
-        updatePlayerCountBadge();
-        calculateTimeEstimate();
-      }
-    };
-
-    window.autoGeneratePlayers = function () {
-      const count = parseInt(document.getElementById("auto-player-count").value) || 8;
-      document.getElementById("create-players").value = Array.from({length: count}, (_, i) => `選手 ${String.fromCharCode(65 + i)}`).join("\n");
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
-    };
-
     window.setScheduleMode = function (mode) {
       document.getElementById("create-schedule-mode").value = mode;
       document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-2 py-2.5 rounded-xl border text-xs font-bold transition text-center";
@@ -1572,27 +1609,21 @@
       document.getElementById("create-game-mins").value = document.getElementById("create-scoring-type").value === "sideout" ? 18 : 12;
     };
 
-    window.updatePlayerCountBadge = function () {
-      const players = document.getElementById("create-players").value.split("\n").filter(Boolean);
-      document.getElementById("player-count-badge").innerText = `${players.length} 位選手`;
-    };
-
     window.calculateTimeEstimate = function () {
-      const players = document.getElementById("create-players").value.split("\n").filter(Boolean);
       const dur = parseFloat(document.getElementById("create-duration").value) || 2.0;
       const courts = parseInt(document.getElementById("create-courts").value) || 1;
       const mins = parseInt(document.getElementById("create-game-mins").value) || 15;
       const mode = document.getElementById("create-schedule-mode").value || "fair";
 
-      if (players.length < 4) {
-        document.getElementById("time-estimate-text").innerHTML = "請輸入至少 4 位選手以計算總局數與每人參賽數。";
+      if (activePlayerTags.length < 4) {
+        document.getElementById("time-estimate-text").innerHTML = "請至少加入 4 位選手標籤以試算總局數與每人參賽數。";
         return;
       }
 
       const target = Math.floor(((dur * 60) / mins) * courts);
-      const totalGames = mode === "max" ? getMaxTotalGames(target) : getValidTotalGames(players.length, target);
+      const totalGames = mode === "max" ? getMaxTotalGames(target) : getValidTotalGames(activePlayerTags.length, target);
       
-      const gamesPerPlayer = ((totalGames * 4) / players.length).toFixed(1);
+      const gamesPerPlayer = ((totalGames * 4) / activePlayerTags.length).toFixed(1);
       const cleanGamesPerPlayer = gamesPerPlayer.endsWith('.0') ? parseInt(gamesPerPlayer) : gamesPerPlayer;
 
       document.getElementById("time-estimate-text").innerHTML = `
@@ -1614,6 +1645,11 @@
       const name = document.getElementById("create-name").value.trim();
       const clubName = document.getElementById("create-club-select").value || null;
 
+      if (activePlayerTags.length < 4) {
+        showToast("⚠️ 請至少加入 4 位參賽選手！", "error");
+        return;
+      }
+
       if (clubName) {
         const clubInfo = STATE.allClubsCache[clubName];
         if (clubInfo && clubInfo.password) {
@@ -1625,14 +1661,13 @@
         }
       }
 
-      const players = [...new Set(document.getElementById("create-players").value.split("\n").filter(Boolean))];
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
-      const matches = generateRoundRobinSchedule(players, 2.0, 15, "fair", 1);
+      const matches = generateRoundRobinSchedule(activePlayerTags, 2.0, 15, "fair", 1);
 
       const tObj = { 
         id: tournamentId, name, clubName, 
         status: "active", createdAt: new Date().toLocaleString("zh-TW"), 
-        players, matches 
+        players: [...activePlayerTags], matches 
       };
 
       if (STATE.db) await set(ref(STATE.db, `tournaments/${tournamentId}`), tObj);
@@ -1783,7 +1818,6 @@
         });
       });
 
-      // 排序: 局數優先 -> 勝率 -> 勝場數 -> 淨勝分
       const ranking = Object.values(stats).map(s => {
         s.diff = s.pf - s.pa;
         s.winRate = s.played > 0 ? ((s.wins / s.played) * 100).toFixed(1) : "0.0";
@@ -1902,7 +1936,7 @@
       try {
         await deleteLocalAndCloudTournaments([tObj.id]);
         showToast("🗑️ 賽事已成功作廢刪除！", "info");
-        window.history.pushState({}, "", window.location.pathname); // 清除網址列參數防呆
+        window.history.pushState({}, "", window.location.pathname);
         navigateTo("hub");
       } catch (err) {
         console.error(err);
@@ -2184,3 +2218,4 @@
   </script>
 </body>
 </html>
+
