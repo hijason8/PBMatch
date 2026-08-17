@@ -85,7 +85,6 @@
       </div>
 
       <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
-        <!-- UI / 系統操作類 -->
         <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="系統資料庫控制台">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
@@ -104,7 +103,6 @@
 
         <span class="sub-text opacity-40 px-0.5 select-none font-light text-sm">/</span>
 
-        <!-- 功能操作類 -->
         <button onclick="navigateTo('hub')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
           <span id="t-nav-hub" class="hidden md:inline">賽事大廳</span>
@@ -135,11 +133,10 @@
           </h2>
         </div>
         <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
-          ➕ 建立新賽事
+          建立新賽事
         </button>
       </div>
 
-      <!-- 進行中的賽事區 -->
       <div class="space-y-3">
         <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
           <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> <span id="t-hub-active">進行中賽事</span>
@@ -147,7 +144,6 @@
         <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
       </div>
 
-      <!-- 已完賽 / 歷史紀錄區 -->
       <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
           <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
@@ -176,7 +172,7 @@
         <div>
           <div class="flex items-center justify-between mb-1">
             <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">2. 所屬社團 <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">(選填)</span></label>
-            <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">➕ 新增社團</button>
+            <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">新增社團</button>
           </div>
           <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
             <option value="">-- 無 --</option>
@@ -187,7 +183,8 @@
           <label id="t-label-club-auth" class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受保護，請輸入社團公用密碼：
           </label>
-          <input type="password" id="create-club-auth-pwd" placeholder="輸入社團公用密碼" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          <!-- 補上純數字鍵盤防呆 -->
+          <input type="password" id="create-club-auth-pwd" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="輸入社團公用密碼" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -254,51 +251,52 @@
           </div>
         </div>
 
-        <!-- 全新：參賽選手標籤畫布區塊 -->
+        <!-- 參賽選手標籤畫布區塊 (極簡全純文字) -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">9. 參賽選手名單</label>
             <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400 font-mono">目前共 0 位</span>
           </div>
 
-          <!-- 主標籤展示區 (單一真理源) -->
-          <div id="player-tags-container" class="min-h-[100px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
-            <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-6 pointer-events-none">請透過下方選項點選社團成員、手動新增或產生臨時代號</span>
+          <div id="player-tags-container" class="min-h-[90px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
+            <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增</span>
           </div>
 
-          <!-- 三大加入管道區塊 -->
           <div class="space-y-2 pt-1">
             <!-- 管道 1: 社團成員選擇 -->
             <div id="box-club-members" class="hidden p-2.5 rounded-xl card-inner border space-y-1.5">
-              <span class="sub-text text-[11px] font-semibold block">👥 點選現有成員：</span>
+              <span class="sub-text text-[11px] font-semibold block">點選現有成員：</span>
               <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
             </div>
 
             <!-- 管道 2: 手動成員名稱 -->
             <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
-              <span class="sub-text text-[11px] font-semibold block">✏️ 手動成員名稱：</span>
+              <span class="sub-text text-[11px] font-semibold block">手動成員名稱：</span>
               <div class="flex items-center gap-2">
-                <input type="text" id="input-manual-player" placeholder="輸入姓名或貼上多行姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
+                <input type="text" id="input-manual-player" placeholder="輸入姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
                 <button type="button" onclick="addManualPlayer()" class="px-3 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition shrink-0">
                   + 加入
                 </button>
               </div>
             </div>
 
-            <!-- 管道 3: 新增臨時名稱 -->
-            <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
-              <span class="sub-text text-[11px] font-semibold block">⚡ 新增臨時名稱：</span>
-              <div class="flex flex-wrap items-center gap-2">
+            <!-- 管道 3: 新增臨時名稱 (分兩列) -->
+            <div class="p-2.5 rounded-xl card-inner border space-y-2">
+              <span class="sub-text text-[11px] font-semibold block">新增臨時名稱：</span>
+              
+              <div class="flex items-center">
                 <button type="button" onclick="addSingleGuestPlayer()" class="px-3 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
                   + 1 位臨打
                 </button>
+              </div>
 
-                <div class="flex items-center gap-1.5 ml-auto">
-                  <input type="number" id="auto-gen-count" min="4" max="64" value="8" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
-                  <button type="button" onclick="batchGenerateABCPlayers()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">
-                    批量生成選手 A~Z
-                  </button>
-                </div>
+              <div class="flex items-center gap-2 pt-1 border-t border-stone-300/30 dark:border-slate-800">
+                <span class="sub-text text-xs">生成數量：</span>
+                <input type="number" id="auto-gen-count" min="4" max="64" value="8" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
+                <span class="sub-text text-xs">人</span>
+                <button type="button" onclick="batchGenerateABCPlayers()" class="ml-auto px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">
+                  生成選手 A~Z
+                </button>
               </div>
             </div>
           </div>
@@ -347,7 +345,7 @@
         </div>
       </div>
 
-      <!-- 成員數據紀錄 (去競爭化) -->
+      <!-- 成員數據紀錄 (去競爭化 & 過濾臨時代號) -->
       <div class="glass-card rounded-2xl overflow-hidden border">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
@@ -368,7 +366,6 @@
         </div>
       </div>
 
-      <!-- 社團歷史賽事封存 -->
       <div id="club-history-tournaments-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
           <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-club-history">該社團歷史封存賽事</span> (<span id="club-history-count">0</span>)
@@ -393,6 +390,11 @@
             <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
             <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target" class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
             <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="map-pin" class="w-3 h-3 text-blue-500"></i> <span id="live-courts-count" class="font-bold text-blue-600 dark:text-blue-300">1 場地</span></span>
+            
+            <!-- 賽事頁面純文字入口：查看/修改選手名單 -->
+            <button onclick="openManagePlayersModal()" class="px-2 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-[11px] font-bold">
+              選手名單
+            </button>
           </div>
         </div>
 
@@ -564,7 +566,8 @@
 
         <div>
           <label id="t-modal-club-pwd1-label" class="block font-semibold mb-1">建立社團管理密碼 ，用於調整與社團刪除</label>
-          <input type="password" id="club-new-pwd1" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="請填入4位數字如未填寫則無需密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          <!-- 補上逗號防呆 -->
+          <input type="password" id="club-new-pwd1" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="請填入4位數字，如未填寫則無需密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
         </div>
 
         <div class="flex items-center gap-2 mt-4 pt-1">
@@ -576,6 +579,26 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL: 查看/修改選手名單 (極簡全純文字) -->
+  <div id="modal-manage-players" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative">
+      <div class="flex items-center justify-between border-b border-stone-300/40 dark:border-slate-800 pb-2.5">
+        <h3 class="text-base font-bold font-display">參賽選手名單</h3>
+        <button onclick="closeManagePlayersModal()" class="sub-text text-xs hover:text-emerald-500">關閉</button>
+      </div>
+
+      <div id="modal-players-list-status" class="text-[11px] sub-text"></div>
+
+      <div id="modal-players-list-container" class="max-h-60 overflow-y-auto space-y-2 text-xs"></div>
+
+      <div class="pt-2">
+        <button onclick="closeManagePlayersModal()" class="w-full card-inner border font-bold py-2.5 rounded-xl text-xs transition">
+          關閉
+        </button>
+      </div>
     </div>
   </div>
 
@@ -619,7 +642,7 @@
 
     let deferredPrompt = null; 
 
-    // 全域參賽選手標籤陣列 (Single Source of Truth)
+    // 全域參賽選手標籤陣列
     let activePlayerTags = [];
 
     const STATE = {
@@ -653,7 +676,7 @@
         hubTitle: "賽事大廳",
         hubActive: "進行中賽事",
         hubArchived: "已完賽紀錄",
-        createNewBtn: "➕ 建立新賽事",
+        createNewBtn: "建立新賽事",
         statusFinished: "🔒 已完賽 (戰績凍結)",
         statusActive: "⚡ 進行中",
         statusVoided: "🚫 已作廢 (流局)",
@@ -663,7 +686,7 @@
         createTitle: "建立新賽事",
         labelName: "1. 賽事名稱",
         labelClub: "2. 所屬社團",
-        btnOpenCreateClub: "➕ 新增社團",
+        btnOpenCreateClub: "新增社團",
         labelClubAuth: "該社團受保護，請輸入社團公用密碼：",
         placeholderClubAuth: "輸入社團公用密碼",
         optionalTag: "(選填)",
@@ -710,7 +733,7 @@
         modalClubPwd2Label: "建立社團公用密碼 ，用於建立與瀏覽賽事",
         placeholderClubPwd2: "請填入4位數字，如未填寫則無需密碼",
         modalClubPwd1Label: "建立社團管理密碼 ，用於調整與社團刪除",
-        placeholderClubPwd1: "請填入4位數字如未填寫則無需密碼",
+        placeholderClubPwd1: "請填入4位數字，如未填寫則無需密碼",
         btnSubmitClub: "確認創建",
         btnCancelClub: "放棄創建",
         estPrefix: "預估",
@@ -771,7 +794,7 @@
         hubTitle: "Tournament Hub",
         hubActive: "Active Tournaments",
         hubArchived: "Archived Records",
-        createNewBtn: "➕ Create Tournament",
+        createNewBtn: "Create Tournament",
         statusFinished: "🔒 Finished (Locked)",
         statusActive: "⚡ Active",
         statusVoided: "🚫 Voided",
@@ -781,7 +804,7 @@
         createTitle: "Create Tournament",
         labelName: "1. Tournament Name",
         labelClub: "2. Club Name",
-        btnOpenCreateClub: "➕ Add Club",
+        btnOpenCreateClub: "Add Club",
         labelClubAuth: "Club protected, enter public password:",
         placeholderClubAuth: "Enter public password",
         optionalTag: "(Optional)",
@@ -819,6 +842,7 @@
         thCPlayer: "Member",
         thCWinRate: "Win %",
         thCWL: "W/L",
+        thCPlayed: "Games",
         thCDiff: "Diff",
         thCPFPA: "PF/PA",
         modalClubTitle: "Create New Club",
@@ -1030,7 +1054,7 @@
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
       document.getElementById("t-hub-active").innerText = t("hubActive");
       document.getElementById("t-hub-archived").innerText = t("hubArchived");
-      document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
+      document.getElementById("t-create-new-btn").innerText = t("createNewBtn");
 
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
@@ -1173,7 +1197,7 @@
       if (pageName === "hub") renderHubTournaments();
       else if (pageName === "create") {
         await populateClubSelect();
-        activePlayerTags = []; // 清空預設標籤，空白佈告
+        activePlayerTags = [];
         renderPlayerTags();
       }
       else if (pageName === "club") await initClubPage();
@@ -1186,24 +1210,24 @@
       lucide.createIcons();
     };
 
-    /* --- 全新：選手標籤核心邏輯 (Single Source of Truth) --- */
+    /* --- 選手標籤核心與極簡畫布邏輯 --- */
     function renderPlayerTags() {
       const container = document.getElementById("player-tags-container");
       const badge = document.getElementById("player-count-badge");
       badge.innerText = `目前共 ${activePlayerTags.length} 位`;
 
       if (activePlayerTags.length === 0) {
-        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-6 pointer-events-none">請透過下方選項點選社團成員、手動新增或產生臨時代號</span>`;
+        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增</span>`;
       } else {
         container.innerHTML = activePlayerTags.map((p, idx) => `
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold shadow-sm animate-fadeIn">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold shadow-sm">
             ${p}
             <button type="button" onclick="removePlayerTag(${idx})" class="hover:text-rose-500 transition text-emerald-500/60 font-normal">✕</button>
           </span>
         `).join("");
       }
 
-      onClubSelectChange(); // 更新社團 Chip 的已選狀態
+      onClubSelectChange();
       calculateTimeEstimate();
     }
 
@@ -1228,12 +1252,15 @@
       renderPlayerTags();
     };
 
+    // +1 位臨打，改用標準「選手 A~Z」命名方式
     window.addSingleGuestPlayer = function() {
-      let count = 1;
-      while (activePlayerTags.includes(`臨打 ${count}`)) {
-        count++;
+      let codeIndex = 0;
+      let newName = `選手 ${String.fromCharCode(65 + codeIndex)}`;
+      while (activePlayerTags.includes(newName)) {
+        codeIndex++;
+        newName = `選手 ${String.fromCharCode(65 + codeIndex)}`;
       }
-      activePlayerTags.push(`臨打 ${count}`);
+      activePlayerTags.push(newName);
       renderPlayerTags();
     };
 
@@ -1248,6 +1275,85 @@
       if (idx >= 0) activePlayerTags.splice(idx, 1);
       else activePlayerTags.push(memberName);
       renderPlayerTags();
+    };
+
+    /* --- 「查看/修改選手名單」極簡彈窗核心功能 --- */
+    window.openManagePlayersModal = function() {
+      const tObj = STATE.tournamentData;
+      if (!tObj) return;
+
+      const container = document.getElementById("modal-players-list-container");
+      const statusText = document.getElementById("modal-players-list-status");
+      const isFinished = tObj.status === "finished";
+
+      // 權限判斷：完賽狀態下，僅在解凍模式允許編輯
+      const canEdit = (!isFinished && STATE.isAdminUnlocked) || (isFinished && STATE.isSuperAdminUnlocked);
+
+      if (canEdit) {
+        statusText.innerText = "點擊名稱即可更名（改名後自動同步賽程與戰績）";
+        statusText.className = "text-[11px] font-semibold text-emerald-500 mb-2";
+      } else {
+        statusText.innerText = isFinished ? "賽事已完賽鎖定，僅供查看名單" : "目前為觀看模式，解鎖後可更名";
+        statusText.className = "text-[11px] sub-text mb-2";
+      }
+
+      container.innerHTML = tObj.players.map((p, idx) => `
+        <div class="flex items-center justify-between p-2 rounded-xl card-inner border">
+          <span class="sub-text font-mono w-6 text-center">${idx + 1}.</span>
+          <div class="flex-1 px-2">
+            ${canEdit ? `
+              <input type="text" id="edit-player-input-${idx}" value="${p}" class="w-full input-bg border rounded-lg p-1 px-2 text-xs font-semibold focus:border-emerald-500 focus:outline-none" />
+            ` : `
+              <span class="font-bold">${p}</span>
+            `}
+          </div>
+          ${canEdit ? `
+            <button onclick="saveSinglePlayerName(${idx})" class="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition">
+              儲存
+            </button>
+          ` : ''}
+        </div>
+      `).join("");
+
+      document.getElementById("modal-manage-players").classList.remove("hidden");
+    };
+
+    window.closeManagePlayersModal = function() {
+      document.getElementById("modal-manage-players").classList.add("hidden");
+    };
+
+    window.saveSinglePlayerName = async function(playerIdx) {
+      const input = document.getElementById(`edit-player-input-${playerIdx}`);
+      if (!input) return;
+
+      const oldName = STATE.tournamentData.players[playerIdx];
+      const newName = input.value.trim();
+
+      if (!newName) {
+        showToast("選手姓名不能為空白！", "error");
+        return;
+      }
+
+      if (oldName === newName) return;
+
+      // 1. 更新主陣列
+      STATE.tournamentData.players[playerIdx] = newName;
+
+      // 2. 批次更新所有對戰賽程表中的藍隊與紅隊名稱
+      STATE.tournamentData.matches.forEach(m => {
+        m.blue = m.blue.map(p => p === oldName ? newName : p);
+        m.red = m.red.map(p => p === oldName ? newName : p);
+        m.resting = m.resting.map(p => p === oldName ? newName : p);
+      });
+
+      // 3. 儲存至資料庫與 LocalStorage
+      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
+      saveToLocalTournaments(STATE.tournamentData);
+
+      // 4. 即時重繪 Live UI
+      renderLiveUI(STATE.tournamentData);
+      openManagePlayersModal();
+      showToast(`已將「${oldName}」修改為「${newName}」`, "success");
     };
 
     window.openGodMode = async function () {
@@ -1587,12 +1693,19 @@
       }
     };
 
+    // 抓取社團成員時，自動過濾掉「選手 A~Z」等預設代號
     function getPlayersFromClub(clubName) {
       if (!clubName) return [];
       const playersSet = new Set();
+      const isAutoGeneratedCode = (str) => /^選手\s+[A-Z]$/i.test(str.trim());
+
       STATE.allTournamentsCache.forEach(tData => {
         if (tData.clubName && tData.clubName.trim().toLowerCase() === clubName.toLowerCase() && tData.status !== "voided") {
-          if (tData.players) tData.players.forEach(p => playersSet.add(p));
+          if (tData.players) {
+            tData.players.forEach(p => {
+              if (p && !isAutoGeneratedCode(p)) playersSet.add(p);
+            });
+          }
         }
       });
       return Array.from(playersSet);
@@ -1781,10 +1894,13 @@
       }
     };
 
+    // 彙整社團歷史累積數據時，自動排除「選手 A~Z」等預設代號
     async function renderClubLeaderboard() {
       await fetchAllTournaments();
       const currentClub = STATE.selectedClubName;
       if (!currentClub) return;
+
+      const isAutoGeneratedCode = (str) => /^選手\s+[A-Z]$/i.test(str.trim());
 
       const clubTournaments = STATE.allTournamentsCache.filter(tData => 
         tData.clubName && 
@@ -1801,6 +1917,7 @@
           const bWin = bs > rs;
 
           m.blue.forEach(p => {
+            if (isAutoGeneratedCode(p)) return; // 自動過濾
             if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
             stats[p].played++;
             stats[p].pf += bs;
@@ -1809,6 +1926,7 @@
           });
 
           m.red.forEach(p => {
+            if (isAutoGeneratedCode(p)) return; // 自動過濾
             if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
             stats[p].played++;
             stats[p].pf += rs;
@@ -1831,7 +1949,7 @@
 
       const tbody = document.getElementById("club-leaderboard-tbody");
       if (ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center sub-text text-xs">社團「${currentClub}」尚無有效的比賽數據</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center sub-text text-xs">社團「${currentClub}」尚無有效的成員數據</td></tr>`;
       } else {
         tbody.innerHTML = ranking.map((r) => `
           <tr class="hover:bg-stone-500/5 whitespace-nowrap">
@@ -1972,6 +2090,7 @@
 
       const isFinished = data.status === "finished";
       const isActive = data.status === "active" || !data.status;
+      const isClubMatch = !!data.clubName;
 
       const statusBadge = document.getElementById("live-status-badge");
       const lockedBanner = document.getElementById("notice-locked-banner");
@@ -1999,8 +2118,9 @@
           : `<i data-lucide="edit-3" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
       }
       
+      // 防呆：非社團公開賽事完賽後，自動隱藏「社團管理者解凍修改」按鈕
       const btnSuperUnlock = document.getElementById("btn-super-admin-unlock");
-      if (isFinished && !STATE.isSuperAdminUnlocked) {
+      if (isFinished && isClubMatch && !STATE.isSuperAdminUnlocked) {
         btnSuperUnlock.classList.remove("hidden");
         btnSuperUnlock.classList.add("flex");
       } else {
@@ -2218,4 +2338,3 @@
   </script>
 </body>
 </html>
-
