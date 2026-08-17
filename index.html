@@ -1,8 +1,3 @@
-這是一個非常關鍵的防呆機制！
-如果預設顯示淡灰色 0，但在實際比賽中完全打不出 0 分（例如被完封 15:0），那會造成很大困擾。
-會出現「不能輸入 0」通常是因為程式碼中用了 !bs 或 if (!score) 來判斷是否有填寫，結果把數字 0 當成了「空值 (false)」。
-我已經將這個問題修正，並把您剛才提出的卡片第三列格式統一（🚩 社團 │ 👥 人數 │ ⚔️ 局數 │ 📅 日期時間）、已封存區塊右上角留白、隊友名稱補 /、以及允許輸入 0 分全數整合。
-以下是最新修正後的完整 HTML/JS 程式碼，請直接複製覆蓋使用：
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -137,9 +132,7 @@
             <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
         </div>
-        <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
-          建立新賽事
-        </button>
+        <!-- 已移除重複多餘的電腦版右側「建立新賽事」按鈕 -->
       </div>
 
       <div class="space-y-3">
@@ -149,7 +142,6 @@
         <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
       </div>
 
-      <!-- 已完賽更名為：已封存 -->
       <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
           <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
@@ -636,13 +628,13 @@
           <div class="p-2.5 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第一隊</span>
             <div id="free-team-1-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
-            <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
+            <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
           </div>
 
           <div class="p-2.5 rounded-xl card-inner border space-y-1">
             <span class="sub-text text-[10px] block font-bold">第二隊</span>
             <div id="free-team-2-display" class="font-bold min-h-[32px] text-xs">未選擇</div>
-            <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-1.5 text-center font-bold font-mono text-sm focus:border-emerald-500 focus:outline-none" />
+            <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
           </div>
         </div>
 
@@ -1103,7 +1095,6 @@
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
       document.getElementById("t-hub-active").innerText = t("hubActive");
       document.getElementById("t-hub-archived").innerText = t("hubArchived");
-      document.getElementById("t-create-new-btn").innerText = t("createNewBtn");
 
       document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
@@ -1550,11 +1541,15 @@
       renderGodModeTables();
     };
 
+    /* 修正：清除快取後清空網址列 ?t=... 參數並重導至首頁 (page-hub) */
     window.godClearLocalStorage = function() {
       if (!confirm("⚠️ 確定要清除所有瀏覽器快取 (LocalStorage) 嗎？")) return;
       localStorage.clear();
       showToast("🧹 本機快取已完全清空！", "success");
-      setTimeout(() => window.location.reload(), 1000);
+      setTimeout(() => {
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.location.href = cleanUrl;
+      }, 1000);
     };
 
     window.godRefreshData = async function() {
@@ -1835,7 +1830,6 @@
       `;
     };
 
-    // 格式化日期時間 helper (MM/DD HH:mm)
     function formatDateTime(dateStr) {
       const d = dateStr ? new Date(dateStr) : new Date();
       if (isNaN(d.getTime())) return dateStr || "";
@@ -1889,7 +1883,6 @@
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
     }
 
-    /* 賽事大廳卡片（第三列統一格式：🚩社團 │ 👥人數 │ ⚔️局數 │ 📅日期時間）*/
     async function renderHubTournaments() {
       const activeContainer = document.getElementById("tournaments-list");
       const archivedContainer = document.getElementById("archived-list");
@@ -1913,7 +1906,6 @@
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
               
-              <!-- 第三列：統一排版格式 -->
               <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
                 ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
                 <span>👥 ${tData.players?.length || 0}人</span>
@@ -1928,7 +1920,6 @@
         `).join("");
       }
 
-      /* 已封存區塊（右上角空白，不標示） */
       if (historyList.length > 0) {
         archivedSection.classList.remove("hidden");
         document.getElementById("archived-count").innerText = historyList.length;
@@ -1937,12 +1928,10 @@
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-mono font-bold text-slate-400">${tData.id}</span>
-                <!-- 右上角保持完全空白 -->
                 <span></span>
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
               
-              <!-- 第三列：統一排版格式 -->
               <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
                 ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
                 <span>👥 ${tData.players?.length || 0}人</span>
@@ -2087,7 +2076,6 @@
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
               
-              <!-- 第三列：統一排版格式 -->
               <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
                 <span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>
                 <span>👥 ${tData.players?.length || 0}人</span>
@@ -2284,7 +2272,7 @@
       renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
-    /* 對戰卡片：隊友第一名單尾端補上 /，比分可精確輸入 0 分 */
+    /* 對戰卡片：一隊恢復雙獨立儲存格、分數字體放大至 text-xl，支援 0 分儲存 */
     function renderMatchesList(matches, canEdit) {
       const container = document.getElementById("matches-container");
       let completedCount = 0;
@@ -2308,24 +2296,22 @@
               </span>
             </div>
 
-            <!-- 第一人名末尾補上 / 符號 -->
+            <!-- 一隊恢復兩個獨立儲存格結構 -->
             <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
-              <div class="p-2.5 rounded-xl card-inner border">
-                <div class="font-bold text-sm tracking-tight leading-snug">
-                  ${m.blue[0]} /<br />${m.blue[1]}
-                </div>
+              <div class="p-2 rounded-xl card-inner border space-y-1">
+                <div class="font-bold truncate text-xs sm:text-sm">${m.blue[0]}</div>
+                <div class="font-bold truncate text-xs sm:text-sm">${m.blue[1]}</div>
               </div>
-              <div class="p-2.5 rounded-xl card-inner border">
-                <div class="font-bold text-sm tracking-tight leading-snug">
-                  ${m.red[0]} /<br />${m.red[1]}
-                </div>
+              <div class="p-2 rounded-xl card-inner border space-y-1">
+                <div class="font-bold truncate text-xs sm:text-sm">${m.red[0]}</div>
+                <div class="font-bold truncate text-xs sm:text-sm">${m.red[1]}</div>
               </div>
             </div>
 
-            <!-- 輸入框預設以淡灰色 0 呈現，支援 0 分儲存 -->
+            <!-- 比分輸入框：字體放大至 text-xl，視覺更清楚 -->
             <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
 
             ${canEdit ? `
@@ -2434,7 +2420,6 @@
       showToast("新賽局比分已成功儲存！", "success");
     };
 
-    /* 修正 0 分無法儲存的判定漏洞 */
     window.saveMatchScore = async function (matchId) {
       const rawB = document.getElementById(`score-blue-${matchId}`).value.trim();
       const rawR = document.getElementById(`score-red-${matchId}`).value.trim();
@@ -2569,4 +2554,3 @@
   </script>
 </body>
 </html>
-
