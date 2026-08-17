@@ -1,3 +1,8 @@
+這是一個非常關鍵的防呆機制！
+如果預設顯示淡灰色 0，但在實際比賽中完全打不出 0 分（例如被完封 15:0），那會造成很大困擾。
+會出現「不能輸入 0」通常是因為程式碼中用了 !bs 或 if (!score) 來判斷是否有填寫，結果把數字 0 當成了「空值 (false)」。
+我已經將這個問題修正，並把您剛才提出的卡片第三列格式統一（🚩 社團 │ 👥 人數 │ ⚔️ 局數 │ 📅 日期時間）、已封存區塊右上角留白、隊友名稱補 /、以及允許輸入 0 分全數整合。
+以下是最新修正後的完整 HTML/JS 程式碼，請直接複製覆蓋使用：
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
@@ -144,10 +149,11 @@
         <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
       </div>
 
+      <!-- 已完賽更名為：已封存 -->
       <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
         <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
           <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-hub-archived">已完賽紀錄</span> (<span id="archived-count">0</span>)
+            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-hub-archived">已封存</span> (<span id="archived-count">0</span>)
           </h3>
           <span id="archive-arrow" class="text-xs sub-text">▼ 展開</span>
         </div>
@@ -238,7 +244,6 @@
           </div>
           <div>
             <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">8. 賽事模式</label>
-            <!-- 按鈕精簡為：平均 / 最大 / 自由，單行不斷字 -->
             <div class="grid grid-cols-3 gap-1">
               <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
                 <span id="t-mode-fair-title">平均</span>
@@ -372,14 +377,14 @@
       </div>
     </section>
 
-    <!-- PAGE D: LIVE TOURNAMENT VIEW (三列層次化資訊區) -->
+    <!-- PAGE D: LIVE TOURNAMENT VIEW -->
     <section id="page-live" class="hidden space-y-4 sm:space-y-6">
       <div class="glass-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-emerald-500 space-y-3">
-        <!-- 第一列：極簡橫排（手機不折行）: [pp] [ID] [進行中] [選手] [🔗 QR] -->
+        <!-- 第一列：極簡橫排 -->
         <div class="flex flex-wrap items-center gap-2">
           <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight mr-1">賽事載入中...</h2>
           <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
-          <span id="live-club-badge" class="hidden px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[11px] font-bold">👥 ---</span>
+          <span id="live-club-badge" class="hidden px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[11px] font-bold">🚩 ---</span>
           <span id="live-status-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold border">進行中</span>
           
           <button onclick="openManagePlayersModal()" class="px-2.5 py-0.5 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-[11px] font-bold">
@@ -725,7 +730,7 @@
         dbConnected: "已連線",
         hubTitle: "賽事大廳",
         hubActive: "進行中賽事",
-        hubArchived: "已完賽紀錄",
+        hubArchived: "已封存",
         createNewBtn: "建立新賽事",
         statusFinished: "🔒 已完賽 (戰績凍結)",
         statusActive: "進行中",
@@ -1767,7 +1772,6 @@
       return Array.from(playersSet);
     }
 
-    /* 切換賽事模式按鈕與細節說明連動 */
     window.setScheduleMode = function (mode) {
       document.getElementById("create-schedule-mode").value = mode;
       document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
@@ -1831,6 +1835,17 @@
       `;
     };
 
+    // 格式化日期時間 helper (MM/DD HH:mm)
+    function formatDateTime(dateStr) {
+      const d = dateStr ? new Date(dateStr) : new Date();
+      if (isNaN(d.getTime())) return dateStr || "";
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${mm}/${dd} ${hh}:${min}`;
+    }
+
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
@@ -1858,7 +1873,7 @@
 
       const tObj = { 
         id: tournamentId, name, clubName, scheduleMode,
-        status: "active", createdAt: new Date().toLocaleString("zh-TW"), 
+        status: "active", createdAt: new Date().toISOString(), 
         players: [...activePlayerTags], matches 
       };
 
@@ -1874,6 +1889,7 @@
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
     }
 
+    /* 賽事大廳卡片（第三列統一格式：🚩社團 │ 👥人數 │ ⚔️局數 │ 📅日期時間）*/
     async function renderHubTournaments() {
       const activeContainer = document.getElementById("tournaments-list");
       const archivedContainer = document.getElementById("archived-list");
@@ -1893,12 +1909,18 @@
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-mono font-bold text-emerald-500">${tData.id}</span>
-                ${tData.clubName ? `<span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold text-[10px]">👥 ${tData.clubName}</span>` : '<span class="px-2 py-0.5 rounded card-inner sub-text text-[10px]">一般公開</span>'}
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">進行中</span>
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              <div class="flex items-center gap-3 text-xs sub-text pt-1">
-                <span>👥 ${tData.players?.length || 0} 人參賽</span>
-                <span>⚔️ ${tData.matches?.length || 0} 局賽程</span>
+              
+              <!-- 第三列：統一排版格式 -->
+              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
+                ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
+                <span>👥 ${tData.players?.length || 0}人</span>
+                <span>│</span>
+                <span>⚔️ ${tData.matches?.length || 0}局</span>
+                <span>│</span>
+                <span>📅 ${formatDateTime(tData.createdAt)}</span>
               </div>
             </div>
             <button onclick="enterTournament('${tData.id}')" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 py-2.5 rounded-xl text-xs font-bold transition">進入賽事</button>
@@ -1906,6 +1928,7 @@
         `).join("");
       }
 
+      /* 已封存區塊（右上角空白，不標示） */
       if (historyList.length > 0) {
         archivedSection.classList.remove("hidden");
         document.getElementById("archived-count").innerText = historyList.length;
@@ -1914,12 +1937,19 @@
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-mono font-bold text-slate-400">${tData.id}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-500/10 text-slate-400">🔒 已完賽 (凍結)</span>
+                <!-- 右上角保持完全空白 -->
+                <span></span>
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              <div class="flex items-center gap-3 text-xs sub-text pt-1">
-                <span>👥 ${tData.players?.length || 0} 人</span>
-                <span>📅 ${tData.createdAt || ''}</span>
+              
+              <!-- 第三列：統一排版格式 -->
+              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
+                ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
+                <span>👥 ${tData.players?.length || 0}人</span>
+                <span>│</span>
+                <span>⚔️ ${tData.matches?.length || 0}局</span>
+                <span>│</span>
+                <span>📅 ${formatDateTime(tData.createdAt)}</span>
               </div>
             </div>
             <button onclick="enterTournament('${tData.id}')" class="w-full card-inner hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 py-2.5 rounded-xl text-xs font-bold transition border">查看歷史戰績</button>
@@ -2053,12 +2083,18 @@
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-mono font-bold text-amber-500">${tData.id}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tData.status === 'finished' ? 'bg-slate-500/10 text-slate-400' : 'bg-emerald-500/10 text-emerald-500'}">${tData.status === 'finished' ? '🔒 已完賽' : '⚡ 進行中'}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tData.status === 'finished' ? 'bg-slate-500/10 text-slate-400' : 'bg-emerald-500/10 text-emerald-500'}">${tData.status === 'finished' ? '🔒 已完賽' : '進行中'}</span>
               </div>
               <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              <div class="flex items-center gap-3 text-xs sub-text pt-1">
-                <span>👥 ${tData.players?.length || 0} 人參賽</span>
-                <span>📅 ${tData.createdAt || ''}</span>
+              
+              <!-- 第三列：統一排版格式 -->
+              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
+                <span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>
+                <span>👥 ${tData.players?.length || 0}人</span>
+                <span>│</span>
+                <span>⚔️ ${tData.matches?.length || 0}局</span>
+                <span>│</span>
+                <span>📅 ${formatDateTime(tData.createdAt)}</span>
               </div>
             </div>
             <button onclick="enterTournament('${tData.id}')" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 py-2.5 rounded-xl text-xs font-bold transition border border-amber-500/20">檢視賽事紀錄</button>
@@ -2172,7 +2208,7 @@
 
       const clubBadge = document.getElementById("live-club-badge");
       if (data.clubName) {
-        clubBadge.innerText = `👥 ${data.clubName}`;
+        clubBadge.innerText = `🚩 ${data.clubName}`;
         clubBadge.classList.remove("hidden");
       } else {
         clubBadge.classList.add("hidden");
@@ -2248,7 +2284,7 @@
       renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
     }
 
-    /* 對戰卡片：第一人名尾端補上 / ，輸入框預設顯示淡灰色 0 */
+    /* 對戰卡片：隊友第一名單尾端補上 /，比分可精確輸入 0 分 */
     function renderMatchesList(matches, canEdit) {
       const container = document.getElementById("matches-container");
       let completedCount = 0;
@@ -2272,7 +2308,7 @@
               </span>
             </div>
 
-            <!-- 第一列末尾補上 / 符號，明確引導隊友組合 -->
+            <!-- 第一人名末尾補上 / 符號 -->
             <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
               <div class="p-2.5 rounded-xl card-inner border">
                 <div class="font-bold text-sm tracking-tight leading-snug">
@@ -2286,10 +2322,10 @@
               </div>
             </div>
 
-            <!-- 輸入框預設以淡灰色 0 呈現 -->
+            <!-- 輸入框預設以淡灰色 0 呈現，支援 0 分儲存 -->
             <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-sm focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
 
             ${canEdit ? `
@@ -2368,13 +2404,16 @@
         return;
       }
 
-      const s1 = parseInt(document.getElementById("free-score-1").value);
-      const s2 = parseInt(document.getElementById("free-score-2").value);
+      const raw1 = document.getElementById("free-score-1").value.trim();
+      const raw2 = document.getElementById("free-score-2").value.trim();
 
-      if (isNaN(s1) || isNaN(s2)) {
+      if (raw1 === "" || raw2 === "") {
         showToast("請輸入兩隊得分！", "error");
         return;
       }
+
+      const s1 = parseInt(raw1, 10);
+      const s2 = parseInt(raw2, 10);
 
       const newMatchId = STATE.tournamentData.matches.length + 1;
       const newMatch = {
@@ -2395,13 +2434,19 @@
       showToast("新賽局比分已成功儲存！", "success");
     };
 
+    /* 修正 0 分無法儲存的判定漏洞 */
     window.saveMatchScore = async function (matchId) {
-      const bs = parseInt(document.getElementById(`score-blue-${matchId}`).value);
-      const rs = parseInt(document.getElementById(`score-red-${matchId}`).value);
-      if (isNaN(bs) || isNaN(rs)) {
+      const rawB = document.getElementById(`score-blue-${matchId}`).value.trim();
+      const rawR = document.getElementById(`score-red-${matchId}`).value.trim();
+
+      if (rawB === "" || rawR === "") {
         showToast("請輸入雙方得分！", "error");
         return;
       }
+
+      const bs = parseInt(rawB, 10);
+      const rs = parseInt(rawR, 10);
+
       const idx = STATE.tournamentData.matches.findIndex(m => m.id === matchId);
       STATE.tournamentData.matches[idx].blueScore = bs;
       STATE.tournamentData.matches[idx].redScore = rs;
@@ -2524,3 +2569,4 @@
   </script>
 </body>
 </html>
+
