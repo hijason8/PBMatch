@@ -155,174 +155,151 @@
     <section id="page-create" class="hidden max-w-2xl mx-auto space-y-4 sm:space-y-6">
       <div class="border-b border-stone-300 dark:border-slate-800 pb-3">
         <h2 id="t-create-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
-          <i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> 建立新賽事
+          <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-500"></i> 建立新賽事
         </h2>
       </div>
 
       <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
-        <div>
-          <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
-          <input type="text" id="create-name" required placeholder="例：週末雙打積分賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">2. 所屬社團 <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">(選填)</span></label>
-            <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">新增社團</button>
-          </div>
-          <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
-            <option value="">-- 無 --</option>
-          </select>
-        </div>
-
-        <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
-          <label id="t-label-club-auth" class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受保護，請輸入社團公用密碼：
-          </label>
-          <input type="password" id="create-club-auth-pwd" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="輸入社團公用密碼" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
-        </div>
-
-        <div class="grid grid-cols-2 gap-3" id="row-duration-courts">
+        
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="info" class="w-4 h-4"></i> Step 1: 基礎參數設定</h3>
+          
           <div>
-            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">3. 預計比賽總時間</label>
-            <div class="relative">
-              <input type="number" id="create-duration" min="0.5" max="8" step="0.5" value="2.0" required inputmode="decimal"
-                     onkeydown="preventInvalidNumberChars(event, true)" 
-                     oninput="clampNumberInput(this, 0.5, 8); calculateTimeEstimate();" 
-                     class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-              <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
+            <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">賽事名稱</label>
+            <input type="text" id="create-name" required placeholder="例：週末雙打積分賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">所屬社團 <span class="text-[10px] sub-text font-normal">(選填)</span></label>
+              <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">新增社團</button>
+            </div>
+            <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+              <option value="">-- 無 --</option>
+            </select>
+          </div>
+
+          <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
+            <label class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受保護，請輸入社團公用密碼：
+            </label>
+            <input type="password" id="create-club-auth-pwd" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="輸入社團公用密碼" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
+          </div>
+
+          <!-- 參賽選手名單提前 -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">參賽選手名單</label>
+              <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400 font-mono">目前共 0 位</span>
+            </div>
+            <div id="player-tags-container" class="min-h-[90px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
+              <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增參賽選手</span>
+            </div>
+            <div class="space-y-2 pt-1">
+              <div id="box-club-members" class="hidden p-2.5 rounded-xl card-inner border space-y-1.5">
+                <span class="sub-text text-[11px] font-semibold block">點選現有社團成員：</span>
+                <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
+              </div>
+              <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
+                <span class="sub-text text-[11px] font-semibold block">手動成員名稱：</span>
+                <div class="flex items-center gap-2">
+                  <input type="text" id="input-manual-player" placeholder="輸入姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
+                  <button type="button" onclick="addManualPlayer()" class="px-3 py-2 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold transition shrink-0">+ 加入</button>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl card-inner border space-y-2">
+                <span class="sub-text text-[11px] font-semibold block">新增臨時名稱：</span>
+                <div class="flex items-center">
+                  <button type="button" onclick="addSingleGuestPlayer()" class="px-3 py-2 bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded-xl text-xs font-bold transition">+ 1 位臨打</button>
+                </div>
+                <div class="flex items-center gap-2 pt-1 border-t border-stone-300/30 dark:border-slate-800">
+                  <span class="sub-text text-xs">生成數量：</span>
+                  <input type="number" id="auto-gen-count" min="4" max="64" value="7" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
+                  <span class="sub-text text-xs">人</span>
+                  <button type="button" onclick="batchGenerateABCPlayers()" class="ml-auto px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">生成選手 A~Z</button>
+                </div>
+              </div>
             </div>
           </div>
 
+          <div class="grid grid-cols-2 gap-3" id="row-duration-courts">
+            <div>
+              <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">預計總時間</label>
+              <div class="relative">
+                <input type="number" id="create-duration" min="0.5" max="8" step="0.5" value="2.0" required inputmode="decimal" oninput="clampNumberInput(this, 0.5, 8); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+                <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
+              </div>
+            </div>
+            <div>
+              <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">比賽場地數</label>
+              <input type="number" id="create-courts" min="1" max="12" value="1" required inputmode="numeric" oninput="clampNumberInput(this, 1, 12); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+            </div>
+          </div>
+          
           <div>
             <label id="t-label-buffer" class="block text-xs sm:text-sm font-semibold mb-1">彈性緩衝時間</label>
             <select id="create-buffer-mins" onchange="calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="0">0 分鐘 (不超時)</option>
-              <option value="10">10 分鐘</option>
               <option value="15" selected>15 分鐘 (推薦)</option>
-              <option value="20">20 分鐘</option>
               <option value="30">30 分鐘</option>
             </select>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3" id="row-scoring-target">
+        <!-- 賽事模式提前 -->
+        <div class="space-y-3 pt-2 border-t border-stone-200 dark:border-slate-800">
+          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="settings" class="w-4 h-4"></i> Step 2: 賽事模式設定</h3>
           <div>
-            <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">4. 比賽場地數</label>
-            <input type="number" id="create-courts" min="1" max="12" value="1" required inputmode="numeric"
-                   onkeydown="preventInvalidNumberChars(event, false)" 
-                   oninput="clampNumberInput(this, 1, 12); calculateTimeEstimate();" 
-                   class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+            <div class="grid grid-cols-3 gap-1">
+              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center">平均賽局</button>
+              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">最大賽局</button>
+              <button type="button" id="btn-mode-free" onclick="setScheduleMode('free')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">自由賽局</button>
+            </div>
+            <input type="hidden" id="create-schedule-mode" value="fair" />
           </div>
 
-          <div>
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">5. 預估單局配時</label>
+          <!-- 動態欄位區塊 -->
+          <div id="box-fair-options" class="p-3 rounded-xl card-inner border space-y-2">
+            <label class="block text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 系統建議總局數（100% 絕對平均上場）
+            </label>
+            <div id="fair-radio-container" class="space-y-1.5 text-xs">
+              <span class="sub-text text-[11px]">計算中...</span>
+            </div>
+          </div>
+
+          <div id="box-game-mins-input" class="hidden">
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">預估單局配時</label>
             <div class="relative">
-              <input type="number" id="create-game-mins" min="3" max="30" value="12" required inputmode="numeric"
-                     onkeydown="preventInvalidNumberChars(event, false)" 
-                     oninput="clampNumberInput(this, 3, 30); calculateTimeEstimate();" 
-                     class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="create-game-mins" min="3" max="30" value="12" inputmode="numeric" oninput="clampNumberInput(this, 3, 30); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">6. 計分賽制選擇</label>
-            <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
-              <option value="rally">落地得分制 (Rally)</option>
-              <option value="sideout">發球得分制 (Side-out)</option>
-            </select>
-          </div>
-
-          <div>
-            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">7. 每局獲勝目標分數</label>
-            <input type="number" id="create-target-score" min="1" max="50" value="15" required inputmode="numeric"
-                   onkeydown="preventInvalidNumberChars(event, false)" 
-                   oninput="clampNumberInput(this, 1, 50); calculateTimeEstimate();" 
-                   class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-          </div>
-        </div>
-
-        <div>
-          <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1">8. 賽事模式</label>
-          <div class="grid grid-cols-3 gap-1">
-            <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
-              <span id="t-mode-fair-title">平均賽局</span>
-            </button>
-            <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
-              <span id="t-mode-max-title">最大賽局</span>
-            </button>
-            <button type="button" id="btn-mode-free" onclick="setScheduleMode('free')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">
-              <span id="t-mode-free-title">自由賽局</span>
-            </button>
-          </div>
-          <input type="hidden" id="create-schedule-mode" value="fair" />
-        </div>
-
-        <!-- 參賽選手標籤畫布區塊 -->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">9. 參賽選手名單</label>
-            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400 font-mono">目前共 0 位</span>
-          </div>
-
-          <div id="player-tags-container" class="min-h-[90px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
-            <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增</span>
-          </div>
-
-          <div class="space-y-2 pt-1">
-            <div id="box-club-members" class="hidden p-2.5 rounded-xl card-inner border space-y-1.5">
-              <span class="sub-text text-[11px] font-semibold block">點選現有成員：</span>
-              <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
+        <!-- 獲勝目標與智能提示 -->
+        <div class="space-y-3 pt-2 border-t border-stone-200 dark:border-slate-800">
+          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4"></i> Step 3: 計分規則</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">計分賽制選擇</label>
+              <select id="create-scoring-type" required class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+                <option value="rally">落地得分制 (Rally)</option>
+                <option value="sideout">發球得分制 (Side-out)</option>
+              </select>
             </div>
-
-            <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
-              <span class="sub-text text-[11px] font-semibold block">手動成員名稱：</span>
-              <div class="flex items-center gap-2">
-                <input type="text" id="input-manual-player" placeholder="輸入姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
-                <button type="button" onclick="addManualPlayer()" class="px-3 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition shrink-0">
-                  + 加入
-                </button>
-              </div>
-            </div>
-
-            <div class="p-2.5 rounded-xl card-inner border space-y-2">
-              <span class="sub-text text-[11px] font-semibold block">新增臨時名稱：</span>
-              
-              <div class="flex items-center">
-                <button type="button" onclick="addSingleGuestPlayer()" class="px-3 py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
-                  + 1 位臨打
-                </button>
-              </div>
-
-              <div class="flex items-center gap-2 pt-1 border-t border-stone-300/30 dark:border-slate-800">
-                <span class="sub-text text-xs">生成數量：</span>
-                <input type="number" id="auto-gen-count" min="4" max="64" value="7" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
-                <span class="sub-text text-xs">人</span>
-                <button type="button" onclick="batchGenerateABCPlayers()" class="ml-auto px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">
-                  生成選手 A~Z
-                </button>
-              </div>
+            <div>
+              <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">每局獲勝目標分數</label>
+              <input type="number" id="create-target-score" min="1" max="50" value="15" required class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
             </div>
           </div>
-        </div>
-
-        <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
-          <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
-            <i data-lucide="calculator" class="w-3.5 h-3.5"></i> 賽程數與時間預估試算：
-          </div>
-          <div id="time-estimate-text" class="sub-text text-[11px]">請先加入參賽選手標籤。</div>
+          <!-- 智能提示容器 -->
+          <div id="score-hint-container"></div>
         </div>
 
         <div class="flex items-center gap-3 mt-4">
-          <button type="button" onclick="resetCreateFormAndGoHub()" id="t-btn-cancel-create" class="w-1/3 bg-stone-200 hover:bg-stone-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-stone-700 dark:text-slate-300 font-bold py-3.5 rounded-xl shadow-sm transition text-sm">
-            放棄
-          </button>
-          <button type="submit" id="t-submit-create-btn" class="w-2/3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5">
-            <i data-lucide="zap" class="w-4 h-4"></i> 生成
-          </button>
+          <button type="button" onclick="resetCreateFormAndGoHub()" class="w-1/3 bg-stone-200 dark:bg-slate-800 text-stone-700 dark:text-slate-300 font-bold py-3.5 rounded-xl transition text-sm">放棄</button>
+          <button type="submit" class="w-2/3 bg-emerald-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex justify-center items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4"></i> 生成賽程</button>
         </div>
       </form>
     </section>
@@ -695,6 +672,7 @@
     import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+    const MIN_GAME_DURATION = 7; // 設定單局防呆底線為 7 分鐘
     let deferredPrompt = null; 
     let activePlayerTags = [];
     let freeMatchSelectedPlayers = [];
@@ -712,6 +690,7 @@
       selectedClubName: "",
       lang: localStorage.getItem("pb_lang") || "zh-TW",
       theme: localStorage.getItem("pb_theme") || "light",
+      selectedFairGamesOption: null, // 儲存平均賽局 Radio Buttons 的當前選擇局數
     };
 
     const DEFAULT_FIREBASE_CONFIG = {
@@ -738,19 +717,19 @@
         playersCountLabel: "人參賽",
         gamesDoneLabel: "局完成",
         createTitle: "建立新賽事",
-        labelName: "1. 賽事名稱",
-        labelClub: "2. 所屬社團",
+        labelName: "賽事名稱",
+        labelClub: "所屬社團",
         btnOpenCreateClub: "新增社團",
         labelClubAuth: "該社團受保護，請輸入社團公用密碼：",
         placeholderClubAuth: "輸入社團公用密碼",
         optionalTag: "(選填)",
-        labelDuration: "3. 預計比賽總時間",
-        labelCourts: "4. 比賽場地數",
-        labelGameMins: "5. 預估單局配時",
-        labelScoring: "6. 計分賽制選擇",
-        labelTarget: "7. 每局獲勝目標分數",
-        labelScheduleMode: "8. 賽事模式",
-        labelPlayers: "9. 參賽選手名單",
+        labelDuration: "預計總時間",
+        labelCourts: "比賽場地數",
+        labelGameMins: "預估單局配時",
+        labelScoring: "計分賽制選擇",
+        labelTarget: "每局獲勝目標分數",
+        labelScheduleMode: "賽事模式設定",
+        labelPlayers: "參賽選手名單",
         unitHours: "小時",
         unitMins: "分鐘",
         courtsUnit: "場地",
@@ -766,7 +745,7 @@
         manualInputTitle: "手動輸入，每行一人：",
         playersBadge: "位選手",
         timeCalcTitle: "賽程數與時間預估試算：",
-        submitCreateBtn: "生成",
+        submitCreateBtn: "生成賽程",
         cancelBtn: "放棄",
         placeholderName: "例：週末雙打積分賽",
         placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D",
@@ -853,19 +832,19 @@
         playersCountLabel: "Players",
         gamesDoneLabel: "Games Done",
         createTitle: "Create Tournament",
-        labelName: "1. Tournament Name",
-        labelClub: "2. Club Name",
+        labelName: "Tournament Name",
+        labelClub: "Club Name",
         btnOpenCreateClub: "Add Club",
         labelClubAuth: "Club protected, enter public password:",
         placeholderClubAuth: "Enter public password",
         optionalTag: "(Optional)",
-        labelDuration: "3. Total Estimated Duration",
-        labelCourts: "4. Number of Courts",
-        labelGameMins: "5. Single Game Mins",
-        labelScoring: "6. Scoring System",
-        labelTarget: "7. Target Points",
-        labelScheduleMode: "8. Schedule Mode",
-        labelPlayers: "9. Player Roster",
+        labelDuration: "Total Duration",
+        labelCourts: "Number of Courts",
+        labelGameMins: "Single Game Mins",
+        labelScoring: "Scoring System",
+        labelTarget: "Target Points",
+        labelScheduleMode: "Schedule Mode",
+        labelPlayers: "Player Roster",
         unitHours: "Hrs",
         unitMins: "Mins",
         courtsUnit: "Courts",
@@ -1103,11 +1082,17 @@
       document.getElementById("t-hub-active").innerText = t("hubActive");
       document.getElementById("t-hub-archived").innerText = t("hubArchived");
 
-      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
+      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-emerald-500"></i> ${t("createTitle")}`;
       document.getElementById("t-label-name").innerText = t("labelName");
-      document.getElementById("t-label-club").innerHTML = `${t("labelClub")} <span id="t-optional-tag-0" class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
+      
+      const lblClub = document.getElementById("t-label-club");
+      if (lblClub) lblClub.innerHTML = `${t("labelClub")} <span class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
+      
       document.getElementById("t-btn-open-create-club").innerText = t("btnOpenCreateClub");
-      document.getElementById("t-label-club-auth").innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("labelClubAuth")}`;
+      
+      const lblAuth = document.querySelector("#box-club-auth-pwd label");
+      if(lblAuth) lblAuth.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("labelClubAuth")}`;
+      
       document.getElementById("create-club-auth-pwd").placeholder = t("placeholderClubAuth");
 
       document.getElementById("t-label-duration").innerText = t("labelDuration");
@@ -1117,14 +1102,13 @@
       document.getElementById("t-unit-mins").innerText = t("unitMins");
       document.getElementById("t-label-scoring").innerText = t("labelScoring");
       document.getElementById("t-label-target").innerText = t("labelTarget");
-      document.getElementById("t-label-schedule-mode").innerText = t("labelScheduleMode");
       document.getElementById("t-mode-fair-title").innerText = t("modeFairTitle");
       document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
       document.getElementById("t-mode-free-title").innerText = t("modeFreeTitle");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
-      document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="calculator" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
-      document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
-      document.getElementById("t-btn-cancel-create").innerText = t("cancelBtn");
+
+      const submitCreateBtn = document.querySelector("#page-create button[type='submit']");
+      if (submitCreateBtn) submitCreateBtn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
       document.getElementById("t-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("clubTitle")}`;
       document.getElementById("t-club-desc").innerText = t("clubDesc");
@@ -1236,6 +1220,7 @@
       const createForm = document.getElementById("form-create-tournament");
       if (createForm) createForm.reset();
       activePlayerTags = [];
+      STATE.selectedFairGamesOption = null;
       navigateTo("hub");
     };
 
@@ -1260,10 +1245,12 @@
         if (authPwdInput) authPwdInput.value = "";
 
         activePlayerTags = [];
+        STATE.selectedFairGamesOption = null;
         renderPlayerTags();
 
         await populateClubSelect();
         document.getElementById("box-club-auth-pwd").classList.add("hidden");
+        setScheduleMode("fair");
       } else if (pageName === "club") {
         await initClubPage();
       } else if (pageName === "godmode") {
@@ -1283,7 +1270,7 @@
       badge.innerText = `目前共 ${activePlayerTags.length} 位`;
 
       if (activePlayerTags.length === 0) {
-        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增</span>`;
+        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增參賽選手</span>`;
       } else {
         container.innerHTML = activePlayerTags.map((p, idx) => `
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold shadow-sm">
@@ -1594,33 +1581,141 @@
 
     function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 
-    /* 重構排賽演算法：平均賽局（絕對均分 + 緩衝彈性代入）、最大賽局、自由賽局 */
+    /* 動態切換賽事模式 UI/UX 邏輯 */
+    window.setScheduleMode = function (mode) {
+      document.getElementById("create-schedule-mode").value = mode;
+      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
+      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
+      document.getElementById("btn-mode-free").className = mode === "free" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
+
+      const fairBox = document.getElementById("box-fair-options");
+      const gameMinsBox = document.getElementById("box-game-mins-input");
+
+      if (mode === "fair") {
+        fairBox.classList.remove("hidden");
+        gameMinsBox.classList.add("hidden");
+      } else if (mode === "max") {
+        fairBox.classList.add("hidden");
+        gameMinsBox.classList.remove("hidden");
+      } else if (mode === "free") {
+        fairBox.classList.add("hidden");
+        gameMinsBox.classList.add("hidden");
+      }
+
+      calculateTimeEstimate();
+    };
+
+    window.onScoringTypeChange = function () {
+      document.getElementById("create-game-mins").value = document.getElementById("create-scoring-type").value === "sideout" ? 18 : 12;
+    };
+
+    /* 取得【平均賽局】合法公倍數並過濾極端值 */
+    function getFairModeRadioOptions(playerCount, totalAllowedMins, courtsCount) {
+      if (playerCount < 4) return [];
+      const blockSize = playerCount / gcd(4, playerCount);
+      const options = [];
+
+      for (let k = 1; k <= 10; k++) {
+        const totalGames = k * blockSize;
+        const gamesPerPlayer = (totalGames * 4) / playerCount;
+        const estMinPerGame = (totalAllowedMins * courtsCount) / totalGames;
+
+        // 核心防呆：只保留單局配時大於等於 7 分鐘的選項
+        if (estMinPerGame >= MIN_GAME_DURATION) {
+          options.push({
+            totalGames,
+            gamesPerPlayer,
+            estMinPerGame: Math.round(estMinPerGame * 10) / 10
+          });
+        }
+      }
+      return options;
+    }
+
+    window.onFairOptionChange = function (val) {
+      STATE.selectedFairGamesOption = parseInt(val, 10);
+      calculateTimeEstimate();
+    };
+
+    /* 賽程數與時間動態試算 (含智能提示) */
+    window.calculateTimeEstimate = function () {
+      const mode = document.getElementById("create-schedule-mode").value || "fair";
+      const n = activePlayerTags.length;
+      const hintContainer = document.getElementById("score-hint-container");
+      
+      if (mode === "free") {
+        hintContainer.innerHTML = "";
+        return;
+      }
+
+      const baseDurMins = (parseFloat(document.getElementById("create-duration").value) || 2.0) * 60;
+      const bufferMins = parseInt(document.getElementById("create-buffer-mins").value) || 0;
+      const courts = parseInt(document.getElementById("create-courts").value) || 1;
+      const totalAllowedMins = baseDurMins + bufferMins;
+
+      let currentEstMins = 0;
+
+      if (mode === "fair") {
+        if (n < 4) {
+          document.getElementById("fair-radio-container").innerHTML = `<span class="sub-text text-[11px]">（需至少 4 位選手才能推算均分選項）</span>`;
+          hintContainer.innerHTML = "";
+          return;
+        }
+
+        const options = getFairModeRadioOptions(n, totalAllowedMins, courts);
+        const radioContainer = document.getElementById("fair-radio-container");
+
+        if (options.length === 0) {
+          radioContainer.innerHTML = `<div class="p-3 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-900 rounded-xl text-rose-600 dark:text-rose-400 text-[11px] font-bold">⚠️ 預計總時間過短或人數過多，無法排定單局 ${MIN_GAME_DURATION} 分鐘以上的公平賽局。建議延長比賽時間、減少人數，或改用【最大賽局 / 自由賽局】。</div>`;
+          hintContainer.innerHTML = "";
+          return;
+        }
+
+        if (!STATE.selectedFairGamesOption || !options.some(o => o.totalGames === STATE.selectedFairGamesOption)) {
+          STATE.selectedFairGamesOption = options[0].totalGames;
+        }
+
+        radioContainer.innerHTML = options.map(opt => `
+          <label class="flex items-center gap-2 p-2 rounded-xl card-inner border cursor-pointer hover:border-emerald-500 transition">
+            <input type="radio" name="fair-game-option" value="${opt.totalGames}" ${opt.totalGames === STATE.selectedFairGamesOption ? 'checked' : ''} onchange="onFairOptionChange(this.value)" class="text-emerald-500 focus:ring-emerald-500" />
+            <div class="flex-1 flex items-center justify-between">
+              <span class="font-bold">🔘 打 ${opt.totalGames} 局 <span class="text-emerald-500">（每人 ${opt.gamesPerPlayer} 局）</span></span>
+              <span class="sub-text text-[11px] font-mono">配時: ${opt.estMinPerGame} 分</span>
+            </div>
+          </label>
+        `).join("");
+
+        const chosenOpt = options.find(o => o.totalGames === STATE.selectedFairGamesOption) || options[0];
+        currentEstMins = chosenOpt.estMinPerGame;
+
+      } else {
+        currentEstMins = parseInt(document.getElementById("create-game-mins").value) || 12;
+      }
+
+      // 渲染智能提示 (Smart Hint)
+      if (currentEstMins > 0) {
+        let suggested = 11;
+        if (currentEstMins >= 15) suggested = 21;
+        else if (currentEstMins >= 10) suggested = 15;
+        
+        hintContainer.innerHTML = `<div class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 p-2 rounded-lg border border-amber-200 dark:border-amber-900/50 mt-2">💡 系統建議：目前單局配時約 ${currentEstMins} 分鐘，建議目標分數設定為 ${suggested} 分較為充裕。</div>`;
+      }
+    };
+
+    /* 重構賽程生成演算法 */
     function generateRoundRobinSchedule(playersList, durationHours = 2.0, bufferMins = 15, estMinsPerGame = 12, scheduleMode = "fair", courtsCount = 1) {
       if (scheduleMode === "free") return [];
 
       const n = playersList.length;
       if (n < 4) return [];
 
-      const baseMins = durationHours * 60;
-      const totalAllowedMins = baseMins + bufferMins;
       let totalRounds = 1;
 
-      if (scheduleMode === "max") {
-        totalRounds = Math.max(1, Math.floor((totalAllowedMins / estMinsPerGame) * courtsCount));
+      if (scheduleMode === "fair") {
+        totalRounds = STATE.selectedFairGamesOption || (n / gcd(4, n));
       } else {
-        // 平均賽局 (Fair)：要求完美的場數一致 (Block Size 倍數)
-        const blockSize = n / gcd(4, n); // N人達成完全均分的最小區塊
-        const rawTargetGames = Math.floor((baseMins / estMinsPerGame) * courtsCount);
-        
-        // 算出最接近預計時間的 Block 倍數
-        let blocks = Math.round(rawTargetGames / blockSize);
-        if (blocks < 1) blocks = 1;
-
-        // 若預計時間算出的場次時間超過總可用時間(含緩衝)，微調回前一個倍數
-        while ((blocks * blockSize * estMinsPerGame) / courtsCount > totalAllowedMins && blocks > 1) {
-          blocks--;
-        }
-        totalRounds = Math.max(1, Math.round(blocks * blockSize));
+        const totalAllowedMins = (durationHours * 60) + bufferMins;
+        totalRounds = Math.max(1, Math.floor((totalAllowedMins / estMinsPerGame) * courtsCount));
       }
 
       const gamesPlayed = {};
@@ -1803,91 +1898,6 @@
       return Array.from(playersSet);
     }
 
-    window.setScheduleMode = function (mode) {
-      document.getElementById("create-schedule-mode").value = mode;
-      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-      document.getElementById("btn-mode-free").className = mode === "free" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-
-      const durationBox = document.getElementById("row-duration-courts");
-      const scoringBox = document.getElementById("row-scoring-target");
-
-      if (mode === "free") {
-        durationBox.classList.add("hidden");
-        scoringBox.classList.add("hidden");
-      } else {
-        durationBox.classList.remove("hidden");
-        scoringBox.classList.remove("hidden");
-      }
-
-      calculateTimeEstimate();
-    };
-
-    window.onScoringTypeChange = function () {
-      document.getElementById("create-game-mins").value = document.getElementById("create-scoring-type").value === "sideout" ? 18 : 12;
-    };
-
-    window.calculateTimeEstimate = function () {
-      const mode = document.getElementById("create-schedule-mode").value || "fair";
-      if (mode === "free") {
-        document.getElementById("time-estimate-text").innerHTML = `<span class="text-amber-500 font-bold">💡 自由賽局：</span>現場手動彈性選擇 4 人配對進行記錄比分。`;
-        return;
-      }
-
-      const n = activePlayerTags.length;
-      if (n < 4) {
-        document.getElementById("time-estimate-text").innerHTML = `<span class="text-emerald-500 font-bold">💡 請加入至少 4 位選手標籤以試算排賽結果。</span>`;
-        return;
-      }
-
-      const baseDurMins = (parseFloat(document.getElementById("create-duration").value) || 2.0) * 60;
-      const bufferMins = parseInt(document.getElementById("create-buffer-mins").value) || 0;
-      const courts = parseInt(document.getElementById("create-courts").value) || 1;
-      const gameMins = parseInt(document.getElementById("create-game-mins").value) || 12;
-
-      const totalAllowedMins = baseDurMins + bufferMins;
-      let totalGames = 1;
-      let gamesPerPlayerStr = "";
-
-      if (mode === "max") {
-        totalGames = Math.max(1, Math.floor((totalAllowedMins / gameMins) * courts));
-        const avgG = ((totalGames * 4) / n).toFixed(1);
-        gamesPerPlayerStr = `約 ${avgG.endsWith('.0') ? parseInt(avgG) : avgG} 局 / 人 (最大化場次)`;
-      } else {
-        // 平均賽局 (Fair)
-        const blockSize = n / gcd(4, n);
-        const rawTargetGames = Math.floor((baseDurMins / gameMins) * courts);
-        let blocks = Math.round(rawTargetGames / blockSize);
-        if (blocks < 1) blocks = 1;
-
-        while ((blocks * blockSize * gameMins) / courts > totalAllowedMins && blocks > 1) {
-          blocks--;
-        }
-        totalGames = Math.max(1, Math.round(blocks * blockSize));
-        const exactG = (totalGames * 4) / n;
-        gamesPerPlayerStr = `<strong>${exactG} 局 / 人</strong> <span class="text-emerald-500 font-bold">(全員 100% 絕對平均)</span>`;
-      }
-
-      const actualUsedMins = Math.ceil((totalGames * gameMins) / courts);
-      const usedBuffer = Math.max(0, actualUsedMins - baseDurMins);
-
-      document.getElementById("time-estimate-text").innerHTML = `
-        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
-          <div class="p-2 rounded-lg card-inner border">
-            <span class="sub-text text-[10px] block">預估賽程總局數</span>
-            <strong class="text-emerald-500 text-sm font-mono">${totalGames} 局</strong> (${courts} 場地)
-          </div>
-          <div class="p-2 rounded-lg card-inner border">
-            <span class="sub-text text-[10px] block">每人參與局數</span>
-            <div class="text-xs font-mono">${gamesPerPlayerStr}</div>
-          </div>
-        </div>
-        <div class="text-[10.5px] sub-text pt-1">
-          ⏱️ 預估總打球時間約 <strong>${actualUsedMins} 分鐘</strong> (主賽程 ${baseDurMins} 分 ${usedBuffer > 0 ? `+ 代入緩衝 <strong>${usedBuffer} 分</strong>` : ''})
-        </div>
-      `;
-    };
-
     function formatDateTime(dateStr) {
       const d = dateStr ? new Date(dateStr) : new Date();
       if (isNaN(d.getTime())) return dateStr || "";
@@ -1932,6 +1942,11 @@
 
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
       const matches = generateRoundRobinSchedule(activePlayerTags, dur, bufferMins, mins, scheduleMode, courts);
+
+      if (scheduleMode === "fair" && matches.length === 0) {
+        showToast("⚠️ 由於系統防呆機制，目前設定無法排定公平賽程，請調整時間或人數！", "error");
+        return;
+      }
 
       const tObj = { 
         id: tournamentId, name, clubName, scheduleMode,
@@ -2642,4 +2657,3 @@
   </script>
 </body>
 </html>
-
