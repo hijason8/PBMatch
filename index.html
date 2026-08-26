@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="light">
+<html lang="zh-TW" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>PB Match</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
   
-  <meta name="description" content="PB Match 專業匹克球賽事管理系統" />
-  <meta name="theme-color" content="#10b981" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="PB Match" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
+  <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
 
-  <link id="manifest-link" rel="manifest" />
-  <link id="apple-icon-link" rel="apple-touch-icon" />
-
+  <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,88 +30,160 @@
     }
   </script>
 
+  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 2px; }
+    /* Custom Touch & Mobile Optimization */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 2px;
+    }
 
-    html.dark body { background-color: #090d16; color: #f1f5f9; }
-    html.dark .glass-nav { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border-color: #1e293b; }
-    html.dark .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.08); color: #f1f5f9; }
-    html.dark .input-bg { background-color: #0f172a; border-color: #334155; color: #ffffff; }
-    html.dark .sub-text { color: #94a3b8; }
-    html.dark .card-inner { background-color: rgba(15, 23, 42, 0.6); border-color: #1e293b; }
+    /* Dark Theme */
+    html.dark body {
+      background-color: #090d16;
+      color: #f1f5f9;
+    }
+    html.dark .glass-nav {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border-color: #1e293b;
+    }
+    html.dark .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+    }
+    html.dark .input-bg {
+      background-color: #0f172a;
+      border-color: #334155;
+      color: #ffffff;
+    }
+    html.dark .sub-text {
+      color: #94a3b8;
+    }
+    html.dark .card-inner {
+      background-color: rgba(15, 23, 42, 0.6);
+      border-color: #1e293b;
+    }
 
-    html.light body { background-color: #fbf9f5; color: #292524; }
-    html.light .glass-nav { background: rgba(245, 240, 230, 0.95); backdrop-filter: blur(12px); border-color: #e7dfd3; }
-    html.light .glass-card { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px); border: 1px solid #ebd9c8; color: #292524; box-shadow: 0 2px 10px -2px rgba(180, 150, 120, 0.08); }
-    html.light .input-bg { background-color: #fdfbf7; border-color: #d6c7b2; color: #1c1917; }
-    html.light .sub-text { color: #78716c; }
-    html.light .card-inner { background-color: #f7f3ec; border-color: #e5dbc9; }
-    html.light .text-white { color: #1c1917 !important; }
-    html.light .text-slate-200, html.light .text-slate-300 { color: #44403c !important; }
-    html.light .text-slate-400 { color: #78716c !important; }
-    html.light .bg-slate-900, html.light .bg-slate-950, html.light .bg-slate-800 { background-color: #f3ece0 !important; border-color: #e7ded0 !important; }
-
-    .mode-btn-active { border-color: #10b981; background: rgba(16, 185, 129, 0.12); color: #059669; }
-    html.dark .mode-btn-active { border-color: #34d399; background: rgba(52, 211, 153, 0.15); color: #34d399; }
-    .mode-btn-inactive { border-color: #cbd5e1; background: transparent; }
-    html.dark .mode-btn-inactive { border-color: #334155; background: transparent; color: #94a3b8; }
-    html.light .mode-btn-inactive { border-color: #d6c7b2; color: #78716c; }
-
-    .safe-top-header { padding-top: env(safe-area-inset-top); }
+    /* Light Theme (白底) */
+    html.light body {
+      background-color: #fbf9f5;
+      color: #292524;
+    }
+    html.light .glass-nav {
+      background: rgba(245, 240, 230, 0.95);
+      backdrop-filter: blur(12px);
+      border-color: #e7dfd3;
+    }
+    html.light .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid #ebd9c8;
+      color: #292524;
+      box-shadow: 0 2px 10px -2px rgba(180, 150, 120, 0.08);
+    }
+    html.light .input-bg {
+      background-color: #fdfbf7;
+      border-color: #d6c7b2;
+      color: #1c1917;
+    }
+    html.light .sub-text {
+      color: #78716c;
+    }
+    html.light .card-inner {
+      background-color: #f7f3ec;
+      border-color: #e5dbc9;
+    }
+    html.light .text-white {
+      color: #1c1917 !important;
+    }
+    html.light .text-slate-200, html.light .text-slate-300 {
+      color: #44403c !important;
+    }
+    html.light .text-slate-400 {
+      color: #78716c !important;
+    }
+    html.light .bg-slate-900, html.light .bg-slate-950, html.light .bg-slate-800 {
+      background-color: #f3ece0 !important;
+      border-color: #e7ded0 !important;
+    }
+    /* Schedule Mode Buttons */
+    .mode-btn-active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+    html.dark .mode-btn-active {
+      border-color: #34d399;
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+    }
+    .mode-btn-inactive {
+      border-color: #cbd5e1;
+      background: transparent;
+    }
+    html.dark .mode-btn-inactive {
+      border-color: #334155;
+      background: transparent;
+      color: #94a3b8;
+    }
+    html.light .mode-btn-inactive {
+      border-color: #d6c7b2;
+      color: #78716c;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
 
-  <!-- HEADER / NAV -->
-  <header class="sticky top-0 z-40 glass-nav border-b transition-colors safe-top-header">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="navigateTo('hub')">
+  <!-- ==================== HEADER / NAV (超緊湊手機優化版) ==================== -->
+  <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
         <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
           <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
           <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
-            PB<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Match</span>
+            Pickleball<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
           </h1>
+          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
-        <button onclick="openGodMode()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-rose-500 transition active:scale-95 shadow-sm shrink-0" title="系統資料庫控制台">
-          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+      <!-- Compact Action Icons Bar -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Theme Toggle (Icon Only) -->
+        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
+          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
 
-        <button onclick="toggleTheme()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm shrink-0" title="切換模式">
-          <i id="theme-icon" data-lucide="sun" class="w-4 h-4 text-orange-500"></i>
-        </button>
-
-        <button onclick="toggleLanguage()" class="w-8 h-8 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm shrink-0" title="切換語言">
+        <!-- Language Toggle (Icon Only) -->
+        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm" title="切換語言 / Language">
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
-        <button id="btn-install-pwa" onclick="installPWA()" class="hidden w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 transition active:scale-95 shadow-sm shrink-0" title="安裝 App">
-          <i data-lucide="download" class="w-4 h-4"></i>
-        </button>
-
-        <span class="sub-text opacity-40 px-0.5 select-none font-light text-sm">/</span>
-
-        <button onclick="navigateTo('hub')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="賽事大廳">
+        <!-- Nav: Hub Icon Button -->
+        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
-          <span id="t-nav-hub" class="hidden md:inline">賽事大廳</span>
+          <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
         </button>
 
-        <button onclick="navigateTo('club')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="社團紀錄">
-          <i data-lucide="users" class="w-4 h-4 text-amber-500"></i>
-          <span id="t-nav-club" class="hidden md:inline">社團紀錄</span>
-        </button>
-
-        <button onclick="navigateTo('create')" class="p-2 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold shrink-0" title="建立賽事">
-          <i data-lucide="plus" class="w-4 h-4 text-emerald-500"></i>
-          <span id="t-nav-create" class="hidden md:inline">建立賽事</span>
+        <!-- Nav: Create Icon Button -->
+        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
         </button>
       </div>
     </div>
@@ -123,309 +192,171 @@
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6">
 
-    <!-- PAGE B: TOURNAMENT HUB -->
+    <!-- ==================== PAGE B: TOURNAMENT HUB ==================== -->
     <section id="page-hub" class="space-y-4 sm:space-y-6">
       <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3 text-left">
-        <div>
-          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
+        <div class="text-left">
+          <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-left">
             <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
+          <p id="t-hub-desc" class="text-xs sub-text mt-0.5 text-left">點擊卡片即可進入即時對戰賽程</p>
         </div>
+        <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
+          ➕ 建立新賽事
+        </button>
       </div>
 
-      <div class="space-y-3">
-        <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-          <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i> <span id="t-hub-active">進行中賽事</span>
-        </h3>
-        <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
-      </div>
-
-      <div id="archived-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
-        <div class="flex items-center justify-between cursor-pointer" onclick="toggleArchivedList()">
-          <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-            <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-hub-archived">已封存</span> (<span id="archived-count">0</span>)
-          </h3>
-          <span id="archive-arrow" class="text-xs sub-text">▼ 展開</span>
-        </div>
-        <div id="archived-list" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+      <!-- Tournaments Grid -->
+      <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- PAGE C: CREATE TOURNAMENT -->
+    <!-- ==================== PAGE C: CREATE TOURNAMENT ==================== -->
     <section id="page-create" class="hidden max-w-2xl mx-auto space-y-4 sm:space-y-6">
       <div class="border-b border-stone-300 dark:border-slate-800 pb-3">
         <h2 id="t-create-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
-          <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-500"></i> 建立新賽事
+          <i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> 建立新賽事 (Create Tournament)
         </h2>
+        <p id="t-create-desc" class="text-xs sub-text mt-0.5">自動計算個人雙打最佳輪播與配時</p>
       </div>
 
       <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
-        
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="info" class="w-4 h-4"></i> Step 1: 基礎參數設定</h3>
-          
-          <div>
-            <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">賽事名稱</label>
-            <input type="text" id="create-name" required placeholder="例：週末雙打積分賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
-          </div>
-
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">所屬社團 <span class="text-[10px] sub-text font-normal">(選填)</span></label>
-              <button type="button" onclick="openCreateClubModal()" id="t-btn-open-create-club" class="text-xs text-amber-500 font-bold hover:underline flex items-center gap-1">新增社團</button>
-            </div>
-            <select id="create-club-select" onchange="onClubSelectChange()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
-              <option value="">-- 無 --</option>
-            </select>
-          </div>
-
-          <div id="box-club-auth-pwd" class="hidden p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-1">
-            <label class="block text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-              <i data-lucide="lock" class="w-3.5 h-3.5"></i> 該社團受保護，請輸入社團公用密碼：
-            </label>
-            <input type="password" id="create-club-auth-pwd" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="輸入社團公用密碼" class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:border-amber-500 focus:outline-none" />
-          </div>
-
-          <!-- 參賽選手名單提前 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">參賽選手名單</label>
-              <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400 font-mono">目前共 0 位</span>
-            </div>
-            <div id="player-tags-container" class="min-h-[90px] max-h-[220px] overflow-y-auto p-3 input-bg border rounded-2xl flex flex-wrap gap-2 items-start">
-              <span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增參賽選手</span>
-            </div>
-            <div class="space-y-2 pt-1">
-              <div id="box-club-members" class="hidden p-2.5 rounded-xl card-inner border space-y-1.5">
-                <span class="sub-text text-[11px] font-semibold block">點選現有社團成員：</span>
-                <div id="club-chips-container" class="flex flex-wrap gap-1.5"></div>
-              </div>
-              <div class="p-2.5 rounded-xl card-inner border space-y-1.5">
-                <span class="sub-text text-[11px] font-semibold block">手動成員名稱：</span>
-                <div class="flex items-center gap-2">
-                  <input type="text" id="input-manual-player" placeholder="輸入姓名..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addManualPlayer();}" class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
-                  <button type="button" onclick="addManualPlayer()" class="px-3 py-2 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold transition shrink-0">+ 加入</button>
-                </div>
-              </div>
-              <div class="p-2.5 rounded-xl card-inner border space-y-2">
-                <span class="sub-text text-[11px] font-semibold block">新增臨時名稱：</span>
-                <div class="flex items-center">
-                  <button type="button" onclick="addSingleGuestPlayer()" class="px-3 py-2 bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded-xl text-xs font-bold transition">+ 1 位臨打</button>
-                </div>
-                <div class="flex items-center gap-2 pt-1 border-t border-stone-300/30 dark:border-slate-800">
-                  <span class="sub-text text-xs">生成數量：</span>
-                  <input type="number" id="auto-gen-count" min="4" max="64" value="7" inputmode="numeric" onkeydown="preventInvalidNumberChars(event, false)" oninput="clampNumberInput(this, 4, 64)" class="w-12 input-bg border rounded-xl p-1.5 text-xs text-center font-mono focus:border-amber-500 focus:outline-none" />
-                  <span class="sub-text text-xs">人</span>
-                  <button type="button" onclick="batchGenerateABCPlayers()" class="ml-auto px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition">生成選手 A~Z</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3" id="row-duration-courts">
-            <div>
-              <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">預計總時間</label>
-              <div class="relative">
-                <input type="number" id="create-duration" min="0.5" max="8" step="0.5" value="2.0" required inputmode="decimal" oninput="clampNumberInput(this, 0.5, 8); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-                <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
-              </div>
-            </div>
-            <div>
-              <label id="t-label-courts" class="block text-xs sm:text-sm font-semibold mb-1">比賽場地數</label>
-              <input type="number" id="create-courts" min="1" max="12" value="1" required inputmode="numeric" oninput="clampNumberInput(this, 1, 12); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-            </div>
-          </div>
-          
-          <div>
-            <label id="t-label-buffer" class="block text-xs sm:text-sm font-semibold mb-1">彈性緩衝時間</label>
-            <select id="create-buffer-mins" onchange="calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
-              <option value="0">0 分鐘 (不超時)</option>
-              <option value="15" selected>15 分鐘 (推薦)</option>
-              <option value="30">30 分鐘</option>
-            </select>
-          </div>
+        <!-- Tournament Name -->
+        <div>
+          <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
+          <input type="text" id="create-name" required placeholder="例：0818 球賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
-        <!-- 賽事模式提前 -->
-        <div class="space-y-3 pt-2 border-t border-stone-200 dark:border-slate-800">
-          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="settings" class="w-4 h-4"></i> Step 2: 賽事模式設定</h3>
+        <!-- Admin PIN -->
+        <div>
+          <label id="t-label-pin" class="block text-xs sm:text-sm font-semibold mb-1">2. 管理員 PIN 碼 (4 位數)</label>
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" required placeholder="4位數字 (刪除賽事用)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+        </div>
+
+        <!-- Duration & Scoring Rules Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Estimated Duration -->
           <div>
-            <div class="grid grid-cols-3 gap-1">
-              <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center">平均賽局</button>
-              <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">最大賽局</button>
-              <button type="button" id="btn-mode-free" onclick="setScheduleMode('free')" class="mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center">自由賽局</button>
-            </div>
-            <input type="hidden" id="create-schedule-mode" value="fair" />
-          </div>
-
-          <!-- 動態欄位區塊 -->
-          <div id="box-fair-options" class="p-3 rounded-xl card-inner border space-y-2">
-            <label class="block text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 系統建議總局數（100% 絕對平均上場）
-            </label>
-            <div id="fair-radio-container" class="space-y-1.5 text-xs">
-              <span class="sub-text text-[11px]">計算中...</span>
-            </div>
-          </div>
-
-          <div id="box-game-mins-input" class="hidden">
-            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">預估單局配時</label>
+            <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">3. 預計比賽總時間</label>
             <div class="relative">
-              <input type="number" id="create-game-mins" min="3" max="30" value="12" inputmode="numeric" oninput="clampNumberInput(this, 3, 30); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
+            </div>
+          </div>
+
+          <!-- Single Game Duration (Customizable) -->
+          <div>
+            <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">4. 預估單局配時</label>
+            <div class="relative">
+              <input type="number" id="create-game-mins" min="3" max="60" value="15" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
             </div>
           </div>
         </div>
 
-        <!-- 獲勝目標與智能提示 -->
-        <div class="space-y-3 pt-2 border-t border-stone-200 dark:border-slate-800">
-          <h3 class="text-sm font-bold text-emerald-600 flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4"></i> Step 3: 計分規則</h3>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">計分賽制選擇</label>
-              <select id="create-scoring-type" required class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
-                <option value="rally">落地得分制 (Rally)</option>
-                <option value="sideout">發球得分制 (Side-out)</option>
-              </select>
-            </div>
-            <div>
-              <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">每局獲勝目標分數</label>
-              <input type="number" id="create-target-score" min="1" max="50" value="15" required class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
-            </div>
+        <!-- Scoring Mode & Target Score Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">5. 計分賽制選擇</label>
+            <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+              <option value="rally">落地得分制 (Rally)</option>
+              <option value="sideout">發球得分制 (Side-out)</option>
+            </select>
           </div>
-          <!-- 智能提示容器 -->
-          <div id="score-hint-container"></div>
+          <div>
+            <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">6. 每局目標分數</label>
+            <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+          </div>
         </div>
 
-        <div class="flex items-center gap-3 mt-4">
-          <button type="button" onclick="resetCreateFormAndGoHub()" class="w-1/3 bg-stone-200 dark:bg-slate-800 text-stone-700 dark:text-slate-300 font-bold py-3.5 rounded-xl transition text-sm">放棄</button>
-          <button type="submit" class="w-2/3 bg-emerald-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex justify-center items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4"></i> 生成賽程</button>
+        <!-- Schedule Mode Selector -->
+        <div>
+          <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1.5">7. 賽事模式選擇</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="equal" class="w-3.5 h-3.5"></i>
+                <span id="t-mode-fair-title">平均賽事</span>
+              </div>
+              <p id="t-mode-fair-desc" class="text-[10px] font-normal opacity-70 leading-snug">場數完全一致</p>
+            </button>
+            <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                <span id="t-mode-max-title">最大賽事</span>
+              </div>
+              <p id="t-mode-max-desc" class="text-[10px] font-normal opacity-70 leading-snug">時間內最多局</p>
+            </button>
+          </div>
+          <input type="hidden" id="create-schedule-mode" value="fair" />
         </div>
+
+        <!-- Player List -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">7. 參賽選手名單 (每列一位)</label>
+            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
+          </div>
+          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+        </div>
+
+        <!-- Time Estimation Hint Box -->
+        <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
+          <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i> 時間預估試算：
+          </div>
+          <p id="time-estimate-text" class="sub-text text-[11px]">輸入選手名單預估局數與每局時間。</p>
+        </div>
+
+        <button type="submit" id="t-submit-create-btn" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5 mt-2">
+          <i data-lucide="zap" class="w-4 h-4"></i> 自動生成賽程並發布
+        </button>
       </form>
     </section>
 
-    <!-- PAGE E: CLUB RECORDS -->
-    <section id="page-club" class="hidden space-y-4 sm:space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-300 dark:border-slate-800 pb-3">
+    <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW (進入賽程頁面排版優化) ==================== -->
+    <section id="page-live" class="hidden space-y-4 sm:space-y-6">
+      <!-- Top Compact Title Banner -->
+      <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-l-4 border-l-emerald-500">
         <div>
-          <h2 id="t-club-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
-            <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 社團賽事紀錄
-          </h2>
-          <p id="t-club-desc" class="text-xs sub-text mt-0.5">選擇社團查看成員累積數據與歷史紀錄</p>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight">賽事載入中...</h2>
+            <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
+          </div>
+          <!-- Compact Info Badges Row -->
+          <div class="flex flex-wrap items-center gap-2 text-[11px] mt-2">
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="users" class="w-3 h-3 sub-text"></i> <span id="live-players-count">0 人</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target" class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
+          </div>
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
-          <div class="flex items-center gap-1.5">
-            <span id="t-switch-club-label" class="text-xs font-semibold whitespace-nowrap">社團：</span>
-            <select id="club-select" onchange="verifyAndSwitchClub()" class="input-bg border rounded-xl p-2 text-xs sm:text-sm font-semibold focus:border-amber-500 focus:outline-none min-w-[150px]">
-              <option value="">-- 請選擇社團 --</option>
-            </select>
-          </div>
-
-          <button onclick="deleteCurrentClub()" id="t-btn-delete-club" class="px-2.5 py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> <span id="t-delete-club-label">刪除社團</span>
+          <button onclick="openShareModal()" id="t-share-btn" class="w-full sm:w-auto px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
+            <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> 分享 / QR Code
           </button>
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl overflow-hidden border">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="card-inner sub-text uppercase font-semibold border-b text-[11px]">
-              <tr class="whitespace-nowrap">
-                <th id="th-c-player" class="py-2.5 px-3">成員</th>
-                <th id="th-c-played" class="py-2.5 px-2 text-center">局數</th>
-                <th id="th-c-winrate" class="py-2.5 px-2 text-center">勝率</th>
-                <th id="th-c-wl" class="py-2.5 px-2 text-center">勝敗</th>
-                <th id="th-c-diff" class="py-2.5 px-2 text-center">淨勝</th>
-                <th id="th-c-pfpa" class="py-2.5 px-3 text-center">得/失</th>
-              </tr>
-            </thead>
-            <tbody id="club-leaderboard-tbody" class="divide-y font-medium text-xs">
-              <tr><td id="t-club-select-prompt" colspan="6" class="p-6 text-center sub-text text-xs">👆 請於上方選取社團以查看數據紀錄</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="club-history-tournaments-section" class="hidden space-y-3 pt-4 border-t border-stone-300 dark:border-slate-800">
-        <h3 class="text-sm font-bold sub-text flex items-center gap-1.5">
-          <i data-lucide="archive" class="w-4 h-4 text-amber-500"></i> <span id="t-club-history">該社團歷史封存賽事</span> (<span id="club-history-count">0</span>)
-        </h3>
-        <div id="club-history-tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
-      </div>
-    </section>
-
-    <!-- PAGE D: LIVE TOURNAMENT VIEW -->
-    <section id="page-live" class="hidden space-y-4 sm:space-y-6">
-      <div class="glass-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-emerald-500 space-y-3">
-        <div class="flex flex-wrap items-center gap-2">
-          <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight mr-1">賽事載入中...</h2>
-          <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
-          <span id="live-status-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold border">進行中</span>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2 text-[11px] pt-0.5">
-          <span id="live-club-badge" class="hidden px-2 py-0.5 rounded-md card-inner border font-bold text-amber-600 dark:text-amber-400">🚩 ---</span>
-          <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="users" class="w-3 h-3 sub-text"></i> <span id="live-players-count">0 人</span></span>
-          <span id="box-live-duration" class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
-          <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target" class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
-          <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="map-pin" class="w-3 h-3 text-blue-500"></i> <span id="live-courts-count" class="font-bold text-blue-600 dark:text-blue-300">1 場地</span></span>
-          <span id="live-mode-badge" class="px-2 py-0.5 rounded-md card-inner border text-[11px] font-bold text-purple-600 dark:text-purple-400">平均賽局</span>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-stone-300/30 dark:border-slate-800">
-          <button onclick="toggleAdminAuth()" id="btn-toggle-admin" class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> 輸入模式
-          </button>
-          
-          <button onclick="openManagePlayersModal()" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold flex items-center gap-1 shadow-sm">
-            <i data-lucide="users" class="w-3.5 h-3.5"></i> 選手
-          </button>
-          
-          <button onclick="openShareModal()" class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition text-xs font-bold flex items-center gap-1 shadow-sm">
-            <i data-lucide="qr-code" class="w-3.5 h-3.5"></i> QR
-          </button>
-
-          <button onclick="unlockSuperAdminAuth()" id="btn-super-admin-unlock" class="hidden px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="key" class="w-3.5 h-3.5"></i> 社團管理者解凍修改
-          </button>
-
-          <button onclick="finishTournament()" id="btn-force-end" class="hidden px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 結束並封存
-          </button>
-
-          <button onclick="voidTournament()" id="btn-toggle-void" class="hidden px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 transition text-xs font-bold items-center justify-center gap-1 shadow-sm">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 流局作廢
-          </button>
-        </div>
-      </div>
-
-      <div id="notice-locked-banner" class="hidden p-3 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-500 text-xs font-bold space-y-1">
-        <div class="flex items-center gap-1.5">
-          <i data-lucide="lock" class="w-4 h-4 shrink-0"></i>
-          <span id="t-locked-notice">本賽事已完賽並鎖定數據，現場管理員無法修改比分。</span>
-        </div>
-        <div id="t-locked-sub" class="text-[11px] sub-text pl-5">如需修正，請點擊右上方「社團管理者解凍修改」</div>
-      </div>
-
+      <!-- Main Live Grid (2 Columns on Desktop, Single Column on Mobile) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+        
+        <!-- Left: Matches Schedule (7 Cols) -->
         <div class="lg:col-span-7 space-y-3">
           <div class="flex items-center justify-between">
             <h3 id="t-schedule-title" class="text-base sm:text-xl font-display font-bold flex items-center gap-1.5">
               <i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> 對戰賽程表
             </h3>
-            <div class="flex items-center gap-2">
-              <button id="btn-add-free-match" onclick="openAddFreeMatchModal()" class="hidden px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition">
-                + 新增一局
-              </button>
-              <span id="completed-count" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-bold">0 / 0 局完成</span>
-            </div>
+            <span id="completed-count" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-bold">0 / 0 局完成</span>
           </div>
 
-          <div id="matches-container" class="space-y-3"></div>
+          <div id="matches-container" class="space-y-3">
+            <!-- Matches Cards rendered dynamically -->
+          </div>
         </div>
 
+        <!-- Right: Leaderboard (5 Cols) -->
         <div class="lg:col-span-5 space-y-3">
           <div class="flex items-center justify-between">
             <h3 id="t-leaderboard-title" class="text-base sm:text-xl font-display font-bold flex items-center gap-1.5">
@@ -433,6 +364,7 @@
             </h3>
           </div>
 
+          <!-- Leaderboard Table Card -->
           <div class="glass-card rounded-2xl overflow-hidden border">
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs">
@@ -445,196 +377,31 @@
                     <th id="th-pf-pa" class="py-2.5 px-2 text-center">得分/失分</th>
                   </tr>
                 </thead>
-                <tbody id="leaderboard-tbody" class="divide-y font-medium text-xs"></tbody>
+                <tbody id="leaderboard-tbody" class="divide-y font-medium text-xs">
+                  <!-- Rendered dynamically -->
+                </tbody>
               </table>
             </div>
           </div>
 
+          <!-- Tie-breaker rules explainer -->
           <div class="p-3 rounded-xl card-inner border text-[11px] sub-text space-y-1">
-            <div id="t-tiebreaker-box-title" class="font-semibold text-stone-800 dark:text-slate-200">📊 排行榜排名規則：</div>
+            <div id="t-tiebreaker-box-title" class="font-semibold text-stone-800 dark:text-slate-200">📊 排行榜 Tie-breaker 排名規則：</div>
             <ol id="t-tiebreaker-list" class="list-decimal list-inside space-y-0.5 sub-text text-[10.5px]">
               <li>第 1 順位：勝場數 (Wins) ⬇️</li>
-              <li>第 2 順位：總淨勝分 (+/- = 得分 - 失分) ⬇️</li>
+              <li>第 2 順位：總淨勝分 (+/- = 總得分 - 總失分) ⬇️</li>
               <li>第 3 順位：總得分 (PF / Points For) ⬇️</li>
               <li>第 4 順位：總失分 (PA / Points Against) ⬆️ (較低者優先)</li>
             </ol>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- PAGE F: GOD MODE / ADMIN CONSOLE -->
-    <section id="page-godmode" class="hidden space-y-6 max-w-4xl mx-auto">
-      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3">
-        <div>
-          <h2 class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-rose-500">
-            <i data-lucide="shield-alert" class="w-6 h-6"></i> <span id="t-god-title">系統資料庫控制台</span>
-          </h2>
-          <p id="t-god-desc" class="text-xs sub-text mt-0.5">最高管理員專用：一鍵勾選刪除異常資料與清除快取</p>
-        </div>
-        <button onclick="navigateTo('hub')" id="t-god-back" class="px-3 py-1.5 rounded-xl card-inner border text-xs font-bold">返回大廳</button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="glass-card rounded-2xl p-4 space-y-3 border border-rose-500/30">
-          <h3 id="t-god-local-title" class="font-bold text-sm text-rose-400 flex items-center gap-1.5">
-            <i data-lucide="database" class="w-4 h-4"></i> 本機與快取維護
-          </h3>
-          <p id="t-god-local-desc" class="text-xs sub-text">清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。</p>
-          <button onclick="godClearLocalStorage()" id="t-god-local-btn" class="w-full py-2 bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 rounded-xl text-xs font-bold transition">
-            🧹 清除所有本機快取
-          </button>
-        </div>
-
-        <div class="glass-card rounded-2xl p-4 space-y-3 border border-amber-500/30">
-          <h3 id="t-god-cloud-title" class="font-bold text-sm text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i> 資料強制重整
-          </h3>
-          <p id="t-god-cloud-desc" class="text-xs sub-text">強制從雲端重新拉取最新的社團與賽事清單。</p>
-          <button onclick="godRefreshData()" id="t-god-cloud-btn" class="w-full py-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-bold transition">
-            🔄 強制重新載入雲端與本地資料
-          </button>
-        </div>
-      </div>
-
-      <div class="space-y-4 pt-2">
-        <div class="glass-card rounded-2xl p-4 space-y-3 border">
-          <div class="flex items-center justify-between">
-            <h3 id="t-god-t-title" class="font-bold text-sm flex items-center gap-1.5">
-              <i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i> 所有賽事列表 (勾選批量管理)
-            </h3>
-            <button onclick="godDeleteSelectedTournaments()" id="t-god-t-btn" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
-              🗑️ 刪除勾選的賽事
-            </button>
-          </div>
-          <div id="god-tournaments-table" class="overflow-x-auto text-xs"></div>
-        </div>
-
-        <div class="glass-card rounded-2xl p-4 space-y-3 border">
-          <div class="flex items-center justify-between">
-            <h3 id="t-god-c-title" class="font-bold text-sm flex items-center gap-1.5">
-              <i data-lucide="users" class="w-4 h-4 text-amber-500"></i> 所有社團列表 (勾選批量管理)
-            </h3>
-            <button onclick="godDeleteSelectedClubs()" id="t-god-c-btn" class="px-3 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold">
-              🗑️ 刪除勾選的社團
-            </button>
-          </div>
-          <div id="god-clubs-table" class="overflow-x-auto text-xs"></div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- MODAL: CREATE CLUB -->
-  <div id="modal-create-club" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative">
-      <button onclick="closeCreateClubModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div>
-        <h3 id="t-modal-club-title" class="text-base font-bold font-display flex items-center gap-1.5">
-          <i data-lucide="users" class="w-5 h-5 text-amber-500"></i> 建立新社團
-        </h3>
-      </div>
-
-      <form id="form-create-club" onsubmit="handleCreateClubSubmit(event)" class="space-y-3 text-xs">
-        <div>
-          <label id="t-modal-club-name-label" class="block font-semibold mb-1">社團名稱 *</label>
-          <input type="text" id="club-new-name" required placeholder="例：週六練球團" class="w-full input-bg border rounded-xl p-2.5 text-xs focus:border-amber-500 focus:outline-none" />
-        </div>
-
-        <div>
-          <label id="t-modal-club-pwd2-label" class="block font-semibold mb-1">建立社團公用密碼，用於建立與瀏覽賽事</label>
-          <input type="password" id="club-new-pwd2" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="請填入4位數字，如未填寫則無需密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
-        </div>
-
-        <div>
-          <label id="t-modal-club-pwd1-label" class="block font-semibold mb-1">建立社團管理密碼，用於調整與社團刪除</label>
-          <input type="password" id="club-new-pwd1" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="請填入4位數字，如未填寫則無需密碼" class="w-full input-bg border rounded-xl p-2.5 text-xs font-mono focus:border-amber-500 focus:outline-none" />
-        </div>
-
-        <div class="flex items-center gap-2 mt-4 pt-1">
-          <button type="button" onclick="closeCreateClubModal()" id="t-btn-cancel-club" class="flex-1 bg-stone-200 hover:bg-stone-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-stone-700 dark:text-slate-300 font-bold py-2.5 rounded-xl transition text-xs">
-            放棄創建
-          </button>
-          <button type="submit" id="btn-submit-club" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold py-2.5 rounded-xl shadow transition text-xs">
-            確認創建
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: 查看/修改選手名單 -->
-  <div id="modal-manage-players" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative">
-      <div class="flex items-center justify-between border-b border-stone-300/40 dark:border-slate-800 pb-2.5">
-        <h3 class="text-base font-bold font-display">參賽選手名單</h3>
-        <button onclick="closeManagePlayersModal()" class="sub-text text-xs hover:text-emerald-500">關閉</button>
-      </div>
-
-      <div id="modal-players-list-status" class="text-[11px] sub-text"></div>
-
-      <div id="modal-players-list-container" class="max-h-52 overflow-y-auto space-y-2 text-xs"></div>
-
-      <div id="box-add-player-live" class="pt-2 border-t border-stone-300/30 dark:border-slate-800 space-y-2">
-        <span class="sub-text text-[11px] block">陸續到場？新增新成員：</span>
-        <div class="flex items-center gap-2">
-          <input type="text" id="input-add-live-player" placeholder="輸入姓名..." class="flex-1 input-bg border rounded-xl p-2 text-xs focus:border-emerald-500 focus:outline-none" />
-          <button onclick="addPlayerToLiveTournament()" class="px-3 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold transition">
-            + 追加
-          </button>
-        </div>
-      </div>
-
-      <div class="pt-2">
-        <button onclick="closeManagePlayersModal()" class="w-full card-inner border font-bold py-2.5 rounded-xl text-xs transition">
-          關閉
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: 自由模式手動新增一局對戰 -->
-  <div id="modal-add-free-match" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="glass-card rounded-2xl max-w-md w-full p-5 space-y-4 border relative">
-      <div class="flex items-center justify-between border-b border-stone-300/40 dark:border-slate-800 pb-2.5">
-        <h3 class="text-base font-bold font-display">新增一局自由對戰</h3>
-        <button onclick="closeAddFreeMatchModal()" class="sub-text text-xs hover:text-emerald-500">關閉</button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <p class="sub-text text-[11px]">請點選上場的 4 位選手（前 2 位為第一隊，後 2 位為第二隊）：</p>
-        <div id="free-match-players-selection" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-2 input-bg border rounded-xl"></div>
-
-        <div class="grid grid-cols-2 gap-3 pt-2">
-          <div class="p-2 rounded-xl card-inner border space-y-1">
-            <span class="sub-text text-[10px] block font-bold">第一隊</span>
-            <div id="free-team-1-display" class="font-bold min-h-[32px] text-xs space-y-1">未選擇</div>
-            <input type="number" id="free-score-1" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
-          </div>
-
-          <div class="p-2 rounded-xl card-inner border space-y-1">
-            <span class="sub-text text-[10px] block font-bold">第二隊</span>
-            <div id="free-team-2-display" class="font-bold min-h-[32px] text-xs space-y-1">未選擇</div>
-            <input type="number" id="free-score-2" inputmode="numeric" pattern="[0-9]*" placeholder="0" class="w-full input-bg border rounded-lg p-2 text-center font-bold font-mono text-xl focus:border-emerald-500 focus:outline-none" />
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 pt-2">
-          <button onclick="closeAddFreeMatchModal()" class="flex-1 card-inner border font-bold py-2.5 rounded-xl text-xs transition">
-            取消
-          </button>
-          <button onclick="submitAddFreeMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow-md">
-            儲存比分
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SHARE / QR MODAL -->
+  <!-- ==================== SHARE / QR MODAL ==================== -->
   <div id="modal-share" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative text-center">
       <button onclick="closeShareModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
@@ -650,10 +417,12 @@
         <p id="t-modal-qr-desc" class="text-xs sub-text mt-0.5">掃描同步戰況比分</p>
       </div>
 
+      <!-- QR Image -->
       <div class="bg-white p-2.5 rounded-xl inline-block shadow-md border border-stone-200">
         <img id="share-qr-img" src="" alt="QR Code" class="w-40 h-40 mx-auto" />
       </div>
 
+      <!-- Share URL Input -->
       <div class="space-y-2">
         <div class="flex items-center gap-2">
           <input type="text" id="share-url-input" readonly class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:outline-none" />
@@ -665,34 +434,28 @@
     </div>
   </div>
 
+  <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script type="module">
     import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    const MIN_GAME_DURATION = 7; // 設定單局防呆底線為 7 分鐘
-    let deferredPrompt = null; 
-    let activePlayerTags = [];
-    let freeMatchSelectedPlayers = [];
-
+    // Global App State
     const STATE = {
       firebaseApp: null,
       db: null,
+      firebaseConfig: null,
       currentTournamentId: null,
       tournamentData: null,
       dbUnsubscribe: null,
-      isAdminUnlocked: false,
-      isSuperAdminUnlocked: false,
-      allTournamentsCache: [],
-      allClubsCache: {},
-      selectedClubName: "",
+      hubUnsubscribe: null,
       lang: localStorage.getItem("pb_lang") || "zh-TW",
-      theme: localStorage.getItem("pb_theme") || "light",
-      selectedFairGamesOption: null, // 儲存平均賽局 Radio Buttons 的當前選擇局數
+      theme: localStorage.getItem("pb_theme") || "dark",
     };
 
+    // Built-in Hardcoded Firebase Config
     const DEFAULT_FIREBASE_CONFIG = {
       apiKey: "AIzaSyDHYf0ooBsXI4XuzRnlO0Sln-X7qswcs_U",
       databaseURL: "https://pickleball-hub-d0ab1-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -700,347 +463,210 @@
       authDomain: "pickleball-hub-d0ab1.firebaseapp.com"
     };
 
+    // Internationalization (i18n) Translations Dictionary
     const I18N = {
       "zh-TW": {
+        appSubtitle: "排賽系統",
         navHub: "賽事大廳",
-        navClub: "社團紀錄",
         navCreate: "建立賽事",
         dbConnected: "已連線",
+
+        // Hub
         hubTitle: "賽事大廳",
-        hubActive: "進行中賽事",
-        hubArchived: "已封存",
-        createNewBtn: "建立新賽事",
-        statusFinished: "🔒 已完賽",
+        hubDesc: "點擊卡片即可進入即時對戰賽程",
+        createNewBtn: "➕ 建立新賽事",
+        statusFinished: "已完賽",
         statusActive: "進行中",
-        statusVoided: "🚫 已作廢 (流局)",
         enterTournament: "進入賽事",
         playersCountLabel: "人參賽",
         gamesDoneLabel: "局完成",
+
+        // Create Form
         createTitle: "建立新賽事",
-        labelName: "賽事名稱",
-        labelClub: "所屬社團",
-        btnOpenCreateClub: "新增社團",
-        labelClubAuth: "該社團受保護，請輸入社團公用密碼：",
-        placeholderClubAuth: "輸入社團公用密碼",
-        optionalTag: "(選填)",
-        labelDuration: "預計總時間",
-        labelCourts: "比賽場地數",
-        labelGameMins: "預估單局配時",
-        labelScoring: "計分賽制選擇",
-        labelTarget: "每局獲勝目標分數",
-        labelScheduleMode: "賽事模式設定",
-        labelPlayers: "參賽選手名單",
+        createDesc: "自動計算個人雙打最佳輪播與配時",
+        labelName: "1. 賽事名稱",
+        labelPin: "2. 管理員 PIN 碼 (4 位數)",
+        labelDuration: "3. 預計比賽總時間",
+        labelGameMins: "4. 預估單局配時",
         unitHours: "小時",
         unitMins: "分鐘",
-        courtsUnit: "場地",
+        labelScoring: "5. 計分賽制選擇",
+        labelTarget: "6. 每局目標分數",
         optionRally: "落地得分制 (Rally)",
         optionSideout: "發球得分制 (Side-out)",
-        modeFairTitle: "平均賽局",
-        modeMaxTitle: "最大賽局",
-        modeFreeTitle: "自由賽局",
-        quickFillLabel: "自動代號生成，人數：",
-        autoPlayerPlaceholder: "人數",
-        chipsHint: "點擊該社團成員：",
-        historyHint: "點擊選擇歷史過往選手：",
-        manualInputTitle: "手動輸入，每行一人：",
+        labelScheduleMode: "7. 賽事模式",
+        modeFairTitle: "平均賽事",
+        modeFairDesc: "場數完全一致",
+        modeMaxTitle: "最大賽事",
+        modeMaxDesc: "時間內最多局",
+        labelPlayers: "8. 參賽選手名單 (每列一位)",
         playersBadge: "位選手",
-        timeCalcTitle: "賽程數與時間預估試算：",
-        submitCreateBtn: "生成賽程",
-        cancelBtn: "放棄",
-        placeholderName: "例：週末雙打積分賽",
-        placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D",
-        clubTitle: "社團賽事紀錄",
-        clubDesc: "選擇社團查看成員歷史總勝率與累積戰績",
-        switchClubLabel: "社團：",
-        btnDeleteClub: "刪除社團",
-        clubSelectPrompt: "👆 請於上方選取社團以查看數據紀錄",
-        clubHistory: "該社團歷史封存賽事",
-        thCPlayer: "成員",
-        thCWinRate: "勝率",
-        thCWL: "勝敗",
-        thCPlayed: "局數",
-        thCDiff: "淨勝",
-        thCPFPA: "得/失",
-        modalClubTitle: "建立新社團",
-        modalClubNameLabel: "社團名稱 *",
-        placeholderClubName: "例：週六練球團",
-        modalClubPwd2Label: "建立社團公用密碼，用於建立與瀏覽賽事",
-        placeholderClubPwd2: "請填入4位數字，如未填寫則無需密碼",
-        modalClubPwd1Label: "建立社團管理密碼，用於調整與社團刪除",
-        placeholderClubPwd1: "請填入4位數字，如未填寫則無需密碼",
-        btnSubmitClub: "確認創建",
-        btnCancelClub: "放棄創建",
+        timeCalcTitle: "時間預估試算：",
+        submitCreateBtn: "⚡ 自動生成賽程並發布",
+
+        // Placeholders
+        placeholderName: "例：0818 球賽",
+        placeholderPin: "4位數字 (刪除賽事用)",
+        placeholderPlayers: "選手 A\n選手 B\n選手 C\n選手 D\n選手 E\n選手 F",
+
+        // Live Tournament
         estPrefix: "預估",
         hrsUnit: "小時",
-        shareBtn: "QR",
+        shareBtn: "分享 / QR Code",
         scheduleTitle: "對戰賽程表",
         completedGamesBadge: "局完成",
         leaderboardTitle: "戰績排行",
-        unlockBtn: "輸入模式",
-        lockBtn: "觀看模式",
-        forceEndBtn: "結束並封存",
+
+        // Leaderboard Columns
         thRank: "名次",
         thPlayer: "選手名稱",
         thWl: "勝/敗",
         thDiff: "淨勝",
         thPfPa: "得分/失分",
-        tbTitle: "📊 排行榜排名規則：",
+
+        // Leaderboard Rules Box
+        tbTitle: "📊 排行榜 Tie-breaker 排名規則：",
         tbRule1: "第 1 順位：勝場數 (Wins) ⬇️",
         tbRule2: "第 2 順位：總淨勝分 (+/- = 得分 - 失分) ⬇️",
         tbRule3: "第 3 順位：總得分 (PF) ⬇️",
         tbRule4: "第 4 順位：總失分 (PA) ⬆️ (較低者優先)",
+
+        // Match Cards
+        blueTeam: "🔵 藍隊",
+        redTeam: "🔴 紅隊",
         restingLabel: "本局輪空休息：",
         noResting: "無",
-        saveScoreBtn: "儲存比分",
-        editScoreBtn: "修改比分",
-        canceledGame: "已單局流局 (作廢)",
+        saveScoreBtn: "儲存",
+        editScoreBtn: "修改",
+        gameCompleted: "已完成",
+        scorePlaceholder: "得分",
+
+        // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
-        copiedToast: "📋 專屬連結已複製！",
-        godModePrompt: "維護密碼：",
-        godTitle: "系統資料庫控制台",
-        godDesc: "最高管理員專用：一鍵勾選刪除異常資料與清除快取",
-        godBack: "返回大廳",
-        godLocalTitle: "本機與快取維護",
-        godLocalDesc: "清除瀏覽器快取 (LocalStorage)，修復資料異常或畫面卡住。",
-        godLocalBtn: "🧹 清除所有本機快取",
-        godCloudTitle: "資料強制重整",
-        godCloudDesc: "強制從雲端重新拉取最新的社團與賽事清單。",
-        godCloudBtn: "🔄 強制重新載入雲端與本地資料",
-        godTTitle: "所有賽事列表 (勾選批量管理)",
-        godTBtn: "🗑️ 刪除勾選的賽事",
-        godCTitle: "所有社團列表 (勾選批量管理)",
-        godCBtn: "🗑️ 刪除勾選的社團",
-        lockedNotice: "本賽事已完賽並鎖定數據，現場管理員無法修改比分。",
-        lockedSub: "如需修正，請點擊右上方「社團管理者解凍修改」",
-        installAppTooltip: "安裝 App"
+        copiedToast: "📋 專屬連結已複製！"
       },
+
       "en": {
+        appSubtitle: "Pickleball Hub",
         navHub: "Hub",
-        navClub: "Clubs",
         navCreate: "Create",
         dbConnected: "Connected",
+
+        // Hub
         hubTitle: "Tournament Hub",
-        hubActive: "Active Tournaments",
-        hubArchived: "Archived Records",
-        createNewBtn: "Create Tournament",
-        statusFinished: "🔒 Finished",
-        statusActive: "Active",
-        statusVoided: "🚫 Voided",
+        hubDesc: "Click card to view live match schedule",
+        createNewBtn: "➕ Create Tournament",
+        statusFinished: "Completed",
+        statusActive: "In Progress",
         enterTournament: "Enter View",
         playersCountLabel: "Players",
         gamesDoneLabel: "Games Done",
+
+        // Create Form
         createTitle: "Create Tournament",
-        labelName: "Tournament Name",
-        labelClub: "Club Name",
-        btnOpenCreateClub: "Add Club",
-        labelClubAuth: "Club protected, enter public password:",
-        placeholderClubAuth: "Enter public password",
-        optionalTag: "(Optional)",
-        labelDuration: "Total Duration",
-        labelCourts: "Number of Courts",
-        labelGameMins: "Single Game Mins",
-        labelScoring: "Scoring System",
-        labelTarget: "Target Points",
-        labelScheduleMode: "Schedule Mode",
-        labelPlayers: "Player Roster",
+        createDesc: "Generate optimal round robin & time estimation",
+        labelName: "1. Tournament Name",
+        labelPin: "2. Admin PIN (4 Digits)",
+        labelDuration: "3. Total Estimated Duration",
+        labelGameMins: "4. Single Game Mins",
         unitHours: "Hrs",
         unitMins: "Mins",
-        courtsUnit: "Courts",
+        labelScoring: "5. Scoring System",
+        labelTarget: "6. Target Points",
         optionRally: "Rally Scoring",
         optionSideout: "Side-out Scoring",
-        modeFairTitle: "Fair Mode",
-        modeMaxTitle: "Max Mode",
-        modeFreeTitle: "Free Mode",
-        quickFillLabel: "Auto Code Gen, Count:",
-        autoPlayerPlaceholder: "Count",
-        chipsHint: "Click Club Member:",
-        historyHint: "Click Historical Player:",
-        manualInputTitle: "Manual Entry, One Per Line:",
+        labelScheduleMode: "7. Schedule Mode",
+        modeFairTitle: "Fair Play",
+        modeFairDesc: "Equal games each",
+        modeMaxTitle: "Max Games",
+        modeMaxDesc: "Most games possible",
+        labelPlayers: "8. Player Roster (One per line)",
         playersBadge: "Players",
-        timeCalcTitle: "Estimate & Player Match Count:",
-        submitCreateBtn: "Generate",
-        cancelBtn: "Cancel",
-        placeholderName: "e.g., Weekend Pickleball",
-        placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D",
-        clubTitle: "Club Records",
-        clubDesc: "Select club to view historical member stats & standings",
-        switchClubLabel: "Club:",
-        btnDeleteClub: "Delete Club",
-        clubSelectPrompt: "👆 Select a club above to view data records",
-        clubHistory: "Club Archived Tournaments",
-        thCPlayer: "Member",
-        thCWinRate: "Win %",
-        thCWL: "W/L",
-        thCPlayed: "Games",
-        thCDiff: "Diff",
-        thCPFPA: "PF/PA",
-        modalClubTitle: "Create New Club",
-        modalClubNameLabel: "Club Name *",
-        placeholderClubName: "e.g., Weekend Pickleball",
-        modalClubPwd2Label: "Public Password for Viewing/Creating",
-        placeholderClubPwd2: "4 digits, leave blank for no pwd",
-        modalClubPwd1Label: "Admin Password for Edits/Delete",
-        placeholderClubPwd1: "4 digits, leave blank for no pwd",
-        btnSubmitClub: "Confirm",
-        btnCancelClub: "Cancel",
+        timeCalcTitle: "Estimated Time Calculation:",
+        submitCreateBtn: "⚡ Generate & Publish Schedule",
+
+        // Placeholders (Authentic Native UI English)
+        placeholderName: "e.g., 0818 Tournament",
+        placeholderPin: "Enter 4-digit PIN",
+        placeholderPlayers: "Player A\nPlayer B\nPlayer C\nPlayer D\nPlayer E\nPlayer F",
+
+        // Live Tournament
         estPrefix: "Est.",
         hrsUnit: "Hrs",
-        shareBtn: "QR",
+        shareBtn: "Share / QR Code",
         scheduleTitle: "Match Schedule",
         completedGamesBadge: "Games Done",
-        leaderboardTitle: "Live Standings",
-        unlockBtn: "Edit Mode",
-        lockBtn: "View Mode",
-        forceEndBtn: "Finish & Archive",
+        leaderboardTitle: "Live Leaderboard",
+
+        // Leaderboard Columns
         thRank: "Rank",
         thPlayer: "Player Name",
         thWl: "W/L",
         thDiff: "Diff",
         thPfPa: "PF/PA",
+
+        // Leaderboard Rules Box
         tbTitle: "📊 Tie-breaker Rules:",
         tbRule1: "1st Order: Wins (W) ⬇️",
         tbRule2: "2nd Order: Point Differential (+/-) ⬇️",
         tbRule3: "3rd Order: Points For (PF) ⬇️",
         tbRule4: "4th Order: Points Against (PA) ⬆️ (Lower is better)",
+
+        // Match Cards
+        blueTeam: "🔵 Blue",
+        redTeam: "🔴 Red",
         restingLabel: "Resting: ",
         noResting: "None",
-        saveScoreBtn: "Save Score",
-        editScoreBtn: "Edit Score",
-        canceledGame: "Match Voided",
+        saveScoreBtn: "Save",
+        editScoreBtn: "Edit",
+        gameCompleted: "Finished",
+        scorePlaceholder: "Score",
+
+        // Modals & Toasts
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
         copyBtn: "Copy",
-        copiedToast: "📋 Link copied to clipboard!",
-        godModePrompt: "Maintenance Password:",
-        godTitle: "System Database Console",
-        godDesc: "Super Admin: One-click delete & clear cache",
-        godBack: "Back to Hub",
-        godLocalTitle: "Local & Cache Maint.",
-        godLocalDesc: "Clear browser cache (LocalStorage) to fix data/UI issues.",
-        godLocalBtn: "🧹 Clear Local Cache",
-        godCloudTitle: "Force Refresh",
-        godCloudDesc: "Force pull latest club and tournament data from cloud.",
-        godCloudBtn: "🔄 Reload Cloud & Local Data",
-        godTTitle: "All Tournaments (Select to manage)",
-        godTBtn: "🗑️ Delete Selected Tournaments",
-        godCTitle: "All Clubs (Select to manage)",
-        godCBtn: "🗑️ Delete Selected Clubs",
-        lockedNotice: "Tournament finished. Scores locked.",
-        lockedSub: "Click 'Super Admin Unlock' to edit.",
-        installAppTooltip: "Install App"
+        copiedToast: "📋 Link copied to clipboard!"
       }
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      initDynamicPwaIcon();
+    // Initialize Icons, Theme, Language & Firebase Connection
+    function initApp() {
       applyThemeUI();
       initFirebase(DEFAULT_FIREBASE_CONFIG);
       applyLanguageUI();
       initRouting();
-      registerServiceWorker();
       lucide.createIcons();
-
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const installBtn = document.getElementById('btn-install-pwa');
-        if (installBtn) installBtn.classList.remove('hidden');
-      });
-    });
-
-    window.preventInvalidNumberChars = function(e, allowDecimal = false) {
-      if (['e', 'E', '+', '-'].includes(e.key) || (!allowDecimal && e.key === '.')) {
-        e.preventDefault();
-      }
-    };
-
-    window.clampNumberInput = function(el, min, max) {
-      if (el.value === '') return;
-      let val = parseFloat(el.value);
-      if (val > max) el.value = max;
-    };
-
-    window.installPWA = async function() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          console.log('User accepted PWA installation');
-        }
-        deferredPrompt = null;
-        document.getElementById('btn-install-pwa').classList.add('hidden');
-      }
-    };
-
-    function initDynamicPwaIcon() {
-      const canvas = document.createElement("canvas");
-      canvas.width = 512;
-      canvas.height = 512;
-      const ctx = canvas.getContext("2d");
-      const grad = ctx.createLinearGradient(0, 512, 512, 0);
-      grad.addColorStop(0, "#10b981");
-      grad.addColorStop(1, "#fbbf24");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.roundRect(0, 0, 512, 512, 128);
-      ctx.fill();
-      ctx.fillStyle = "#090d16";
-      ctx.beginPath();
-      ctx.rect(160, 128, 192, 64);
-      ctx.arc(256, 192, 96, 0, Math.PI, false);
-      ctx.fill();
-      ctx.fillRect(240, 288, 32, 64);
-      ctx.fillRect(192, 352, 128, 32);
-      const iconDataUrl = canvas.toDataURL("image/png");
-      const appleLink = document.getElementById("apple-icon-link");
-      if (appleLink) appleLink.href = iconDataUrl;
-
-      const manifestObj = {
-        name: "PB Match",
-        short_name: "PB Match",
-        start_url: "./",
-        display: "standalone",
-        background_color: "#fbf9f5",
-        theme_color: "#10b981",
-        icons: [{ src: iconDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
-      };
-      const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/json" });
-      const manifestUrl = URL.createObjectURL(manifestBlob);
-      const manifestLink = document.getElementById("manifest-link");
-      if (manifestLink) manifestLink.href = manifestUrl;
     }
 
-    function registerServiceWorker() {
-      if ('serviceWorker' in navigator) {
-        const swCode = `
-          self.addEventListener('install', (e) => self.skipWaiting());
-          self.addEventListener('activate', (e) => self.clients.claim());
-          self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
-        `;
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(swUrl).catch(err => console.log('SW Register error:', err));
-      }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
     }
 
     window.addEventListener("popstate", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const tId = urlParams.get("t");
-      if (tId) loadLiveTournament(tId);
-      else navigateTo("hub");
+      initRouting();
     });
 
+    // ----------------------------------------------------
+    // THEME SWITCHER (黑底 ↔ 白底)
+    // ----------------------------------------------------
     window.toggleTheme = function () {
       STATE.theme = STATE.theme === "dark" ? "light" : "dark";
       localStorage.setItem("pb_theme", STATE.theme);
       applyThemeUI();
+      showToast(STATE.theme === "dark" 
+        ? (STATE.lang === "zh-TW" ? "已切換至【黑底】" : "Switched to Dark Mode")
+        : (STATE.lang === "zh-TW" ? "已切換至【白底】" : "Switched to Light Mode"), "info");
     };
 
     function applyThemeUI() {
       const html = document.documentElement;
       const themeIcon = document.getElementById("theme-icon");
+
       if (STATE.theme === "light") {
         html.classList.remove("dark");
         html.classList.add("light");
@@ -1059,12 +685,17 @@
       lucide.createIcons();
     }
 
+    // ----------------------------------------------------
+    // I18N LANGUAGE SWITCHER
+    // ----------------------------------------------------
     window.toggleLanguage = function () {
       STATE.lang = STATE.lang === "zh-TW" ? "en" : "zh-TW";
       localStorage.setItem("pb_lang", STATE.lang);
       applyLanguageUI();
       applyThemeUI();
-      if (STATE.tournamentData) renderLiveUI(STATE.tournamentData);
+      if (STATE.tournamentData) {
+        renderLiveUI(STATE.tournamentData);
+      }
       renderHubTournaments();
       showToast(STATE.lang === "zh-TW" ? "已切換至 繁體中文" : "Switched to English", "info");
     };
@@ -1074,85 +705,62 @@
     }
 
     function applyLanguageUI() {
+      document.getElementById("t-app-subtitle").innerText = t("appSubtitle");
       document.getElementById("t-nav-hub").innerText = t("navHub");
-      document.getElementById("t-nav-club").innerText = t("navClub");
       document.getElementById("t-nav-create").innerText = t("navCreate");
 
+      // Hub Page
       document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
-      document.getElementById("t-hub-active").innerText = t("hubActive");
-      document.getElementById("t-hub-archived").innerText = t("hubArchived");
+      document.getElementById("t-hub-desc").innerText = t("hubDesc");
+      document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
 
-      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-emerald-500"></i> ${t("createTitle")}`;
+      // Create Form Page
+      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
+      document.getElementById("t-create-desc").innerText = t("createDesc");
       document.getElementById("t-label-name").innerText = t("labelName");
-      
-      const lblClub = document.getElementById("t-label-club");
-      if (lblClub) lblClub.innerHTML = `${t("labelClub")} <span class="text-[10px] sub-text font-normal">${t("optionalTag")}</span>`;
-      
-      document.getElementById("t-btn-open-create-club").innerText = t("btnOpenCreateClub");
-      
-      const lblAuth = document.querySelector("#box-club-auth-pwd label");
-      if(lblAuth) lblAuth.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i> ${t("labelClubAuth")}`;
-      
-      document.getElementById("create-club-auth-pwd").placeholder = t("placeholderClubAuth");
-
+      document.getElementById("t-label-pin").innerText = t("labelPin");
       document.getElementById("t-label-duration").innerText = t("labelDuration");
       document.getElementById("t-unit-hours").innerText = t("unitHours");
-      document.getElementById("t-label-courts").innerText = t("labelCourts");
       document.getElementById("t-label-game-mins").innerText = t("labelGameMins");
       document.getElementById("t-unit-mins").innerText = t("unitMins");
       document.getElementById("t-label-scoring").innerText = t("labelScoring");
       document.getElementById("t-label-target").innerText = t("labelTarget");
+      document.getElementById("t-label-schedule-mode").innerText = t("labelScheduleMode");
       document.getElementById("t-mode-fair-title").innerText = t("modeFairTitle");
+      document.getElementById("t-mode-fair-desc").innerText = t("modeFairDesc");
       document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
-      document.getElementById("t-mode-free-title").innerText = t("modeFreeTitle");
+      document.getElementById("t-mode-max-desc").innerText = t("modeMaxDesc");
       document.getElementById("t-label-players").innerText = t("labelPlayers");
+      document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
+      document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
-      const submitCreateBtn = document.querySelector("#page-create button[type='submit']");
-      if (submitCreateBtn) submitCreateBtn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
-
-      document.getElementById("t-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("clubTitle")}`;
-      document.getElementById("t-club-desc").innerText = t("clubDesc");
-      document.getElementById("t-delete-club-label").innerText = t("btnDeleteClub");
-      document.getElementById("t-switch-club-label").innerText = t("switchClubLabel");
-      const promptEl = document.getElementById("t-club-select-prompt");
-      if(promptEl) promptEl.innerText = t("clubSelectPrompt");
-      document.getElementById("t-club-history").innerText = t("clubHistory");
-      document.getElementById("th-c-player").innerText = t("thCPlayer");
-      document.getElementById("th-c-winrate").innerText = t("thCWinRate");
-      document.getElementById("th-c-wl").innerText = t("thCWL");
-      document.getElementById("th-c-played").innerText = t("thCPlayed");
-      document.getElementById("th-c-diff").innerText = t("thCDiff");
-      document.getElementById("th-c-pfpa").innerText = t("thCPFPA");
-
-      document.getElementById("t-modal-club-title").innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-500"></i> ${t("modalClubTitle")}`;
-      document.getElementById("t-modal-club-name-label").innerText = t("modalClubNameLabel");
-      document.getElementById("club-new-name").placeholder = t("placeholderClubName");
-      document.getElementById("t-modal-club-pwd2-label").innerText = t("modalClubPwd2Label");
-      document.getElementById("club-new-pwd2").placeholder = t("placeholderClubPwd2");
-      document.getElementById("t-modal-club-pwd1-label").innerText = t("modalClubPwd1Label");
-      document.getElementById("club-new-pwd1").placeholder = t("placeholderClubPwd1");
-      document.getElementById("btn-submit-club").innerText = t("btnSubmitClub");
-      document.getElementById("t-btn-cancel-club").innerText = t("btnCancelClub");
-
+      // Placeholders translation
       document.getElementById("create-name").placeholder = t("placeholderName");
+      document.getElementById("create-pin").placeholder = t("placeholderPin");
+      document.getElementById("create-players").placeholder = t("placeholderPlayers");
 
+      // Select Options
       const scoringSel = document.getElementById("create-scoring-type");
       if (scoringSel) {
         scoringSel.options[0].text = t("optionRally");
         scoringSel.options[1].text = t("optionSideout");
       }
 
+      // Live Tournament
       document.getElementById("t-est-prefix").innerText = t("estPrefix");
       document.getElementById("t-hrs-unit").innerText = t("hrsUnit");
+      document.getElementById("t-share-btn").innerHTML = `<i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> ${t("shareBtn")}`;
       document.getElementById("t-schedule-title").innerHTML = `<i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
       document.getElementById("t-leaderboard-title").innerHTML = `<i data-lucide="crown" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500"></i> ${t("leaderboardTitle")}`;
 
+      // Leaderboard Table Headers
       document.getElementById("th-rank").innerText = t("thRank");
       document.getElementById("th-player").innerText = t("thPlayer");
       document.getElementById("th-wl").innerText = t("thWl");
       document.getElementById("th-diff").innerText = t("thDiff");
       document.getElementById("th-pf-pa").innerText = t("thPfPa");
 
+      // Leaderboard Rules Box
       document.getElementById("t-tiebreaker-box-title").innerText = t("tbTitle");
       const list = document.getElementById("t-tiebreaker-list");
       if (list) {
@@ -1162,40 +770,32 @@
         list.children[3].innerText = t("tbRule4");
       }
 
+      // Modal
       document.getElementById("t-modal-qr-title").innerText = t("modalQrTitle");
       document.getElementById("t-modal-qr-desc").innerText = t("modalQrDesc");
       document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
 
-      document.getElementById("t-god-title").innerText = t("godTitle");
-      document.getElementById("t-god-desc").innerText = t("godDesc");
-      document.getElementById("t-god-back").innerText = t("godBack");
-      document.getElementById("t-god-local-title").innerHTML = `<i data-lucide="database" class="w-4 h-4"></i> ${t("godLocalTitle")}`;
-      document.getElementById("t-god-local-desc").innerText = t("godLocalDesc");
-      document.getElementById("t-god-local-btn").innerText = t("godLocalBtn");
-      document.getElementById("t-god-cloud-title").innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> ${t("godCloudTitle")}`;
-      document.getElementById("t-god-cloud-desc").innerText = t("godCloudDesc");
-      document.getElementById("t-god-cloud-btn").innerText = t("godCloudBtn");
-      document.getElementById("t-god-t-title").innerHTML = `<i data-lucide="list-checks" class="w-4 h-4 text-emerald-500"></i> ${t("godTTitle")}`;
-      document.getElementById("t-god-t-btn").innerText = t("godTBtn");
-      document.getElementById("t-god-c-title").innerHTML = `<i data-lucide="users" class="w-4 h-4 text-amber-500"></i> ${t("godCTitle")}`;
-      document.getElementById("t-god-c-btn").innerText = t("godCBtn");
-      document.getElementById("t-locked-notice").innerText = t("lockedNotice");
-      document.getElementById("t-locked-sub").innerText = t("lockedSub");
-      
-      const installBtn = document.getElementById("btn-install-pwa");
-      if(installBtn) installBtn.title = t("installAppTooltip");
-
-      renderPlayerTags();
+      updatePlayerCountBadge();
       calculateTimeEstimate();
       lucide.createIcons();
     }
 
+    // ----------------------------------------------------
+    // FIREBASE INITIALIZATION
+    // ----------------------------------------------------
     function initFirebase(cfg) {
       try {
-        if (!getApps().length) STATE.firebaseApp = initializeApp(cfg);
-        else STATE.firebaseApp = getApp();
+        if (!getApps().length) {
+          STATE.firebaseApp = initializeApp(cfg);
+        } else {
+          STATE.firebaseApp = getApp();
+        }
         STATE.db = getDatabase(STATE.firebaseApp);
-        updateDbStatusBadge(true);
+        const connectedRef = ref(STATE.db, ".info/connected");
+        onValue(connectedRef, (snap) => {
+          const isOnline = snap.val() === true;
+          updateDbStatusBadge(isOnline);
+        });
       } catch (err) {
         console.error("Firebase init error:", err);
         updateDbStatusBadge(false);
@@ -1205,27 +805,32 @@
     function updateDbStatusBadge(isOnline) {
       const hubSpan = document.getElementById("brand-hub-text");
       if (hubSpan) {
-        hubSpan.className = isOnline ? "text-emerald-500 dark:text-emerald-400 transition-colors duration-300" : "text-rose-500 dark:text-rose-400 transition-colors duration-300 font-extrabold";
+        if (isOnline) {
+          hubSpan.className = "text-emerald-500 dark:text-emerald-400 transition-colors duration-300";
+        } else {
+          hubSpan.className = "text-rose-500 dark:text-rose-400 transition-colors duration-300 font-extrabold";
+        }
       }
     }
 
-    async function initRouting() {
+    // ----------------------------------------------------
+    // ROUTING & SPA NAVIGATION
+    // ----------------------------------------------------
+    function initRouting() {
       const urlParams = new URLSearchParams(window.location.search);
       const tId = urlParams.get("t");
-      if (tId) await loadLiveTournament(tId);
-      else navigateTo("hub");
+      const page = urlParams.get("page");
+      if (tId) {
+        loadLiveTournament(tId, false);
+      } else if (page === "create") {
+        navigateTo("create", false);
+      } else {
+        navigateTo("hub", false);
+      }
     }
 
-    window.resetCreateFormAndGoHub = function() {
-      const createForm = document.getElementById("form-create-tournament");
-      if (createForm) createForm.reset();
-      activePlayerTags = [];
-      STATE.selectedFairGamesOption = null;
-      navigateTo("hub");
-    };
-
-    window.navigateTo = async function (pageName) {
-      const pages = ["hub", "create", "live", "club", "godmode"];
+    window.navigateTo = function (pageName, pushHistory = true) {
+      const pages = ["hub", "create", "live"];
       pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
         if (el) el.classList.add("hidden");
@@ -1234,489 +839,60 @@
       const target = document.getElementById(`page-${pageName}`);
       if (target) target.classList.remove("hidden");
 
+      if (pushHistory) {
+        if (pageName === "hub") {
+          window.history.pushState({}, "", window.location.pathname);
+        } else if (pageName === "create") {
+          window.history.pushState({}, "", `${window.location.pathname}?page=create`);
+        }
+      }
+
       if (pageName === "hub") {
         renderHubTournaments();
-      } else if (pageName === "create") {
-        const createForm = document.getElementById("form-create-tournament");
-        if (createForm) createForm.reset();
-
-        document.getElementById("create-name").value = "";
-        const authPwdInput = document.getElementById("create-club-auth-pwd");
-        if (authPwdInput) authPwdInput.value = "";
-
-        activePlayerTags = [];
-        STATE.selectedFairGamesOption = null;
-        renderPlayerTags();
-
-        await populateClubSelect();
-        document.getElementById("box-club-auth-pwd").classList.add("hidden");
-        setScheduleMode("fair");
-      } else if (pageName === "club") {
-        await initClubPage();
-      } else if (pageName === "godmode") {
-        await renderGodModeTables();
       }
 
       if (pageName !== "live" && STATE.dbUnsubscribe) {
         STATE.dbUnsubscribe();
         STATE.dbUnsubscribe = null;
       }
-      lucide.createIcons();
-    };
-
-    function renderPlayerTags() {
-      const container = document.getElementById("player-tags-container");
-      const badge = document.getElementById("player-count-badge");
-      badge.innerText = `目前共 ${activePlayerTags.length} 位`;
-
-      if (activePlayerTags.length === 0) {
-        container.innerHTML = `<span id="tags-empty-placeholder" class="sub-text text-xs text-center w-full my-auto py-5 pointer-events-none">請透過下方新增參賽選手</span>`;
-      } else {
-        container.innerHTML = activePlayerTags.map((p, idx) => `
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold shadow-sm">
-            ${p}
-            <button type="button" onclick="removePlayerTag(${idx})" class="hover:text-rose-500 transition text-emerald-500/60 font-normal">✕</button>
-          </span>
-        `).join("");
-      }
-
-      onClubSelectChange();
-      calculateTimeEstimate();
-    }
-
-    window.removePlayerTag = function(idx) {
-      activePlayerTags.splice(idx, 1);
-      renderPlayerTags();
-    };
-
-    window.addManualPlayer = function() {
-      const input = document.getElementById("input-manual-player");
-      const rawText = input.value.trim();
-      if (!rawText) return;
-
-      const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      lines.forEach(name => {
-        if (!activePlayerTags.includes(name)) {
-          activePlayerTags.push(name);
-        }
-      });
-
-      input.value = "";
-      renderPlayerTags();
-    };
-
-    window.addSingleGuestPlayer = function() {
-      let codeIndex = 0;
-      let newName = `選手 ${String.fromCharCode(65 + codeIndex)}`;
-      while (activePlayerTags.includes(newName)) {
-        codeIndex++;
-        newName = `選手 ${String.fromCharCode(65 + codeIndex)}`;
-      }
-      activePlayerTags.push(newName);
-      renderPlayerTags();
-    };
-
-    window.batchGenerateABCPlayers = function() {
-      const count = parseInt(document.getElementById("auto-gen-count").value) || 7;
-      activePlayerTags = Array.from({length: count}, (_, i) => `選手 ${String.fromCharCode(65 + i)}`);
-      renderPlayerTags();
-    };
-
-    window.toggleClubMemberTag = function(memberName) {
-      const idx = activePlayerTags.indexOf(memberName);
-      if (idx >= 0) activePlayerTags.splice(idx, 1);
-      else activePlayerTags.push(memberName);
-      renderPlayerTags();
-    };
-
-    window.openManagePlayersModal = function() {
-      const tObj = STATE.tournamentData;
-      if (!tObj) return;
-
-      const container = document.getElementById("modal-players-list-container");
-      const statusText = document.getElementById("modal-players-list-status");
-      const isFinished = tObj.status === "finished";
-
-      const canEdit = (!isFinished && STATE.isAdminUnlocked) || (isFinished && STATE.isSuperAdminUnlocked);
-
-      if (canEdit) {
-        statusText.innerText = "點擊名稱即可更名（改名後自動同步賽程與戰績）";
-        statusText.className = "text-[11px] font-semibold text-emerald-500 mb-2";
-      } else {
-        statusText.innerText = isFinished ? "賽事已完賽鎖定，僅供查看名單" : "目前為觀看模式，解鎖後可更名";
-        statusText.className = "text-[11px] sub-text mb-2";
-      }
-
-      container.innerHTML = tObj.players.map((p, idx) => `
-        <div class="flex items-center justify-between p-2 rounded-xl card-inner border">
-          <span class="sub-text font-mono w-6 text-center">${idx + 1}.</span>
-          <div class="flex-1 px-2">
-            ${canEdit ? `
-              <input type="text" id="edit-player-input-${idx}" value="${p}" class="w-full input-bg border rounded-lg p-1 px-2 text-xs font-semibold focus:border-emerald-500 focus:outline-none" />
-            ` : `
-              <span class="font-bold">${p}</span>
-            `}
-          </div>
-          ${canEdit ? `
-            <button onclick="saveSinglePlayerName(${idx})" class="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition">
-              儲存
-            </button>
-          ` : ''}
-        </div>
-      `).join("");
-
-      document.getElementById("modal-manage-players").classList.remove("hidden");
-    };
-
-    window.closeManagePlayersModal = function() {
-      document.getElementById("modal-manage-players").classList.add("hidden");
-    };
-
-    window.saveSinglePlayerName = async function(playerIdx) {
-      const input = document.getElementById(`edit-player-input-${playerIdx}`);
-      if (!input) return;
-
-      const oldName = STATE.tournamentData.players[playerIdx];
-      const newName = input.value.trim();
-
-      if (!newName) {
-        showToast("選手姓名不能為空白！", "error");
-        return;
-      }
-
-      if (oldName === newName) return;
-
-      STATE.tournamentData.players[playerIdx] = newName;
-
-      STATE.tournamentData.matches.forEach(m => {
-        m.blue = m.blue.map(p => p === oldName ? newName : p);
-        m.red = m.red.map(p => p === oldName ? newName : p);
-        m.resting = m.resting.map(p => p === oldName ? newName : p);
-      });
-
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      saveToLocalTournaments(STATE.tournamentData);
-
-      renderLiveUI(STATE.tournamentData);
-      openManagePlayersModal();
-      showToast(`已將「${oldName}」修改為「${newName}」`, "success");
-    };
-
-    window.addPlayerToLiveTournament = async function() {
-      const input = document.getElementById("input-add-live-player");
-      const name = input.value.trim();
-      if (!name) return;
-
-      if (!STATE.tournamentData.players.includes(name)) {
-        STATE.tournamentData.players.push(name);
-        if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-        saveToLocalTournaments(STATE.tournamentData);
-        input.value = "";
-        renderLiveUI(STATE.tournamentData);
-        openManagePlayersModal();
-        showToast(`已成功追加選手「${name}」！`, "success");
-      } else {
-        showToast("該名單已存在！", "warning");
-      }
-    };
-
-    window.openGodMode = async function () {
-      const input = prompt(t("godModePrompt"));
-      if (input === null) return;
-      if (input !== "19851108") {
-        showToast("❌ 權限不足，密碼錯誤！", "error");
-        return;
-      }
-      navigateTo("godmode");
-    };
-
-    async function renderGodModeTables() {
-      await fetchAllTournaments();
-      await fetchAllClubs();
-
-      const tContainer = document.getElementById("god-tournaments-table");
-      const tournaments = STATE.allTournamentsCache;
-      if (tournaments.length === 0) {
-        tContainer.innerHTML = `<p class="sub-text text-center py-3">目前無任何賽事資料</p>`;
-      } else {
-        tContainer.innerHTML = `
-          <table class="w-full text-left">
-            <thead class="card-inner sub-text border-b">
-              <tr>
-                <th class="p-2 w-10"><input type="checkbox" id="select-all-t" onclick="toggleSelectAllT(this)"></th>
-                <th class="p-2">ID</th>
-                <th class="p-2">名稱</th>
-                <th class="p-2">狀態</th>
-                <th class="p-2">社團</th>
-                <th class="p-2">建立時間</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y">
-              ${tournaments.map(tData => `
-                <tr class="hover:bg-stone-500/5">
-                  <td class="p-2"><input type="checkbox" class="t-checkbox" value="${tData.id}"></td>
-                  <td class="p-2 font-mono">${tData.id}</td>
-                  <td class="p-2 font-semibold">${tData.name}</td>
-                  <td class="p-2"><span class="px-2 py-0.5 rounded text-[10px] ${tData.status === 'voided' ? 'bg-rose-500/10 text-rose-500' : tData.status === 'finished' ? 'bg-slate-500/10 text-slate-400' : 'bg-emerald-500/10 text-emerald-500'}">${tData.status || 'active'}</span></td>
-                  <td class="p-2">${tData.clubName || '無'}</td>
-                  <td class="p-2 sub-text">${tData.createdAt || ''}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        `;
-      }
-
-      const cContainer = document.getElementById("god-clubs-table");
-      const clubs = Object.keys(STATE.allClubsCache);
-      if (clubs.length === 0) {
-        cContainer.innerHTML = `<p class="sub-text text-center py-3">目前無任何社團資料</p>`;
-      } else {
-        cContainer.innerHTML = `
-          <table class="w-full text-left">
-            <thead class="card-inner sub-text border-b">
-              <tr>
-                <th class="p-2 w-10"><input type="checkbox" id="select-all-c" onclick="toggleSelectAllC(this)"></th>
-                <th class="p-2">社團名稱</th>
-                <th class="p-2">公用密碼</th>
-                <th class="p-2">管理密碼</th>
-                <th class="p-2">建立時間</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y">
-              ${clubs.map(cName => {
-                const c = STATE.allClubsCache[cName];
-                return `
-                  <tr class="hover:bg-stone-500/5">
-                    <td class="p-2"><input type="checkbox" class="c-checkbox" value="${cName}"></td>
-                    <td class="p-2 font-semibold text-amber-500">${cName}</td>
-                    <td class="p-2 font-mono">${c.password || '無'}</td>
-                    <td class="p-2 font-mono">${c.deletePassword || '無'}</td>
-                    <td class="p-2 sub-text">${c.createdAt || ''}</td>
-                  </tr>
-                `;
-              }).join("")}
-            </tbody>
-          </table>
-        `;
+      if (pageName !== "hub" && STATE.hubUnsubscribe) {
+        STATE.hubUnsubscribe();
+        STATE.hubUnsubscribe = null;
       }
       lucide.createIcons();
+    };
+
+    // Helper: 公平模式 - 調整總局數使每人場數完全一致
+    function getValidTotalGames(n, rawTargetGames) {
+      if (n < 4) return 0;
+      // 找最小區塊大小：每N人輪一圈，每次4人上場
+      // GCD(4, N) 的倍數即為「合法總局數」的最小單位
+      function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+      const blockSize = n / gcd(4, n);  // 每人打1場所需的局數
+      let blocks = Math.round(rawTargetGames / blockSize);
+      if (blocks < 1) blocks = 1;
+      return blocks * blockSize;
     }
 
-    window.toggleSelectAllT = function(master) {
-      document.querySelectorAll('.t-checkbox').forEach(cb => cb.checked = master.checked);
-    };
-    window.toggleSelectAllC = function(master) {
-      document.querySelectorAll('.c-checkbox').forEach(cb => cb.checked = master.checked);
-    };
-
-    window.godDeleteSelectedTournaments = async function() {
-      const selected = Array.from(document.querySelectorAll('.t-checkbox:checked')).map(cb => cb.value);
-      if (selected.length === 0) {
-        showToast("請先勾選要刪除的賽事！", "warning");
-        return;
-      }
-      if (!confirm(`⚠️ 確定要永久刪除勾選的 ${selected.length} 場賽事嗎？`)) return;
-
-      try {
-        await deleteLocalAndCloudTournaments(selected);
-        showToast("已成功刪除選定的賽事！", "success");
-        renderGodModeTables();
-      } catch(err) {
-        showToast("刪除失敗，請檢查網路狀態", "error");
-      }
-    };
-
-    async function deleteLocalAndCloudTournaments(tournamentIds) {
-      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-      for (const id of tournamentIds) {
-        delete local[id];
-        if (STATE.db) await remove(ref(STATE.db, `tournaments/${id}`));
-      }
-      localStorage.setItem("pb_tournaments", JSON.stringify(local));
+    // Helper: 最大模式 - 直接取最大局數，不調整
+    function getMaxTotalGames(rawTargetGames) {
+      return Math.max(3, rawTargetGames);
     }
 
-    window.godDeleteSelectedClubs = async function() {
-      const selected = Array.from(document.querySelectorAll('.c-checkbox:checked')).map(cb => cb.value);
-      if (selected.length === 0) {
-        showToast("請先勾選要刪除的社團！", "warning");
-        return;
-      }
-      if (!confirm(`⚠️ 確定要永久刪除勾選的 ${selected.length} 個社團嗎？`)) return;
-
-      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
-      for (const cName of selected) {
-        delete localClubs[cName];
-        if (STATE.db) await remove(ref(STATE.db, `clubs/${cName}`));
-      }
-      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
-      showToast("已成功刪除選定的社團！", "success");
-      renderGodModeTables();
-    };
-
-    window.godClearLocalStorage = function() {
-      if (!confirm("⚠️ 確定要清除所有瀏覽器快取 (LocalStorage) 嗎？")) return;
-      localStorage.clear();
-      showToast("🧹 本機快取已完全清空！", "success");
-      setTimeout(() => {
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.location.href = cleanUrl;
-      }, 1000);
-    };
-
-    window.godRefreshData = async function() {
-      await fetchAllTournaments();
-      await fetchAllClubs();
-      showToast("🔄 資料已重新載入同步！", "success");
-    };
-
-    function shuffleArray(array) {
-      const arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
-
-    /* 動態切換賽事模式 UI/UX 邏輯 */
-    window.setScheduleMode = function (mode) {
-      document.getElementById("create-schedule-mode").value = mode;
-      document.getElementById("btn-mode-fair").className = mode === "fair" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-      document.getElementById("btn-mode-max").className = mode === "max" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-      document.getElementById("btn-mode-free").className = mode === "free" ? "mode-btn-active px-1 py-2 rounded-xl border text-xs font-bold transition text-center" : "mode-btn-inactive px-1 py-2 rounded-xl border text-xs font-bold transition text-center";
-
-      const fairBox = document.getElementById("box-fair-options");
-      const gameMinsBox = document.getElementById("box-game-mins-input");
-
-      if (mode === "fair") {
-        fairBox.classList.remove("hidden");
-        gameMinsBox.classList.add("hidden");
-      } else if (mode === "max") {
-        fairBox.classList.add("hidden");
-        gameMinsBox.classList.remove("hidden");
-      } else if (mode === "free") {
-        fairBox.classList.add("hidden");
-        gameMinsBox.classList.add("hidden");
-      }
-
-      calculateTimeEstimate();
-    };
-
-    window.onScoringTypeChange = function () {
-      document.getElementById("create-game-mins").value = document.getElementById("create-scoring-type").value === "sideout" ? 18 : 12;
-    };
-
-    /* 取得【平均賽局】合法公倍數並過濾極端值 */
-    function getFairModeRadioOptions(playerCount, totalAllowedMins, courtsCount) {
-      if (playerCount < 4) return [];
-      const blockSize = playerCount / gcd(4, playerCount);
-      const options = [];
-
-      for (let k = 1; k <= 10; k++) {
-        const totalGames = k * blockSize;
-        const gamesPerPlayer = (totalGames * 4) / playerCount;
-        const estMinPerGame = (totalAllowedMins * courtsCount) / totalGames;
-
-        // 核心防呆：只保留單局配時大於等於 7 分鐘的選項
-        if (estMinPerGame >= MIN_GAME_DURATION) {
-          options.push({
-            totalGames,
-            gamesPerPlayer,
-            estMinPerGame: Math.round(estMinPerGame * 10) / 10
-          });
-        }
-      }
-      return options;
-    }
-
-    window.onFairOptionChange = function (val) {
-      STATE.selectedFairGamesOption = parseInt(val, 10);
-      calculateTimeEstimate();
-    };
-
-    /* 賽程數與時間動態試算 (含智能提示) */
-    window.calculateTimeEstimate = function () {
-      const mode = document.getElementById("create-schedule-mode").value || "fair";
-      const n = activePlayerTags.length;
-      const hintContainer = document.getElementById("score-hint-container");
-      
-      if (mode === "free") {
-        hintContainer.innerHTML = "";
-        return;
-      }
-
-      const baseDurMins = (parseFloat(document.getElementById("create-duration").value) || 2.0) * 60;
-      const bufferMins = parseInt(document.getElementById("create-buffer-mins").value) || 0;
-      const courts = parseInt(document.getElementById("create-courts").value) || 1;
-      const totalAllowedMins = baseDurMins + bufferMins;
-
-      let currentEstMins = 0;
-
-      if (mode === "fair") {
-        if (n < 4) {
-          document.getElementById("fair-radio-container").innerHTML = `<span class="sub-text text-[11px]">（需至少 4 位選手才能推算均分選項）</span>`;
-          hintContainer.innerHTML = "";
-          return;
-        }
-
-        const options = getFairModeRadioOptions(n, totalAllowedMins, courts);
-        const radioContainer = document.getElementById("fair-radio-container");
-
-        if (options.length === 0) {
-          radioContainer.innerHTML = `<div class="p-3 bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-900 rounded-xl text-rose-600 dark:text-rose-400 text-[11px] font-bold">⚠️ 預計總時間過短或人數過多，無法排定單局 ${MIN_GAME_DURATION} 分鐘以上的公平賽局。建議延長比賽時間、減少人數，或改用【最大賽局 / 自由賽局】。</div>`;
-          hintContainer.innerHTML = "";
-          return;
-        }
-
-        if (!STATE.selectedFairGamesOption || !options.some(o => o.totalGames === STATE.selectedFairGamesOption)) {
-          STATE.selectedFairGamesOption = options[0].totalGames;
-        }
-
-        radioContainer.innerHTML = options.map(opt => `
-          <label class="flex items-center gap-2 p-2 rounded-xl card-inner border cursor-pointer hover:border-emerald-500 transition">
-            <input type="radio" name="fair-game-option" value="${opt.totalGames}" ${opt.totalGames === STATE.selectedFairGamesOption ? 'checked' : ''} onchange="onFairOptionChange(this.value)" class="text-emerald-500 focus:ring-emerald-500" />
-            <div class="flex-1 flex items-center justify-between">
-              <span class="font-bold">🔘 打 ${opt.totalGames} 局 <span class="text-emerald-500">（每人 ${opt.gamesPerPlayer} 局）</span></span>
-              <span class="sub-text text-[11px] font-mono">配時: ${opt.estMinPerGame} 分</span>
-            </div>
-          </label>
-        `).join("");
-
-        const chosenOpt = options.find(o => o.totalGames === STATE.selectedFairGamesOption) || options[0];
-        currentEstMins = chosenOpt.estMinPerGame;
-
-      } else {
-        currentEstMins = parseInt(document.getElementById("create-game-mins").value) || 12;
-      }
-
-      // 渲染智能提示 (Smart Hint)
-      if (currentEstMins > 0) {
-        let suggested = 11;
-        if (currentEstMins >= 15) suggested = 21;
-        else if (currentEstMins >= 10) suggested = 15;
-        
-        hintContainer.innerHTML = `<div class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 p-2 rounded-lg border border-amber-200 dark:border-amber-900/50 mt-2">💡 系統建議：目前單局配時約 ${currentEstMins} 分鐘，建議目標分數設定為 ${suggested} 分較為充裕。</div>`;
-      }
-    };
-
-    /* 重構賽程生成演算法 */
-    function generateRoundRobinSchedule(playersList, durationHours = 2.0, bufferMins = 15, estMinsPerGame = 12, scheduleMode = "fair", courtsCount = 1) {
-      if (scheduleMode === "free") return [];
-
+    // ----------------------------------------------------
+    // INDIVIDUAL ROUND ROBIN ALGORITHM (個人雙打輪播)
+    // ----------------------------------------------------
+    function generateRoundRobinSchedule(playersList, durationHours = 2.0, estMinsPerGame = 15, scheduleMode = "fair") {
       const n = playersList.length;
       if (n < 4) return [];
 
-      let totalRounds = 1;
+      const totalMinutes = durationHours * 60;
+      const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
 
-      if (scheduleMode === "fair") {
-        totalRounds = STATE.selectedFairGamesOption || (n / gcd(4, n));
-      } else {
-        const totalAllowedMins = (durationHours * 60) + bufferMins;
-        totalRounds = Math.max(1, Math.floor((totalAllowedMins / estMinsPerGame) * courtsCount));
-      }
+      // 平均模式：調整局數確保每人場數完全相同；最大模式：直接用最大局數
+      const totalRounds = scheduleMode === "max"
+        ? getMaxTotalGames(rawTargetGames)
+        : getValidTotalGames(n, rawTargetGames);
 
       const gamesPlayed = {};
       const partneredCount = {};
@@ -1727,8 +903,14 @@
       });
 
       const matches = [];
+
       for (let r = 1; r <= totalRounds; r++) {
-        const sorted = shuffleArray([...playersList]).sort((a, b) => gamesPlayed[a] - gamesPlayed[b]);
+        // 嚴格優先選擇場數較少者登場，確保場數完全平衡
+        const sorted = [...playersList].sort((a, b) => {
+          if (gamesPlayed[a] !== gamesPlayed[b]) return gamesPlayed[a] - gamesPlayed[b];
+          return Math.random() - 0.5;
+        });
+
         const active = sorted.slice(0, 4);
         const resting = sorted.slice(4);
 
@@ -1740,9 +922,15 @@
 
         let bestCombo = combinations[0];
         let minScore = Infinity;
+
         combinations.forEach(combo => {
-          const score = partneredCount[combo.blue[0]][combo.blue[1]] + partneredCount[combo.red[0]][combo.red[1]];
-          if (score < minScore) { minScore = score; bestCombo = combo; }
+          const bScore = partneredCount[combo.blue[0]][combo.blue[1]];
+          const rScore = partneredCount[combo.red[0]][combo.red[1]];
+          const score = bScore + rScore;
+          if (score < minScore) {
+            minScore = score;
+            bestCombo = combo;
+          }
         });
 
         bestCombo.blue.concat(bestCombo.red).forEach(p => gamesPlayed[p]++);
@@ -1752,212 +940,143 @@
         partneredCount[bestCombo.red[1]][bestCombo.red[0]]++;
 
         matches.push({
-          id: r, roundName: `Game ${r}`, court: ((r - 1) % courtsCount) + 1,
-          blue: bestCombo.blue, red: bestCombo.red, resting,
-          blueScore: null, redScore: null, completed: false, status: "pending"
+          id: r,
+          roundName: `Game ${r}`,
+          blue: bestCombo.blue,
+          red: bestCombo.red,
+          resting: resting,
+          blueScore: null,
+          redScore: null,
+          completed: false,
         });
       }
+
       return matches;
     }
 
-    async function fetchAllTournaments() {
-      let list = [];
-      if (STATE.db) {
-        try {
-          const snapshot = await get(ref(STATE.db, "tournaments"));
-          if (snapshot.exists()) list = Object.values(snapshot.val());
-        } catch (e) { console.error("Fetch error:", e); }
+    // ----------------------------------------------------
+    // PAGE C: CREATE TOURNAMENT & TIME ESTIMATION
+    // ----------------------------------------------------
+    window.setScheduleMode = function (mode) {
+      document.getElementById("create-schedule-mode").value = mode;
+      const btnFair = document.getElementById("btn-mode-fair");
+      const btnMax = document.getElementById("btn-mode-max");
+      if (mode === "fair") {
+        btnFair.className = btnFair.className.replace("mode-btn-inactive", "mode-btn-active");
+        btnMax.className = btnMax.className.replace("mode-btn-active", "mode-btn-inactive");
+      } else {
+        btnMax.className = btnMax.className.replace("mode-btn-inactive", "mode-btn-active");
+        btnFair.className = btnFair.className.replace("mode-btn-active", "mode-btn-inactive");
       }
-      const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-      Object.values(localData).forEach(lt => {
-        if (!list.some(t => t.id === lt.id)) list.push(lt);
-      });
-      list = list.filter(tData => tData.status !== "voided");
-      STATE.allTournamentsCache = list;
-      return list;
-    }
-
-    async function fetchAllClubs() {
-      let clubs = {};
-      if (STATE.db) {
-        try {
-          const snapshot = await get(ref(STATE.db, "clubs"));
-          if (snapshot.exists()) clubs = snapshot.val();
-        } catch (e) { console.error("Fetch clubs error:", e); }
-      }
-      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
-      STATE.allClubsCache = { ...localClubs, ...clubs };
-      return STATE.allClubsCache;
-    }
-
-    window.openCreateClubModal = function () { document.getElementById("modal-create-club").classList.remove("hidden"); };
-    window.closeCreateClubModal = function () { 
-      document.getElementById("modal-create-club").classList.add("hidden"); 
-      document.getElementById("form-create-club").reset();
+      calculateTimeEstimate();
     };
 
-    window.handleCreateClubSubmit = async function (e) {
-      e.preventDefault();
-      const clubName = document.getElementById("club-new-name").value.trim();
-      const pwdUse = document.getElementById("club-new-pwd2").value.trim();
-      const pwdMgmt = document.getElementById("club-new-pwd1").value.trim();
-      if (!clubName) return;
-
-      const clubObj = { name: clubName, password: pwdUse || null, deletePassword: pwdMgmt || null, createdAt: new Date().toLocaleString("zh-TW") };
-      if (STATE.db) {
-        try { await set(ref(STATE.db, `clubs/${clubName}`), clubObj); } catch (err) { console.error(err); }
+    window.onScoringTypeChange = function () {
+      const scoringType = document.getElementById("create-scoring-type").value;
+      const gameMinsEl = document.getElementById("create-game-mins");
+      if (gameMinsEl) {
+        // Auto default: Rally = 12 mins, Side-out = 18 mins
+        gameMinsEl.value = scoringType === "sideout" ? 18 : 12;
       }
-
-      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
-      localClubs[clubName] = clubObj;
-      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
-
-      showToast("社團建立成功！", "success");
-      closeCreateClubModal();
-      await populateClubSelect(clubName);
     };
 
-    window.deleteCurrentClub = async function () {
-      const currentClub = STATE.selectedClubName;
-      if (!currentClub) {
-        showToast("請先選擇要刪除的社團！", "warning");
-        return;
-      }
-      const clubInfo = STATE.allClubsCache[currentClub];
+    window.updatePlayerCountBadge = function () {
+      const text = document.getElementById("create-players").value;
+      const players = text.split("\n").map(s => s.trim()).filter(Boolean);
+      const badge = document.getElementById("player-count-badge");
+      if (badge) badge.innerText = `${players.length} ${t("playersBadge")}`;
+    };
 
-      const inputPwd = prompt("刪除社團為最高權限操作，請輸入社團最高管理密碼：");
-      if (inputPwd === null) return;
-      if (inputPwd.trim() !== String(clubInfo?.deletePassword || "").trim() && inputPwd.trim() !== "19851108") {
-        showToast("❌ 密碼錯誤！權限不足", "error");
+    window.calculateTimeEstimate = function () {
+      const text = document.getElementById("create-players").value;
+      const players = text.split("\n").map(s => s.trim()).filter(Boolean);
+      const durationHours = parseFloat(document.getElementById("create-duration").value) || 2.0;
+      const scoringType = document.getElementById("create-scoring-type").value;
+      const targetScore = parseInt(document.getElementById("create-target-score").value) || 15;
+      const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
+      const scheduleMode = document.getElementById("create-schedule-mode").value || "fair";
+      const hintText = document.getElementById("time-estimate-text");
+
+      if (players.length < 4) {
+        hintText.innerText = STATE.lang === "zh-TW" ? "請輸入至少 4 位參賽選手姓名。" : "Please enter at least 4 player names.";
         return;
       }
 
-      if (STATE.db) await remove(ref(STATE.db, `clubs/${currentClub}`));
-      const localClubs = JSON.parse(localStorage.getItem("pb_clubs") || "{}");
-      delete localClubs[currentClub];
-      localStorage.setItem("pb_clubs", JSON.stringify(localClubs));
-      showToast("社團已刪除", "success");
-      
-      STATE.selectedClubName = "";
-      await initClubPage();
-    };
+      const totalMinutes = durationHours * 60;
+      const rawTargetGames = Math.floor(totalMinutes / estMinsPerGame);
+      const scoringLabel = scoringType === "rally" ? (STATE.lang === "zh-TW" ? "落地得分" : "Rally") : (STATE.lang === "zh-TW" ? "發球得分" : "Side-out");
 
-    async function populateClubSelect(autoSelectName = null) {
-      await fetchAllClubs();
-      const select = document.getElementById("create-club-select");
-      const clubsList = Object.keys(STATE.allClubsCache);
-      select.innerHTML = `<option value="">-- 無 --</option>` + clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
-      if (autoSelectName) select.value = autoSelectName;
-      onClubSelectChange();
-    }
-
-    window.onClubSelectChange = function () {
-      const selectedClub = document.getElementById("create-club-select").value;
-      const authBox = document.getElementById("box-club-auth-pwd");
-      const clubInfo = STATE.allClubsCache[selectedClub];
-      
-      if (clubInfo && clubInfo.password) {
-        authBox.classList.remove("hidden");
-      } else {
-        authBox.classList.add("hidden");
-      }
-
-      const clubPlayers = getPlayersFromClub(selectedClub);
-      const membersBox = document.getElementById("box-club-members");
-      const membersContainer = document.getElementById("club-chips-container");
-
-      if (selectedClub && clubPlayers.length > 0) {
-        membersBox.classList.remove("hidden");
-        membersContainer.innerHTML = clubPlayers.map(p => {
-          const isSelected = activePlayerTags.includes(p);
-          return `
-            <button type="button" onclick="toggleClubMemberTag('${p}')" class="px-2.5 py-1 rounded-xl border text-xs font-semibold transition flex items-center gap-1 ${isSelected ? 'bg-emerald-500 text-slate-950 border-emerald-500 font-bold' : 'card-inner hover:border-emerald-500'}}">
-              ${isSelected ? '✓ ' : '+ '}${p}
-            </button>
-          `;
-        }).join("");
-      } else {
-        membersBox.classList.add("hidden");
-      }
-    };
-
-    function getPlayersFromClub(clubName) {
-      if (!clubName) return [];
-      const playersSet = new Set();
-      const isAutoGeneratedCode = (str) => /^選手\s+[A-Z]$/i.test(str.trim());
-
-      STATE.allTournamentsCache.forEach(tData => {
-        if (tData.clubName && tData.clubName.trim().toLowerCase() === clubName.toLowerCase() && tData.status !== "voided") {
-          if (tData.players) {
-            tData.players.forEach(p => {
-              if (p && !isAutoGeneratedCode(p)) playersSet.add(p);
-            });
-          }
+      if (scheduleMode === "max") {
+        // 最大賽事：直接用最大局數，場數可能有些微差異
+        const totalGames = getMaxTotalGames(rawTargetGames);
+        const maxGames = Math.ceil(totalGames * 4 / players.length);
+        const minGames = Math.floor(totalGames * 4 / players.length);
+        if (STATE.lang === "zh-TW") {
+          hintText.innerHTML = `時間內最多可安排 <strong class="text-emerald-500">${totalGames} 局賽程</strong>，每人 <strong class="text-amber-500">${minGames}–${maxGames} 場</strong> (單局約 ${estMinsPerGame} 分鐘)。`;
+        } else {
+          hintText.innerHTML = `Up to <strong class="text-emerald-500">${totalGames} games</strong> in ${durationHours}h, <strong class="text-amber-500">${minGames}–${maxGames} games/player</strong> (~${estMinsPerGame} mins/game).`;
         }
-      });
-      return Array.from(playersSet);
-    }
-
-    function formatDateTime(dateStr) {
-      const d = dateStr ? new Date(dateStr) : new Date();
-      if (isNaN(d.getTime())) return dateStr || "";
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      const hh = String(d.getHours()).padStart(2, '0');
-      const min = String(d.getMinutes()).padStart(2, '0');
-      return `${mm}/${dd} ${hh}:${min}`;
-    }
+      } else {
+        // 平均賽事：確保每人場數完全一致
+        const totalGames = getValidTotalGames(players.length, rawTargetGames);
+        const exactGamesPerPlayer = (totalGames * 4) / players.length;
+        if (STATE.lang === "zh-TW") {
+          hintText.innerHTML = `系統自動調整為 <strong class="text-emerald-500">${totalGames} 局賽程</strong>，<strong class="text-amber-500">每人剛好各打 ${exactGamesPerPlayer} 場</strong> (單局約 ${estMinsPerGame} 分鐘)。`;
+        } else {
+          hintText.innerHTML = `Adjusted to <strong class="text-emerald-500">${totalGames} games</strong> — <strong class="text-amber-500">exactly ${exactGamesPerPlayer} games/player</strong> (~${estMinsPerGame} mins/game).`;
+        }
+      }
+    };
 
     window.handleCreateTournament = async function (e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
-      const clubName = document.getElementById("create-club-select").value || null;
+      const pin = document.getElementById("create-pin").value.trim();
+      const duration = parseFloat(document.getElementById("create-duration").value) || 2.0;
+      const estMinsPerGame = parseInt(document.getElementById("create-game-mins").value) || 15;
+      const scoringType = document.getElementById("create-scoring-type").value;
+      const targetScore = parseInt(document.getElementById("create-target-score").value) || 15;
       const scheduleMode = document.getElementById("create-schedule-mode").value || "fair";
+      const rawPlayers = document.getElementById("create-players").value;
 
-      if (!name) {
-        showToast("⚠️ 請輸入賽事名稱！", "error");
+      const players = rawPlayers.split("\n").map(s => s.trim()).filter(Boolean);
+      const uniquePlayers = [...new Set(players)];
+
+      if (uniquePlayers.length < 4) {
+        showToast(STATE.lang === "zh-TW" ? "選手至少需 4 位！" : "At least 4 players required!", "error");
         return;
       }
-
-      if (activePlayerTags.length < 4) {
-        showToast("⚠️ 請至少加入 4 位參賽選手！", "error");
-        return;
-      }
-
-      if (clubName) {
-        const clubInfo = STATE.allClubsCache[clubName];
-        if (clubInfo && clubInfo.password) {
-          const authPwd = document.getElementById("create-club-auth-pwd").value.trim();
-          if (authPwd !== String(clubInfo.password).trim() && authPwd !== "19851108") {
-            showToast("❌ 社團公用密碼錯誤！", "error");
-            return;
-          }
-        }
-      }
-
-      const dur = parseFloat(document.getElementById("create-duration").value) || 2.0;
-      const bufferMins = parseInt(document.getElementById("create-buffer-mins").value) || 0;
-      const courts = parseInt(document.getElementById("create-courts").value) || 1;
-      const mins = parseInt(document.getElementById("create-game-mins").value) || 12;
 
       const tournamentId = "T-" + Math.floor(100000 + Math.random() * 900000);
-      const matches = generateRoundRobinSchedule(activePlayerTags, dur, bufferMins, mins, scheduleMode, courts);
+      const matches = generateRoundRobinSchedule(uniquePlayers, duration, estMinsPerGame, scheduleMode);
 
-      if (scheduleMode === "fair" && matches.length === 0) {
-        showToast("⚠️ 由於系統防呆機制，目前設定無法排定公平賽程，請調整時間或人數！", "error");
-        return;
-      }
-
-      const tObj = { 
-        id: tournamentId, name, clubName, scheduleMode,
-        status: "active", createdAt: new Date().toISOString(), 
-        players: [...activePlayerTags], matches 
+      const tournamentObj = {
+        id: tournamentId,
+        name: name,
+        adminPin: pin,
+        durationHours: duration,
+        scoringType: scoringType,
+        targetScore: targetScore,
+        createdAt: new Date().toLocaleString("zh-TW"),
+        players: uniquePlayers,
+        matches: matches,
       };
 
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${tournamentId}`), tObj);
-      saveToLocalTournaments(tObj);
-      window.history.pushState({}, "", `?t=${tournamentId}`);
-      loadLiveTournament(tournamentId);
+      saveToLocalTournaments(tournamentObj);
+
+      if (STATE.db) {
+        try {
+          await set(ref(STATE.db, `tournaments/${tournamentId}`), tournamentObj);
+          showToast(`🏆 ${STATE.lang === "zh-TW" ? "賽事" : "Tournament"} ${tournamentId} ${STATE.lang === "zh-TW" ? "已發布！" : "Published!"}`, "success");
+        } catch (err) {
+          console.error("Firebase write error:", err);
+          showToast(STATE.lang === "zh-TW" ? "雲端發布失敗，已轉存至本地備份" : "Saved to local backup", "warning");
+        }
+      } else {
+        showToast(STATE.lang === "zh-TW" ? "已發布至本地模式" : "Published in Local Mode", "info");
+      }
+
+      loadLiveTournament(tournamentId, true);
     };
 
     function saveToLocalTournaments(tObj) {
@@ -1966,658 +1085,413 @@
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
     }
 
-    async function renderHubTournaments() {
-      const activeContainer = document.getElementById("tournaments-list");
-      const archivedContainer = document.getElementById("archived-list");
-      const archivedSection = document.getElementById("archived-section");
-      
-      activeContainer.innerHTML = `<div class="col-span-full text-center py-4 sub-text">Loading...</div>`;
-      const list = await fetchAllTournaments();
-
-      const activeList = list.filter(tData => tData.status === "active" || !tData.status);
-      const historyList = list.filter(tData => tData.status === "finished");
-
-      if (activeList.length === 0) {
-        activeContainer.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-6 text-center sub-text text-xs">目前無進行中的賽事記錄</div>`;
-      } else {
-        activeContainer.innerHTML = activeList.map(tData => `
-          <div class="glass-card rounded-xl p-4 space-y-3 border flex flex-col justify-between">
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-mono font-bold text-emerald-500">${tData.id}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">進行中</span>
-              </div>
-              <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              
-              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
-                ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
-                <span>👥 ${tData.players?.length || 0}人</span>
-                <span>│</span>
-                <span>⚔️ ${tData.matches?.length || 0}局</span>
-                <span>│</span>
-                <span>📅 ${formatDateTime(tData.createdAt)}</span>
-              </div>
+    // ----------------------------------------------------
+    // PAGE B: HUB TOURNAMENTS RENDER & DELETE
+    // ----------------------------------------------------
+    function displayHubTournamentsList(list) {
+      const container = document.getElementById("tournaments-list");
+      if (!list || list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full glass-card rounded-2xl p-8 text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl card-inner sub-text flex items-center justify-center mx-auto">
+              <i data-lucide="trophy" class="w-6 h-6"></i>
             </div>
-            <button onclick="enterTournament('${tData.id}')" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 py-2.5 rounded-xl text-xs font-bold transition">進入賽事</button>
+            <h3 class="text-base font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
+            <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">
+              ➕ ${t("createNewBtn")}
+            </button>
           </div>
-        `).join("");
-      }
-
-      if (historyList.length > 0) {
-        archivedSection.classList.remove("hidden");
-        document.getElementById("archived-count").innerText = historyList.length;
-        archivedContainer.innerHTML = historyList.map(tData => `
-          <div class="glass-card rounded-xl p-4 space-y-3 border opacity-80 hover:opacity-100 transition flex flex-col justify-between">
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-mono font-bold text-slate-400">${tData.id}</span>
-                <span></span>
-              </div>
-              <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              
-              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
-                ${tData.clubName ? `<span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>` : ''}
-                <span>👥 ${tData.players?.length || 0}人</span>
-                <span>│</span>
-                <span>⚔️ ${tData.matches?.length || 0}局</span>
-                <span>│</span>
-                <span>📅 ${formatDateTime(tData.createdAt)}</span>
-              </div>
-            </div>
-            <button onclick="enterTournament('${tData.id}')" class="w-full card-inner hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 py-2.5 rounded-xl text-xs font-bold transition border">查看歷史戰績</button>
-          </div>
-        `).join("");
-      } else {
-        archivedSection.classList.add("hidden");
-      }
-    }
-
-    window.toggleArchivedList = function() {
-      const list = document.getElementById("archived-list");
-      const arrow = document.getElementById("archive-arrow");
-      if (list.classList.contains("hidden")) {
-        list.classList.remove("hidden");
-        arrow.innerText = "▲ 收合";
-      } else {
-        list.classList.add("hidden");
-        arrow.innerText = "▼ 展開";
-      }
-    };
-
-    window.enterTournament = function (id) {
-      window.history.pushState({}, "", `?t=${id}`);
-      loadLiveTournament(id);
-    };
-
-    async function initClubPage() {
-      await fetchAllClubs();
-      const select = document.getElementById("club-select");
-      const clubsList = Object.keys(STATE.allClubsCache);
-
-      select.innerHTML = `<option value="">-- 請選擇社團 --</option>` + clubsList.map(c => `<option value="${c}">${c}</option>`).join("");
-      select.value = STATE.selectedClubName || "";
-
-      if (STATE.selectedClubName) {
-        renderClubLeaderboard();
-      } else {
-        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td id="t-club-select-prompt" colspan="6" class="p-6 text-center sub-text text-xs">${t("clubSelectPrompt")}</td></tr>`;
-        document.getElementById("club-history-tournaments-section").classList.add("hidden");
-      }
-    }
-
-    window.verifyAndSwitchClub = function () {
-      STATE.selectedClubName = document.getElementById("club-select").value;
-      if (STATE.selectedClubName) {
-        renderClubLeaderboard();
-      } else {
-        document.getElementById("club-leaderboard-tbody").innerHTML = `<tr><td id="t-club-select-prompt" colspan="6" class="p-6 text-center sub-text text-xs">${t("clubSelectPrompt")}</td></tr>`;
-        document.getElementById("club-history-tournaments-section").classList.add("hidden");
-      }
-    };
-
-    async function renderClubLeaderboard() {
-      await fetchAllTournaments();
-      const currentClub = STATE.selectedClubName;
-      if (!currentClub) return;
-
-      const isAutoGeneratedCode = (str) => /^選手\s+[A-Z]$/i.test(str.trim());
-
-      const clubTournaments = STATE.allTournamentsCache.filter(tData => 
-        tData.clubName && 
-        tData.clubName.trim().toLowerCase() === currentClub.toLowerCase() && 
-        tData.status !== "voided"
-      );
-
-      const stats = {};
-      clubTournaments.forEach(tData => {
-        tData.matches.forEach(m => {
-          if (!m.completed || m.status === "voided") return;
-          const bs = m.blueScore;
-          const rs = m.redScore;
-          const bWin = bs > rs;
-
-          m.blue.forEach(p => {
-            if (isAutoGeneratedCode(p)) return;
-            if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
-            stats[p].played++;
-            stats[p].pf += bs;
-            stats[p].pa += rs;
-            if (bWin) stats[p].wins++; else stats[p].losses++;
-          });
-
-          m.red.forEach(p => {
-            if (isAutoGeneratedCode(p)) return;
-            if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
-            stats[p].played++;
-            stats[p].pf += rs;
-            stats[p].pa += bs;
-            if (!bWin) stats[p].wins++; else stats[p].losses++;
-          });
-        });
-      });
-
-      const ranking = Object.values(stats).map(s => {
-        s.diff = s.pf - s.pa;
-        s.winRate = s.played > 0 ? ((s.wins / s.played) * 100).toFixed(1) : "0.0";
-        return s;
-      }).sort((a, b) => {
-        if (b.played !== a.played) return b.played - a.played;
-        if (parseFloat(b.winRate) !== parseFloat(a.winRate)) return parseFloat(b.winRate) - parseFloat(a.winRate);
-        if (b.wins !== a.wins) return b.wins - a.wins;
-        return b.diff - a.diff;
-      });
-
-      const tbody = document.getElementById("club-leaderboard-tbody");
-      if (ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center sub-text text-xs">社團「${currentClub}」尚無有效的成員數據</td></tr>`;
-      } else {
-        tbody.innerHTML = ranking.map((r) => `
-          <tr class="hover:bg-stone-500/5 whitespace-nowrap">
-            <td class="py-2.5 px-3 font-semibold text-emerald-500 truncate max-w-[100px]">${r.name}</td>
-            <td class="py-2.5 px-2 text-center font-mono font-bold">${r.played}</td>
-            <td class="py-2.5 px-2 text-center font-mono text-amber-500">${r.winRate}%</td>
-            <td class="py-2.5 px-2 text-center font-mono">${r.wins}/${r.losses}</td>
-            <td class="py-2.5 px-2 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
-            <td class="py-2.5 px-3 text-center font-mono sub-text">${r.pf}/${r.pa}</td>
-          </tr>
-        `).join("");
-      }
-
-      const historySection = document.getElementById("club-history-tournaments-section");
-      const historyListContainer = document.getElementById("club-history-tournaments-list");
-      const historyCountSpan = document.getElementById("club-history-count");
-
-      if (clubTournaments.length > 0) {
-        historySection.classList.remove("hidden");
-        historyCountSpan.innerText = clubTournaments.length;
-        historyListContainer.innerHTML = clubTournaments.map(tData => `
-          <div class="glass-card rounded-xl p-4 space-y-3 border flex flex-col justify-between">
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-xs">
-                <span class="font-mono font-bold text-amber-500">${tData.id}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tData.status === 'finished' ? 'bg-slate-500/10 text-slate-400' : 'bg-emerald-500/10 text-emerald-500'}">${tData.status === 'finished' ? '🔒 已完賽' : '進行中'}</span>
-              </div>
-              <h3 class="text-base font-bold tracking-tight">${tData.name || '未命名賽事'}</h3>
-              
-              <div class="flex items-center gap-2 text-[11px] sub-text pt-1 font-medium whitespace-nowrap overflow-x-auto">
-                <span class="text-amber-500 font-bold">🚩 ${tData.clubName}</span><span>│</span>
-                <span>👥 ${tData.players?.length || 0}人</span>
-                <span>│</span>
-                <span>⚔️ ${tData.matches?.length || 0}局</span>
-                <span>│</span>
-                <span>📅 ${formatDateTime(tData.createdAt)}</span>
-              </div>
-            </div>
-            <button onclick="enterTournament('${tData.id}')" class="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 py-2.5 rounded-xl text-xs font-bold transition border border-amber-500/20">檢視賽事紀錄</button>
-          </div>
-        `).join("");
-      } else {
-        historySection.classList.add("hidden");
-      }
-    }
-
-    async function loadLiveTournament(tId) {
-      STATE.currentTournamentId = tId;
-      STATE.isAdminUnlocked = false;
-      STATE.isSuperAdminUnlocked = false;
-      navigateTo("live");
-      await fetchAllTournaments();
-      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-      STATE.tournamentData = local[tId] || null;
-      if (STATE.tournamentData) renderLiveUI(STATE.tournamentData);
-    }
-
-    window.toggleAdminAuth = function () {
-      const tObj = STATE.tournamentData;
-      if (!tObj) return;
-
-      if (STATE.isAdminUnlocked) {
-        STATE.isAdminUnlocked = false;
-        showToast("🔒 已切換至觀看模式", "info");
-      } else {
-        const clubInfo = tObj.clubName ? STATE.allClubsCache[tObj.clubName] : null;
-        if (clubInfo && clubInfo.password) {
-          const input = prompt("請輸入社團公用密碼解鎖記分權限：");
-          if (input === null) return;
-          if (input.trim() !== String(clubInfo.password).trim() && input.trim() !== "19851108") {
-            showToast("❌ 密碼錯誤！無法解鎖記分", "error");
-            return;
-          }
-        }
-        STATE.isAdminUnlocked = true;
-        showToast("🔓 已切換至輸入模式！", "success");
-      }
-      renderLiveUI(tObj);
-    };
-
-    window.unlockSuperAdminAuth = function () {
-      const tObj = STATE.tournamentData;
-      if (!tObj) return;
-
-      const clubInfo = tObj.clubName ? STATE.allClubsCache[tObj.clubName] : null;
-      const targetPwd = clubInfo?.deletePassword;
-
-      const input = prompt("解凍歷史戰績為社團最高權限，請輸入社團管理密碼：");
-      if (input === null) return;
-
-      if (targetPwd && input.trim() !== String(targetPwd).trim() && input.trim() !== "19851108") {
-        showToast("❌ 權限驗證失敗！密碼錯誤", "error");
+        `;
+        lucide.createIcons();
         return;
       }
 
-      STATE.isSuperAdminUnlocked = true;
-      STATE.isAdminUnlocked = true;
-      showToast("🔓 社團最高權限已解凍！可修改本賽事", "success");
-      renderLiveUI(tObj);
-    };
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    window.voidTournament = async function () {
-      const tObj = STATE.tournamentData;
-      if (!tObj) return;
-      if (!confirm("⚠️ 確定要將此賽事「流局作廢」嗎？作廢後賽事資料將直接刪除，不進入歷史紀錄！")) return;
-
-      try {
-        await deleteLocalAndCloudTournaments([tObj.id]);
-        showToast("🗑️ 賽事已成功作廢刪除！", "info");
-        window.history.pushState({}, "", window.location.pathname);
-        navigateTo("hub");
-      } catch (err) {
-        console.error(err);
-        showToast("發生錯誤，請重試", "error");
-      }
-    };
-
-    window.finishTournament = async function () {
-      if (!confirm("確定要結束並封存本場賽事嗎？完賽後戰績將鎖定，現場管理員將無法再改分！")) return;
-      
-      STATE.tournamentData.status = "finished";
-      saveToLocalTournaments(STATE.tournamentData);
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      
-      STATE.isAdminUnlocked = false;
-      renderLiveUI(STATE.tournamentData);
-      showToast("🔒 賽事已成功結束並封存！", "success");
-    };
-
-    function renderLiveUI(data) {
-      document.getElementById("live-title").innerText = data.name;
-      document.getElementById("live-id-badge").innerText = `ID: ${data.id}`;
-      document.getElementById("live-players-count").innerText = `${data.players.length} 人`;
-      document.getElementById("live-courts-count").innerText = `${data.matches[0]?.court || 1} 場地`;
-      
-      const isFreeMode = data.scheduleMode === "free";
-      const modeBadge = document.getElementById("live-mode-badge");
-      const durationBox = document.getElementById("box-live-duration");
-      
-      if (isFreeMode) {
-        modeBadge.innerText = "自由賽局";
-        durationBox.classList.add("hidden");
-      } else {
-        modeBadge.innerText = data.scheduleMode === "max" ? "最大賽局" : "平均賽局";
-        durationBox.classList.remove("hidden");
-      }
-
-      const clubBadge = document.getElementById("live-club-badge");
-      if (data.clubName) {
-        clubBadge.innerText = `🚩 ${data.clubName}`;
-        clubBadge.classList.remove("hidden");
-      } else {
-        clubBadge.classList.add("hidden");
-      }
-
-      const isFinished = data.status === "finished";
-      const isActive = data.status === "active" || !data.status;
-      const isClubMatch = !!data.clubName;
-
-      const statusBadge = document.getElementById("live-status-badge");
-      const lockedBanner = document.getElementById("notice-locked-banner");
-
-      if (isFinished) {
-        statusBadge.innerText = t("statusFinished");
-        statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-slate-500/10 text-slate-400 border-slate-500/30";
-        if (!STATE.isSuperAdminUnlocked) lockedBanner.classList.remove("hidden");
-        else lockedBanner.classList.add("hidden");
-      } else {
-        statusBadge.innerText = t("statusActive");
-        statusBadge.className = "px-2 py-0.5 rounded-md text-[11px] font-bold border bg-emerald-500/10 text-emerald-500 border-emerald-500/30";
-        lockedBanner.classList.add("hidden");
-      }
-
-      const btnToggleAdmin = document.getElementById("btn-toggle-admin");
-      if (isFinished) {
-        btnToggleAdmin.classList.add("hidden");
-        btnToggleAdmin.classList.remove("flex");
-      } else {
-        btnToggleAdmin.classList.remove("hidden");
-        btnToggleAdmin.classList.add("flex");
-        btnToggleAdmin.innerHTML = STATE.isAdminUnlocked 
-          ? `<i data-lucide="eye" class="w-3.5 h-3.5"></i> ${t("lockBtn")}` 
-          : `<i data-lucide="edit-3" class="w-3.5 h-3.5"></i> ${t("unlockBtn")}`;
-      }
-      
-      const btnSuperUnlock = document.getElementById("btn-super-admin-unlock");
-      if (isFinished && isClubMatch && !STATE.isSuperAdminUnlocked) {
-        btnSuperUnlock.classList.remove("hidden");
-        btnSuperUnlock.classList.add("flex");
-      } else {
-        btnSuperUnlock.classList.add("hidden");
-        btnSuperUnlock.classList.remove("flex");
-      }
-
-      const btnFinish = document.getElementById("btn-force-end");
-      if (STATE.isAdminUnlocked && isActive) {
-        btnFinish.classList.remove("hidden");
-        btnFinish.classList.add("flex");
-      } else {
-        btnFinish.classList.add("hidden");
-        btnFinish.classList.remove("flex");
-      }
-
-      const btnVoid = document.getElementById("btn-toggle-void");
-      if (STATE.isAdminUnlocked && isActive) {
-        btnVoid.classList.remove("hidden");
-        btnVoid.classList.add("flex");
-      } else {
-        btnVoid.classList.add("hidden");
-        btnVoid.classList.remove("flex");
-      }
-
-      const canEditScores = (STATE.isAdminUnlocked && isActive) || STATE.isSuperAdminUnlocked;
-
-      const btnAddFreeMatch = document.getElementById("btn-add-free-match");
-      if (isFreeMode && canEditScores) {
-        btnAddFreeMatch.classList.remove("hidden");
-      } else {
-        btnAddFreeMatch.classList.add("hidden");
-      }
-
-      renderMatchesList(data.matches, canEditScores);
-      renderLeaderboardTable(calculateLeaderboard(data.players, data.matches));
-    }
-
-    function renderMatchesList(matches, canEdit) {
-      const container = document.getElementById("matches-container");
-      let completedCount = 0;
-
-      if (!matches || matches.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center sub-text text-xs">目前無賽程，請點擊上方「+ 新增一局」記錄比分</div>`;
-        document.getElementById("completed-count").innerText = `0 局完成`;
-        return;
-      }
-
-      container.innerHTML = matches.map(m => {
-        const isMatchVoided = m.status === "voided";
-        if (m.completed && !isMatchVoided) completedCount++;
+      container.innerHTML = list.map(tData => {
+        const total = tData.matches ? tData.matches.length : 0;
+        const done = tData.matches ? tData.matches.filter(m => m.completed).length : 0;
+        const isFinished = total > 0 && done === total;
+        const scoringLabel = tData.scoringType === "sideout" 
+          ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
+          : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
         return `
-          <div class="glass-card rounded-xl p-3 sm:p-4 border ${isMatchVoided ? 'opacity-50 border-rose-500/30' : m.completed ? 'border-emerald-500/40' : ''}">
-            <div class="flex items-center justify-between text-xs mb-2 font-bold">
-              <span class="text-emerald-500">Game ${m.id} (場地 ${m.court})</span>
-              <span class="${isMatchVoided ? 'text-rose-500' : m.completed ? 'text-emerald-500' : 'sub-text'}">
-                ${isMatchVoided ? '🚫 已單局流局' : m.completed ? '已完成' : '進行中'}
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-xs mb-2.5">
-              <div class="p-1.5 sm:p-2 rounded-xl card-inner border space-y-1">
-                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
-                  ${m.blue[0]}
-                </div>
-                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
-                  ${m.blue[1]}
-                </div>
+          <div class="glass-card rounded-xl p-4 space-y-3 border hover:border-emerald-500/40 transition flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold font-mono card-inner text-emerald-600 dark:text-emerald-400 border">${tData.id}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded font-medium ${isFinished ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20'}">
+                  ${isFinished ? t("statusFinished") : t("statusActive")}
+                </span>
               </div>
-
-              <div class="p-1.5 sm:p-2 rounded-xl card-inner border space-y-1">
-                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-amber-600 dark:text-amber-400">
-                  ${m.red[0]}
-                </div>
-                <div class="px-2.5 py-1.5 rounded-lg input-bg border font-bold truncate text-xs sm:text-sm text-amber-600 dark:text-amber-400">
-                  ${m.red[1]}
-                </div>
+              <h3 class="text-base font-bold mt-1.5 font-display line-clamp-1">${tData.name}</h3>
+              <p class="text-xs sub-text mt-1 flex items-center gap-1">
+                <i data-lucide="clock" class="w-3 h-3"></i> ${t("estPrefix")} ${tData.durationHours || 2}${t("hrsUnit")} · ${scoringLabel} (${tData.targetScore || 15}分)
+              </p>
+              <div class="flex items-center gap-3 text-xs mt-2 pt-2 border-t border-stone-200 dark:border-slate-800/80">
+                <span>👥 ${tData.players ? tData.players.length : 0} ${t("playersCountLabel")}</span>
+                <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500 inline shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/><circle cx="16.5" cy="12" r="1" fill="currentColor"/><circle cx="8.8" cy="8.8" r="1" fill="currentColor"/><circle cx="15.2" cy="15.2" r="1" fill="currentColor"/><circle cx="15.2" cy="8.8" r="1" fill="currentColor"/><circle cx="8.8" cy="15.2" r="1" fill="currentColor"/></svg> ${done}/${total} ${t("gamesDoneLabel")}</span>
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 items-center">
-              <input type="number" id="score-blue-${m.id}" value="${m.blueScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
-              <input type="number" id="score-red-${m.id}" value="${m.redScore ?? ''}" min="0" inputmode="numeric" pattern="[0-9]*" ${!canEdit || isMatchVoided ? 'disabled' : ''} placeholder="0" class="input-bg border rounded-xl p-2.5 text-center font-bold text-xl focus:border-emerald-500 focus:outline-none font-mono" />
+            <div class="flex items-center gap-2 pt-1">
+              <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
+              </button>
+              <button onclick="deleteTournament('${tData.id}', '${tData.adminPin}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
             </div>
-
-            ${canEdit ? `
-              <div class="flex items-center gap-2 mt-2.5">
-                ${!isMatchVoided ? `
-                  <button onclick="saveMatchScore(${m.id})" class="flex-1 ${m.completed ? 'bg-amber-500 hover:bg-amber-400' : 'bg-emerald-500 hover:bg-emerald-400'} text-slate-950 font-bold rounded-xl py-2 text-xs transition shadow-sm">
-                    ${m.completed ? t("editScoreBtn") : t("saveScoreBtn")}
-                  </button>
-                  <button onclick="voidSingleMatch(${m.id})" class="px-3 bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 border border-rose-500/30 rounded-xl py-2 text-xs font-bold transition">
-                    單局流局
-                  </button>
-                ` : `
-                  <button onclick="restoreSingleMatch(${m.id})" class="w-full bg-slate-500/20 hover:bg-slate-500/30 text-slate-200 border border-slate-500/30 rounded-xl py-2 text-xs font-bold transition">
-                    恢復本局比賽
-                  </button>
-                `}
-              </div>
-            ` : ''}
           </div>
         `;
       }).join("");
 
-      document.getElementById("completed-count").innerText = `${completedCount} / ${matches.length} 局完成`;
       lucide.createIcons();
     }
 
-    window.openAddFreeMatchModal = function() {
-      freeMatchSelectedPlayers = [];
-      renderFreeMatchPlayerChips();
-      document.getElementById("modal-add-free-match").classList.remove("hidden");
+    function renderHubTournaments() {
+      const container = document.getElementById("tournaments-list");
+      container.innerHTML = `<div class="col-span-full text-center py-8 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
+      lucide.createIcons();
+
+      if (STATE.hubUnsubscribe) {
+        STATE.hubUnsubscribe();
+        STATE.hubUnsubscribe = null;
+      }
+
+      if (STATE.db) {
+        const tournamentsRef = ref(STATE.db, "tournaments");
+        STATE.hubUnsubscribe = onValue(tournamentsRef, (snapshot) => {
+          let list = [];
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            list = Object.values(data);
+          }
+          const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+          Object.values(localData).forEach(lt => {
+            if (!list.some(t => t.id === lt.id)) list.push(lt);
+          });
+          displayHubTournamentsList(list);
+        }, (error) => {
+          console.error("Fetch tournaments error:", error);
+          const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+          displayHubTournamentsList(Object.values(localData));
+        });
+      } else {
+        const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+        displayHubTournamentsList(Object.values(localData));
+      }
+    }
+
+    window.enterTournament = function (id) {
+      loadLiveTournament(id, true);
     };
 
-    window.closeAddFreeMatchModal = function() {
-      document.getElementById("modal-add-free-match").classList.add("hidden");
+    window.deleteTournament = async function (id, pin) {
+      const MASTER_PIN = "19851108";
+      const promptMsg = STATE.lang === "zh-TW" 
+        ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數管理員 PIN 碼：`
+        : `🗑️ Delete tournament (${id})?\nEnter 4-digit Admin PIN:`;
+
+      const inputPin = prompt(promptMsg);
+      if (inputPin === null) return;
+      
+      const cleanInput = inputPin.trim();
+      if (cleanInput !== String(pin).trim() && cleanInput !== MASTER_PIN) {
+        showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符，無法刪除！" : "❌ PIN Incorrect!", "error");
+        return;
+      }
+
+      if (STATE.db) {
+        try {
+          await remove(ref(STATE.db, `tournaments/${id}`));
+        } catch (e) {
+          console.error("Firebase delete error:", e);
+        }
+      }
+      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      delete local[id];
+      localStorage.setItem("pb_tournaments", JSON.stringify(local));
+
+      showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已成功刪除` : `Tournament ${id} deleted`, "success");
+      renderHubTournaments();
     };
 
-    function renderFreeMatchPlayerChips() {
-      const container = document.getElementById("free-match-players-selection");
-      const players = STATE.tournamentData.players;
+    // ----------------------------------------------------
+    // PAGE D: LIVE TOURNAMENT CONTROLLER & REALTIME SYNC
+    // ----------------------------------------------------
+    async function loadLiveTournament(tId, pushHistory = true) {
+      STATE.currentTournamentId = tId;
+      navigateTo("live", false);
+      if (pushHistory) {
+        window.history.pushState({}, "", `${window.location.pathname}?t=${tId}`);
+      }
 
-      container.innerHTML = players.map(p => {
-        const isSelected = freeMatchSelectedPlayers.includes(p);
-        const selIdx = freeMatchSelectedPlayers.indexOf(p);
+      document.getElementById("live-title").innerText = STATE.lang === "zh-TW" ? "賽事載入中..." : "Loading...";
+      document.getElementById("live-id-badge").innerText = `ID: ${tId}`;
+
+      if (STATE.db) {
+        if (STATE.dbUnsubscribe) STATE.dbUnsubscribe();
+        const tRef = ref(STATE.db, `tournaments/${tId}`);
+
+        STATE.dbUnsubscribe = onValue(tRef, (snapshot) => {
+          if (snapshot.exists()) {
+            STATE.tournamentData = snapshot.val();
+            saveToLocalTournaments(STATE.tournamentData);
+            renderLiveUI(STATE.tournamentData);
+          } else {
+            loadFromLocalCache(tId);
+          }
+        });
+      } else {
+        loadFromLocalCache(tId);
+      }
+    }
+
+    function loadFromLocalCache(tId) {
+      const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      if (local[tId]) {
+        STATE.tournamentData = local[tId];
+        renderLiveUI(STATE.tournamentData);
+      } else {
+        showToast(`Tournament ID ${tId} not found`, "error");
+        navigateTo("hub");
+      }
+    }
+
+    function renderLiveUI(data) {
+      if (!data) return;
+
+      const pCount = data.players ? data.players.length : 0;
+      const totalMatches = data.matches ? data.matches.length : 0;
+      const estGamesPerPlayer = pCount > 0 ? Math.round((totalMatches * 4 / pCount) * 10) / 10 : 0;
+
+      const scoringLabel = data.scoringType === "sideout" 
+        ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
+        : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
+
+      document.getElementById("live-title").innerText = data.name;
+      document.getElementById("live-players-count").innerText = STATE.lang === "zh-TW" 
+        ? `${pCount} 人 (每人約 ${estGamesPerPlayer} 場)` 
+        : `${pCount} Players (~${estGamesPerPlayer} games/player)`;
+      document.getElementById("live-duration").innerText = data.durationHours || "2.0";
+      document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}分)`;
+
+      // Render Matches Schedule
+      renderMatchesList(data.matches || []);
+
+      // Calculate & Render Leaderboard
+      const leaderboardData = calculateLeaderboard(data.players || [], data.matches || []);
+      renderLeaderboardTable(leaderboardData);
+    }
+
+    function renderMatchesList(matches) {
+      const container = document.getElementById("matches-container");
+      const doneCount = matches.filter(m => m.completed).length;
+      document.getElementById("completed-count").innerText = `${doneCount} / ${matches.length} ${t("completedGamesBadge")}`;
+
+      container.innerHTML = matches.map((m, idx) => {
+        const isDone = m.completed;
         return `
-          <button onclick="toggleFreeMatchPlayer('${p}')" class="px-2.5 py-1 rounded-xl border text-xs font-bold transition ${isSelected ? 'bg-emerald-500 text-slate-950 border-emerald-500' : 'card-inner'}}">
-            ${isSelected ? `${selIdx < 2 ? '1隊' : '2隊'}: ` : ''}${p}
-          </button>
+          <div class="glass-card rounded-xl p-3 sm:p-4 border ${isDone ? 'border-emerald-500/40' : ''} transition space-y-3">
+            <!-- Game Header -->
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-sm font-display font-extrabold flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-md card-inner text-emerald-600 dark:text-emerald-400 text-[11px] flex items-center justify-center font-mono">${m.id}</span>
+                ${STATE.lang === 'zh-TW' ? `第 ${m.id} 局` : `Game ${m.id}`}
+              </span>
+            </div>
+
+            <!-- Teams Grid (Mobile Compact & Sleek) -->
+            <div class="grid grid-cols-2 gap-1.5">
+              <!-- Blue Team -->
+              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/25 space-y-1">
+                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-blue-600 dark:text-blue-400 tracking-tight flex items-center justify-between">
+                  <span>${t("blueTeam")}</span>
+                </div>
+                <div class="text-xs font-semibold line-clamp-1">
+                  ${m.blue[0]} & ${m.blue[1]}
+                </div>
+                <div class="flex items-center pt-0.5">
+                  <input type="number" min="0" max="99" id="score-blue-${m.id}" value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-blue-400" />
+                </div>
+              </div>
+
+              <!-- Red Team -->
+              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/25 space-y-1">
+                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-rose-600 dark:text-rose-400 tracking-tight flex items-center justify-between">
+                  <span>${t("redTeam")}</span>
+                </div>
+                <div class="text-xs font-semibold line-clamp-1">
+                  ${m.red[0]} & ${m.red[1]}
+                </div>
+                <div class="flex items-center pt-0.5">
+                  <input type="number" min="0" max="99" id="score-red-${m.id}" value="${m.redScore !== null ? m.redScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-rose-400" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Resting Players & Action Button Footer -->
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
+              <div class="sub-text truncate">
+                <span>${t("restingLabel")}<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : t('noResting')}</strong></span>
+              </div>
+              <button onclick="saveMatchScore(${m.id})" class="px-3 py-1 font-bold rounded-lg text-xs transition flex items-center gap-1 shrink-0 shadow-sm ${isDone ? 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30' : 'bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950'}">
+                <i data-lucide="${isDone ? 'edit-2' : 'check'}" class="w-3.5 h-3.5"></i> ${isDone ? t("editScoreBtn") : t("saveScoreBtn")}
+              </button>
+            </div>
+          </div>
         `;
       }).join("");
 
-      const team1 = freeMatchSelectedPlayers.slice(0, 2);
-      const team2 = freeMatchSelectedPlayers.slice(2, 4);
-
-      document.getElementById("free-team-1-display").innerHTML = team1.length > 0 ? team1.map(name => `<div class="p-1 px-2 rounded input-bg border">${name}</div>`).join("") : "未選擇";
-      document.getElementById("free-team-2-display").innerHTML = team2.length > 0 ? team2.map(name => `<div class="p-1 px-2 rounded input-bg border">${name}</div>`).join("") : "未選擇";
+      lucide.createIcons();
     }
 
-    window.toggleFreeMatchPlayer = function(name) {
-      const idx = freeMatchSelectedPlayers.indexOf(name);
-      if (idx >= 0) {
-        freeMatchSelectedPlayers.splice(idx, 1);
-      } else {
-        if (freeMatchSelectedPlayers.length < 4) {
-          freeMatchSelectedPlayers.push(name);
-        } else {
-          showToast("每局最多只能選擇 4 位選手！", "warning");
-        }
-      }
-      renderFreeMatchPlayerChips();
-    };
-
-    window.submitAddFreeMatch = async function() {
-      if (freeMatchSelectedPlayers.length < 4) {
-        showToast("請選擇滿 4 位選手上場！", "error");
-        return;
-      }
-
-      const raw1 = document.getElementById("free-score-1").value.trim();
-      const raw2 = document.getElementById("free-score-2").value.trim();
-
-      if (raw1 === "" || raw2 === "") {
-        showToast("請輸入兩隊得分！", "error");
-        return;
-      }
-
-      const s1 = parseInt(raw1, 10);
-      const s2 = parseInt(raw2, 10);
-
-      const newMatchId = STATE.tournamentData.matches.length + 1;
-      const newMatch = {
-        id: newMatchId, roundName: `Game ${newMatchId}`, court: 1,
-        blue: [freeMatchSelectedPlayers[0], freeMatchSelectedPlayers[1]],
-        red: [freeMatchSelectedPlayers[2], freeMatchSelectedPlayers[3]],
-        resting: [],
-        blueScore: s1, redScore: s2, completed: true, status: "completed"
-      };
-
-      STATE.tournamentData.matches.push(newMatch);
-
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      saveToLocalTournaments(STATE.tournamentData);
-
-      closeAddFreeMatchModal();
-      renderLiveUI(STATE.tournamentData);
-      showToast("新賽局比分已成功儲存！", "success");
-    };
-
     window.saveMatchScore = async function (matchId) {
-      const rawB = document.getElementById(`score-blue-${matchId}`).value.trim();
-      const rawR = document.getElementById(`score-red-${matchId}`).value.trim();
+      const blueScoreVal = document.getElementById(`score-blue-${matchId}`).value;
+      const redScoreVal = document.getElementById(`score-red-${matchId}`).value;
 
-      if (rawB === "" || rawR === "") {
-        showToast("請輸入雙方得分！", "error");
+      if (blueScoreVal === "" || redScoreVal === "") {
+        showToast(STATE.lang === "zh-TW" ? "請先輸入得分！" : "Please enter scores!", "warning");
         return;
       }
 
-      const bs = parseInt(rawB, 10);
-      const rs = parseInt(rawR, 10);
+      const blueScore = parseInt(blueScoreVal);
+      const redScore = parseInt(redScoreVal);
 
-      const idx = STATE.tournamentData.matches.findIndex(m => m.id === matchId);
-      STATE.tournamentData.matches[idx].blueScore = bs;
-      STATE.tournamentData.matches[idx].redScore = rs;
-      STATE.tournamentData.matches[idx].completed = true;
-      STATE.tournamentData.matches[idx].status = "completed";
+      if (isNaN(blueScore) || isNaN(redScore)) return;
 
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      saveToLocalTournaments(STATE.tournamentData);
-      renderLiveUI(STATE.tournamentData);
-      showToast("比分已儲存！", "success");
+      const tObj = STATE.tournamentData;
+      if (!tObj || !tObj.matches) return;
+
+      const matchIdx = tObj.matches.findIndex(m => m.id === matchId);
+      if (matchIdx === -1) return;
+
+      tObj.matches[matchIdx].blueScore = blueScore;
+      tObj.matches[matchIdx].redScore = redScore;
+      tObj.matches[matchIdx].completed = true;
+
+      // Always save locally first
+      saveToLocalTournaments(tObj);
+      renderLiveUI(tObj);
+
+      if (STATE.db) {
+        try {
+          await set(ref(STATE.db, `tournaments/${tObj.id}/matches`), tObj.matches);
+          showToast(STATE.lang === "zh-TW" ? `第 ${matchId} 局比分已同步！` : `Game ${matchId} updated!`, "success");
+        } catch (e) {
+          console.error("Save score error:", e);
+          showToast(STATE.lang === "zh-TW" ? "雲端同步失敗，已存至本地" : "Cloud sync failed, saved locally", "warning");
+        }
+      } else {
+        showToast(STATE.lang === "zh-TW" ? `第 ${matchId} 局比分已儲存 (本地)` : `Game ${matchId} saved (Local)`, "success");
+      }
     };
 
-    window.voidSingleMatch = async function (matchId) {
-      const idx = STATE.tournamentData.matches.findIndex(m => m.id === matchId);
-      STATE.tournamentData.matches[idx].status = "voided";
-      STATE.tournamentData.matches[idx].completed = false;
-      STATE.tournamentData.matches[idx].blueScore = null;
-      STATE.tournamentData.matches[idx].redScore = null;
-
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      saveToLocalTournaments(STATE.tournamentData);
-      renderLiveUI(STATE.tournamentData);
-      showToast("🚫 本局已設為流局作廢（不計分）", "info");
-    };
-
-    window.restoreSingleMatch = async function (matchId) {
-      const idx = STATE.tournamentData.matches.findIndex(m => m.id === matchId);
-      STATE.tournamentData.matches[idx].status = "pending";
-
-      if (STATE.db) await set(ref(STATE.db, `tournaments/${STATE.tournamentData.id}`), STATE.tournamentData);
-      saveToLocalTournaments(STATE.tournamentData);
-      renderLiveUI(STATE.tournamentData);
-      showToast("✅ 本局已重新開放比賽", "success");
-    };
-
+    // ----------------------------------------------------
+    // LEADERBOARD CALCULATOR & TIE-BREAKER SORTING
+    // ----------------------------------------------------
     function calculateLeaderboard(players, matches) {
       const stats = {};
       players.forEach(p => {
-        stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
+        stats[p] = { name: p, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0, played: 0 };
       });
 
       matches.forEach(m => {
-        if (!m.completed || m.status === "voided") return;
-        const bs = m.blueScore;
-        const rs = m.redScore;
-        const bWin = bs > rs;
+        if (m.completed && m.blueScore !== null && m.redScore !== null) {
+          const bs = m.blueScore;
+          const rs = m.redScore;
+          const blueWon = bs > rs;
 
-        m.blue.forEach(p => {
-          if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
-          stats[p].played++;
-          stats[p].pf += bs;
-          stats[p].pa += rs;
-          if (bWin) stats[p].wins++; else stats[p].losses++;
-        });
+          m.blue.forEach(p => {
+            if (stats[p]) {
+              stats[p].played++;
+              stats[p].pf += bs;
+              stats[p].pa += rs;
+              if (blueWon) stats[p].wins++;
+              else stats[p].losses++;
+            }
+          });
 
-        m.red.forEach(p => {
-          if (!stats[p]) stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0 };
-          stats[p].played++;
-          stats[p].pf += rs;
-          stats[p].pa += bs;
-          if (!bWin) stats[p].wins++; else stats[p].losses++;
-        });
+          m.red.forEach(p => {
+            if (stats[p]) {
+              stats[p].played++;
+              stats[p].pf += rs;
+              stats[p].pa += bs;
+              if (!blueWon) stats[p].wins++;
+              else stats[p].losses++;
+            }
+          });
+        }
       });
 
       Object.values(stats).forEach(s => {
         s.diff = s.pf - s.pa;
       });
 
-      return Object.values(stats).sort((a, b) => {
+      const sorted = Object.values(stats).sort((a, b) => {
         if (b.wins !== a.wins) return b.wins - a.wins;
         if (b.diff !== a.diff) return b.diff - a.diff;
         if (b.pf !== a.pf) return b.pf - a.pf;
         return a.pa - b.pa;
       });
+
+      return sorted;
     }
 
-    function renderLeaderboardTable(ranking) {
+    function renderLeaderboardTable(leaderboard) {
       const tbody = document.getElementById("leaderboard-tbody");
-      if (ranking.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center sub-text">尚無戰績</td></tr>`;
+      if (!leaderboard.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center sub-text text-xs">${STATE.lang === 'zh-TW' ? '尚無數據' : 'No Data'}</td></tr>`;
         return;
       }
-      tbody.innerHTML = ranking.map((r, idx) => `
-        <tr class="hover:bg-stone-500/5 whitespace-nowrap">
-          <td class="py-2.5 px-2 text-center font-bold font-mono">${idx + 1}</td>
-          <td class="py-2.5 px-2 font-semibold truncate max-w-[100px]">${r.name}</td>
-          <td class="py-2.5 px-1.5 text-center font-mono">${r.wins}/${r.losses}</td>
-          <td class="py-2.5 px-1.5 text-center font-mono ${r.diff > 0 ? 'text-emerald-500' : r.diff < 0 ? 'text-rose-500' : ''}">${r.diff > 0 ? '+' + r.diff : r.diff}</td>
-          <td class="py-2.5 px-2 text-center font-mono sub-text">${r.pf}/${r.pa}</td>
-        </tr>
-      `).join("");
+
+      tbody.innerHTML = leaderboard.map((row, idx) => {
+        const isMvp = idx === 0 && row.played > 0;
+        let rankBadge = `<span class="font-mono sub-text font-bold text-[11px]">${idx + 1}</span>`;
+        if (isMvp) rankBadge = `<span class="text-base" title="👑 MVP Leader">👑</span>`;
+        else if (idx === 1 && row.played > 0) rankBadge = `<span class="text-sm">🥈</span>`;
+        else if (idx === 2 && row.played > 0) rankBadge = `<span class="text-sm">🥉</span>`;
+
+        const winUnit = STATE.lang === "zh-TW" ? "勝" : "W";
+        const lossUnit = STATE.lang === "zh-TW" ? "敗" : "L";
+
+        return `
+          <tr class="${isMvp ? 'bg-amber-500/10 font-bold border-l-2 border-amber-400' : 'hover:bg-stone-500/5'} transition">
+            <td class="py-2 px-1 text-center">${rankBadge}</td>
+            <td class="py-2 px-2">
+              <span class="font-semibold text-xs ${isMvp ? 'text-amber-600 dark:text-amber-300' : ''}">${row.name}</span>
+            </td>
+            <td class="py-2 px-1 text-center font-mono text-[11px]">
+              <span class="text-emerald-600 dark:text-emerald-400">${row.wins}${winUnit}</span>/<span class="text-rose-600 dark:text-rose-400">${row.losses}${lossUnit}</span>
+            </td>
+            <td class="py-2 px-1 text-center font-mono text-[11px] font-bold ${row.diff > 0 ? 'text-emerald-600 dark:text-emerald-400' : row.diff < 0 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
+              ${row.diff > 0 ? '+' + row.diff : row.diff}
+            </td>
+            <td class="py-2 px-2 text-center font-mono text-[11px] sub-text">
+              ${row.pf}/${row.pa}
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      lucide.createIcons();
     }
 
+    // ----------------------------------------------------
+    // SHARE & QR CODE MODAL
+    // ----------------------------------------------------
     window.openShareModal = function () {
-      const url = window.location.href;
-      document.getElementById("share-url-input").value = url;
-      document.getElementById("share-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
-      document.getElementById("modal-share").classList.remove("hidden");
+      const modal = document.getElementById("modal-share");
+      const urlInput = document.getElementById("share-url-input");
+      const qrImg = document.getElementById("share-qr-img");
+
+      const shareUrl = `${window.location.origin}${window.location.pathname}?t=${STATE.currentTournamentId}`;
+      urlInput.value = shareUrl;
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
+
+      modal.classList.remove("hidden");
     };
 
     window.closeShareModal = function () {
@@ -2625,34 +1499,32 @@
     };
 
     window.copyShareUrl = function () {
-      const input = document.getElementById("share-url-input");
-      input.select();
-      document.execCommand("copy");
+      const urlInput = document.getElementById("share-url-input");
+      urlInput.select();
+      navigator.clipboard.writeText(urlInput.value);
       showToast(t("copiedToast"), "success");
     };
 
+    // ----------------------------------------------------
+    // TOAST NOTIFICATION SYSTEM
+    // ----------------------------------------------------
     function showToast(msg, type = "info") {
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
-      
-      let borderBg = "bg-slate-900 border-slate-700 text-slate-100";
-      if (type === "success") borderBg = "bg-emerald-950 border-emerald-500 text-emerald-200";
-      else if (type === "error") borderBg = "bg-rose-950 border-rose-500 text-rose-200";
-      else if (type === "warning") borderBg = "bg-amber-950 border-amber-500 text-amber-200";
 
-      toast.className = `p-3 rounded-xl border shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${borderBg}`;
+      let bgClass = "card-inner border text-slate-200";
+      if (type === "success") bgClass = "bg-emerald-950/90 dark:bg-emerald-950/90 bg-emerald-50 border-emerald-500/50 text-emerald-800 dark:text-emerald-300";
+      else if (type === "error") bgClass = "bg-rose-950/90 dark:bg-rose-950/90 bg-rose-50 border-rose-500/50 text-rose-800 dark:text-rose-300";
+      else if (type === "warning") bgClass = "bg-amber-950/90 dark:bg-amber-950/90 bg-amber-50 border-amber-500/50 text-amber-800 dark:text-amber-300";
+
+      toast.className = `px-3.5 py-2.5 rounded-xl border text-xs font-semibold shadow-xl transition transform translate-y-2 ${bgClass} flex items-center gap-2 pointer-events-auto`;
       toast.innerHTML = `<span>${msg}</span>`;
 
       container.appendChild(toast);
-
       setTimeout(() => {
-        toast.classList.remove("translate-y-2", "opacity-0");
-      }, 10);
-
-      setTimeout(() => {
-        toast.classList.add("opacity-0", "translate-y-2");
+        toast.classList.add("opacity-0", "-translate-y-2");
         setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      }, 3500);
     }
   </script>
 </body>
