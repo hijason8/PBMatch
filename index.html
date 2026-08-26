@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-TW" class="dark">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
-  
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
   <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
@@ -12,7 +13,9 @@
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,9 +42,11 @@
       width: 4px;
       height: 4px;
     }
+
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+
     ::-webkit-scrollbar-thumb {
       background: #475569;
       border-radius: 2px;
@@ -52,25 +57,30 @@
       background-color: #090d16;
       color: #f1f5f9;
     }
+
     html.dark .glass-nav {
       background: rgba(15, 23, 42, 0.92);
       backdrop-filter: blur(12px);
       border-color: #1e293b;
     }
+
     html.dark .glass-card {
       background: rgba(30, 41, 59, 0.75);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #f1f5f9;
     }
+
     html.dark .input-bg {
       background-color: #0f172a;
       border-color: #334155;
       color: #ffffff;
     }
+
     html.dark .sub-text {
       color: #94a3b8;
     }
+
     html.dark .card-inner {
       background-color: rgba(15, 23, 42, 0.6);
       border-color: #1e293b;
@@ -81,11 +91,13 @@
       background-color: #fbf9f5;
       color: #292524;
     }
+
     html.light .glass-nav {
       background: rgba(245, 240, 230, 0.95);
       backdrop-filter: blur(12px);
       border-color: #e7dfd3;
     }
+
     html.light .glass-card {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(8px);
@@ -93,95 +105,122 @@
       color: #292524;
       box-shadow: 0 2px 10px -2px rgba(180, 150, 120, 0.08);
     }
+
     html.light .input-bg {
       background-color: #fdfbf7;
       border-color: #d6c7b2;
       color: #1c1917;
     }
+
     html.light .sub-text {
       color: #78716c;
     }
+
     html.light .card-inner {
       background-color: #f7f3ec;
       border-color: #e5dbc9;
     }
+
     html.light .text-white {
       color: #1c1917 !important;
     }
-    html.light .text-slate-200, html.light .text-slate-300 {
+
+    html.light .text-slate-200,
+    html.light .text-slate-300 {
       color: #44403c !important;
     }
+
     html.light .text-slate-400 {
       color: #78716c !important;
     }
-    html.light .bg-slate-900, html.light .bg-slate-950, html.light .bg-slate-800 {
+
+    html.light .bg-slate-900,
+    html.light .bg-slate-950,
+    html.light .bg-slate-800 {
       background-color: #f3ece0 !important;
       border-color: #e7ded0 !important;
     }
+
     /* Schedule Mode Buttons */
     .mode-btn-active {
       border-color: #10b981;
       background: rgba(16, 185, 129, 0.12);
       color: #059669;
     }
+
     html.dark .mode-btn-active {
       border-color: #34d399;
       background: rgba(52, 211, 153, 0.15);
       color: #34d399;
     }
+
     .mode-btn-inactive {
       border-color: #cbd5e1;
       background: transparent;
     }
+
     html.dark .mode-btn-inactive {
       border-color: #334155;
       background: transparent;
       color: #94a3b8;
     }
+
     html.light .mode-btn-inactive {
       border-color: #d6c7b2;
       color: #78716c;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
+
+<body
+  class="min-h-screen flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950 transition-colors duration-200">
 
   <!-- ==================== HEADER / NAV (超緊湊手機優化版) ==================== -->
   <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
       <!-- Logo & Title -->
       <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
+        <div
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
           <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
           <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
-            Pickleball<span id="brand-hub-text" class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
+            Pickleball<span id="brand-hub-text"
+              class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
           </h1>
-          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">排賽系統</p>
+          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">
+            排賽系統</p>
         </div>
       </div>
 
       <!-- Compact Action Icons Bar -->
       <div class="flex items-center gap-1.5 sm:gap-2">
         <!-- Theme Toggle (Icon Only) -->
-        <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm" title="切換黑/白底模式">
+        <button onclick="toggleTheme()"
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm"
+          title="切換黑/白底模式">
           <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
 
         <!-- Language Toggle (Icon Only) -->
-        <button onclick="toggleLanguage()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm" title="切換語言 / Language">
+        <button onclick="toggleLanguage()"
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm"
+          title="切換語言 / Language">
           <i data-lucide="globe" class="w-4 h-4"></i>
         </button>
 
         <!-- Nav: Hub Icon Button -->
-        <button onclick="navigateTo('hub')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold" title="賽事大廳">
+        <button onclick="navigateTo('hub')"
+          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold"
+          title="賽事大廳">
           <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
           <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
         </button>
 
         <!-- Nav: Create Icon Button -->
-        <button onclick="navigateTo('create')" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
+        <button onclick="navigateTo('create')"
+          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
           <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
         </button>
@@ -201,7 +240,8 @@
           </h2>
           <p id="t-hub-desc" class="text-xs sub-text mt-0.5 text-left">點擊卡片即可進入即時對戰賽程</p>
         </div>
-        <button onclick="navigateTo('create')" id="t-create-new-btn" class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
+        <button onclick="navigateTo('create')" id="t-create-new-btn"
+          class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
           ➕ 建立新賽事
         </button>
       </div>
@@ -221,17 +261,20 @@
         <p id="t-create-desc" class="text-xs sub-text mt-0.5">自動計算個人雙打最佳輪播與配時</p>
       </div>
 
-      <form id="form-create-tournament" onsubmit="handleCreateTournament(event)" class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+      <form id="form-create-tournament" onsubmit="handleCreateTournament(event)"
+        class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
         <!-- Tournament Name -->
         <div>
           <label id="t-label-name" class="block text-xs sm:text-sm font-semibold mb-1">1. 賽事名稱</label>
-          <input type="text" id="create-name" required placeholder="例：0818 球賽" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+          <input type="text" id="create-name" required placeholder="例：0818 球賽"
+            class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
         </div>
 
         <!-- Admin PIN -->
         <div>
           <label id="t-label-pin" class="block text-xs sm:text-sm font-semibold mb-1">2. 管理員 PIN 碼 (4 位數)</label>
-          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" required placeholder="4位數字 (刪除賽事用)" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
+          <input type="password" id="create-pin" maxlength="4" pattern="\d{4}" required placeholder="4位數字 (刪除賽事用)"
+            class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono tracking-widest" />
         </div>
 
         <!-- Duration & Scoring Rules Grid -->
@@ -240,7 +283,9 @@
           <div>
             <label id="t-label-duration" class="block text-xs sm:text-sm font-semibold mb-1">3. 預計比賽總時間</label>
             <div class="relative">
-              <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="create-duration" min="0.5" max="24" step="0.5" value="2.0" required
+                onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()"
+                class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-hours" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">小時</span>
             </div>
           </div>
@@ -249,7 +294,9 @@
           <div>
             <label id="t-label-game-mins" class="block text-xs sm:text-sm font-semibold mb-1">4. 預估單局配時</label>
             <div class="relative">
-              <input type="number" id="create-game-mins" min="3" max="60" value="15" required onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
+              <input type="number" id="create-game-mins" min="3" max="60" value="15" required
+                onchange="calculateTimeEstimate()" oninput="calculateTimeEstimate()"
+                class="w-full input-bg border rounded-xl p-2.5 pr-10 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono" />
               <span id="t-unit-mins" class="absolute right-2.5 top-2.5 text-xs sub-text font-semibold">分鐘</span>
             </div>
           </div>
@@ -259,14 +306,17 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label id="t-label-scoring" class="block text-xs sm:text-sm font-semibold mb-1">5. 計分賽制選擇</label>
-            <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
+            <select id="create-scoring-type" required onchange="onScoringTypeChange(); calculateTimeEstimate();"
+              class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none">
               <option value="rally">落地得分制 (Rally)</option>
               <option value="sideout">發球得分制 (Side-out)</option>
             </select>
           </div>
           <div>
             <label id="t-label-target" class="block text-xs sm:text-sm font-semibold mb-1">6. 每局目標分數</label>
-            <input type="number" id="create-target-score" min="1" max="99" value="15" required onchange="calculateTimeEstimate()" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
+            <input type="number" id="create-target-score" min="1" max="99" value="15" required
+              onchange="calculateTimeEstimate()"
+              class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none" />
           </div>
         </div>
 
@@ -274,14 +324,16 @@
         <div>
           <label id="t-label-schedule-mode" class="block text-xs sm:text-sm font-semibold mb-1.5">7. 賽事模式選擇</label>
           <div class="grid grid-cols-2 gap-2">
-            <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')" class="mode-btn-active px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+            <button type="button" id="btn-mode-fair" onclick="setScheduleMode('fair')"
+              class="mode-btn-active px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
               <div class="flex items-center gap-1.5">
                 <i data-lucide="equal" class="w-3.5 h-3.5"></i>
                 <span id="t-mode-fair-title">平均賽事</span>
               </div>
               <p id="t-mode-fair-desc" class="text-[10px] font-normal opacity-70 leading-snug">場數完全一致</p>
             </button>
-            <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')" class="mode-btn-inactive px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+            <button type="button" id="btn-mode-max" onclick="setScheduleMode('max')"
+              class="mode-btn-inactive px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
               <div class="flex items-center gap-1.5">
                 <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
                 <span id="t-mode-max-title">最大賽事</span>
@@ -296,20 +348,26 @@
         <div>
           <div class="flex items-center justify-between mb-1">
             <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">7. 參賽選手名單 (每列一位)</label>
-            <span id="player-count-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0 位</span>
+            <span id="player-count-badge"
+              class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0
+              位</span>
           </div>
-          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();" placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F" class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+          <textarea id="create-players" rows="5" required oninput="updatePlayerCountBadge(); calculateTimeEstimate();"
+            placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F"
+            class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
         </div>
 
         <!-- Time Estimation Hint Box -->
         <div id="time-estimate-box" class="p-3 rounded-xl card-inner border text-xs space-y-1">
-          <div id="t-time-calc-title" class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
+          <div id="t-time-calc-title"
+            class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 text-xs">
             <i data-lucide="clock" class="w-3.5 h-3.5"></i> 時間預估試算：
           </div>
           <p id="time-estimate-text" class="sub-text text-[11px]">輸入選手名單預估局數與每局時間。</p>
         </div>
 
-        <button type="submit" id="t-submit-create-btn" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5 mt-2">
+        <button type="submit" id="t-submit-create-btn"
+          class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5 mt-2">
           <i data-lucide="zap" class="w-4 h-4"></i> 自動生成賽程並發布
         </button>
       </form>
@@ -318,22 +376,31 @@
     <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW (進入賽程頁面排版優化) ==================== -->
     <section id="page-live" class="hidden space-y-4 sm:space-y-6">
       <!-- Top Compact Title Banner -->
-      <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-l-4 border-l-emerald-500">
+      <div
+        class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-l-4 border-l-emerald-500">
         <div>
           <div class="flex items-center gap-2 flex-wrap">
             <h2 id="live-title" class="text-lg sm:text-2xl font-display font-extrabold tracking-tight">賽事載入中...</h2>
-            <span id="live-id-badge" class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID: ---</span>
+            <span id="live-id-badge"
+              class="px-2 py-0.5 rounded-md card-inner border font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">ID:
+              ---</span>
           </div>
           <!-- Compact Info Badges Row -->
           <div class="flex flex-wrap items-center gap-2 text-[11px] mt-2">
-            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="users" class="w-3 h-3 sub-text"></i> <span id="live-players-count">0 人</span></span>
-            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration" class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
-            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target" class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type" class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="users"
+                class="w-3 h-3 sub-text"></i> <span id="live-players-count">0 人</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="clock"
+                class="w-3 h-3 text-amber-500"></i> <span id="t-est-prefix">預估</span> <span id="live-duration"
+                class="font-bold text-amber-600 dark:text-amber-300">2</span> <span id="t-hrs-unit">小時</span></span>
+            <span class="flex items-center gap-1 px-2 py-0.5 rounded-md card-inner border"><i data-lucide="target"
+                class="w-3 h-3 text-emerald-500"></i> <span id="live-scoring-type"
+                class="font-bold text-emerald-600 dark:text-emerald-300">落地得分 (15分)</span></span>
           </div>
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
-          <button onclick="openShareModal()" id="t-share-btn" class="w-full sm:w-auto px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
+          <button onclick="openShareModal()" id="t-share-btn"
+            class="w-full sm:w-auto px-3 py-2 rounded-xl card-inner border transition text-xs font-semibold flex items-center justify-center gap-1 shadow-sm">
             <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> 分享 / QR Code
           </button>
         </div>
@@ -341,14 +408,16 @@
 
       <!-- Main Live Grid (2 Columns on Desktop, Single Column on Mobile) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-        
+
         <!-- Left: Matches Schedule (7 Cols) -->
         <div class="lg:col-span-7 space-y-3">
           <div class="flex items-center justify-between">
             <h3 id="t-schedule-title" class="text-base sm:text-xl font-display font-bold flex items-center gap-1.5">
               <i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> 對戰賽程表
             </h3>
-            <span id="completed-count" class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-bold">0 / 0 局完成</span>
+            <span id="completed-count"
+              class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-bold">0
+              / 0 局完成</span>
           </div>
 
           <div id="matches-container" class="space-y-3">
@@ -386,7 +455,8 @@
 
           <!-- Tie-breaker rules explainer -->
           <div class="p-3 rounded-xl card-inner border text-[11px] sub-text space-y-1">
-            <div id="t-tiebreaker-box-title" class="font-semibold text-stone-800 dark:text-slate-200">📊 排行榜 Tie-breaker 排名規則：</div>
+            <div id="t-tiebreaker-box-title" class="font-semibold text-stone-800 dark:text-slate-200">📊 排行榜 Tie-breaker
+              排名規則：</div>
             <ol id="t-tiebreaker-list" class="list-decimal list-inside space-y-0.5 sub-text text-[10.5px]">
               <li>第 1 順位：勝場數 (Wins) ⬇️</li>
               <li>第 2 順位：總淨勝分 (+/- = 總得分 - 總失分) ⬇️</li>
@@ -402,7 +472,8 @@
   </main>
 
   <!-- ==================== SHARE / QR MODAL ==================== -->
-  <div id="modal-share" class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div id="modal-share"
+    class="fixed inset-0 z-50 bg-stone-900/60 dark:bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="glass-card rounded-2xl max-w-sm w-full p-5 space-y-4 border relative text-center">
       <button onclick="closeShareModal()" class="absolute top-3.5 right-3.5 sub-text hover:text-emerald-500">
         <i data-lucide="x" class="w-5 h-5"></i>
@@ -425,8 +496,10 @@
       <!-- Share URL Input -->
       <div class="space-y-2">
         <div class="flex items-center gap-2">
-          <input type="text" id="share-url-input" readonly class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:outline-none" />
-          <button onclick="copyShareUrl()" id="t-copy-btn" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition shrink-0">
+          <input type="text" id="share-url-input" readonly
+            class="w-full input-bg border rounded-xl p-2 text-xs font-mono focus:outline-none" />
+          <button onclick="copyShareUrl()" id="t-copy-btn"
+            class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition shrink-0">
             <i data-lucide="copy" class="w-3.5 h-3.5"></i> 複製
           </button>
         </div>
@@ -632,36 +705,18 @@
       }
     };
 
-    // Initialize Icons, Theme, Language & Firebase Connection
-    function initApp() {
-      applyThemeUI();
-      initFirebase(DEFAULT_FIREBASE_CONFIG);
-      applyLanguageUI();
-      initRouting();
-      lucide.createIcons();
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initApp);
-    } else {
-      initApp();
-    }
-
-    window.addEventListener("popstate", () => {
-      initRouting();
-    });
-
     // ----------------------------------------------------
     // THEME SWITCHER (黑底 ↔ 白底)
     // ----------------------------------------------------
-    window.toggleTheme = function () {
+    function toggleTheme() {
       STATE.theme = STATE.theme === "dark" ? "light" : "dark";
       localStorage.setItem("pb_theme", STATE.theme);
       applyThemeUI();
-      showToast(STATE.theme === "dark" 
+      showToast(STATE.theme === "dark"
         ? (STATE.lang === "zh-TW" ? "已切換至【黑底】" : "Switched to Dark Mode")
         : (STATE.lang === "zh-TW" ? "已切換至【白底】" : "Switched to Light Mode"), "info");
-    };
+    }
+    window.toggleTheme = toggleTheme;
 
     function applyThemeUI() {
       const html = document.documentElement;
@@ -688,7 +743,7 @@
     // ----------------------------------------------------
     // I18N LANGUAGE SWITCHER
     // ----------------------------------------------------
-    window.toggleLanguage = function () {
+    function toggleLanguage() {
       STATE.lang = STATE.lang === "zh-TW" ? "en" : "zh-TW";
       localStorage.setItem("pb_lang", STATE.lang);
       applyLanguageUI();
@@ -698,7 +753,8 @@
       }
       renderHubTournaments();
       showToast(STATE.lang === "zh-TW" ? "已切換至 繁體中文" : "Switched to English", "info");
-    };
+    }
+    window.toggleLanguage = toggleLanguage;
 
     function t(key) {
       return (I18N[STATE.lang] && I18N[STATE.lang][key]) || key;
@@ -829,7 +885,7 @@
       }
     }
 
-    window.navigateTo = function (pageName, pushHistory = true) {
+    function navigateTo(pageName, pushHistory = true) {
       const pages = ["hub", "create", "live"];
       pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
@@ -860,7 +916,8 @@
         STATE.hubUnsubscribe = null;
       }
       lucide.createIcons();
-    };
+    }
+    window.navigateTo = navigateTo;
 
     // Helper: 公平模式 - 調整總局數使每人場數完全一致
     function getValidTotalGames(n, rawTargetGames) {
@@ -957,7 +1014,7 @@
     // ----------------------------------------------------
     // PAGE C: CREATE TOURNAMENT & TIME ESTIMATION
     // ----------------------------------------------------
-    window.setScheduleMode = function (mode) {
+    function setScheduleMode(mode) {
       document.getElementById("create-schedule-mode").value = mode;
       const btnFair = document.getElementById("btn-mode-fair");
       const btnMax = document.getElementById("btn-mode-max");
@@ -969,25 +1026,28 @@
         btnFair.className = btnFair.className.replace("mode-btn-active", "mode-btn-inactive");
       }
       calculateTimeEstimate();
-    };
+    }
+    window.setScheduleMode = setScheduleMode;
 
-    window.onScoringTypeChange = function () {
+    function onScoringTypeChange() {
       const scoringType = document.getElementById("create-scoring-type").value;
       const gameMinsEl = document.getElementById("create-game-mins");
       if (gameMinsEl) {
         // Auto default: Rally = 12 mins, Side-out = 18 mins
         gameMinsEl.value = scoringType === "sideout" ? 18 : 12;
       }
-    };
+    }
+    window.onScoringTypeChange = onScoringTypeChange;
 
-    window.updatePlayerCountBadge = function () {
+    function updatePlayerCountBadge() {
       const text = document.getElementById("create-players").value;
       const players = text.split("\n").map(s => s.trim()).filter(Boolean);
       const badge = document.getElementById("player-count-badge");
       if (badge) badge.innerText = `${players.length} ${t("playersBadge")}`;
-    };
+    }
+    window.updatePlayerCountBadge = updatePlayerCountBadge;
 
-    window.calculateTimeEstimate = function () {
+    function calculateTimeEstimate() {
       const text = document.getElementById("create-players").value;
       const players = text.split("\n").map(s => s.trim()).filter(Boolean);
       const durationHours = parseFloat(document.getElementById("create-duration").value) || 2.0;
@@ -1026,9 +1086,10 @@
           hintText.innerHTML = `Adjusted to <strong class="text-emerald-500">${totalGames} games</strong> — <strong class="text-amber-500">exactly ${exactGamesPerPlayer} games/player</strong> (~${estMinsPerGame} mins/game).`;
         }
       }
-    };
+    }
+    window.calculateTimeEstimate = calculateTimeEstimate;
 
-    window.handleCreateTournament = async function (e) {
+    async function handleCreateTournament(e) {
       e.preventDefault();
       const name = document.getElementById("create-name").value.trim();
       const pin = document.getElementById("create-pin").value.trim();
@@ -1077,7 +1138,8 @@
       }
 
       loadLiveTournament(tournamentId, true);
-    };
+    }
+    window.handleCreateTournament = handleCreateTournament;
 
     function saveToLocalTournaments(tObj) {
       const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
@@ -1112,8 +1174,8 @@
         const total = tData.matches ? tData.matches.length : 0;
         const done = tData.matches ? tData.matches.filter(m => m.completed).length : 0;
         const isFinished = total > 0 && done === total;
-        const scoringLabel = tData.scoringType === "sideout" 
-          ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
+        const scoringLabel = tData.scoringType === "sideout"
+          ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out")
           : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
         return `
@@ -1184,19 +1246,20 @@
       }
     }
 
-    window.enterTournament = function (id) {
+    function enterTournament(id) {
       loadLiveTournament(id, true);
-    };
+    }
+    window.enterTournament = enterTournament;
 
-    window.deleteTournament = async function (id, pin) {
+    async function deleteTournament(id, pin) {
       const MASTER_PIN = "19851108";
-      const promptMsg = STATE.lang === "zh-TW" 
+      const promptMsg = STATE.lang === "zh-TW"
         ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入 4 位數管理員 PIN 碼：`
         : `🗑️ Delete tournament (${id})?\nEnter 4-digit Admin PIN:`;
 
       const inputPin = prompt(promptMsg);
       if (inputPin === null) return;
-      
+
       const cleanInput = inputPin.trim();
       if (cleanInput !== String(pin).trim() && cleanInput !== MASTER_PIN) {
         showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符，無法刪除！" : "❌ PIN Incorrect!", "error");
@@ -1216,7 +1279,8 @@
 
       showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已成功刪除` : `Tournament ${id} deleted`, "success");
       renderHubTournaments();
-    };
+    }
+    window.deleteTournament = deleteTournament;
 
     // ----------------------------------------------------
     // PAGE D: LIVE TOURNAMENT CONTROLLER & REALTIME SYNC
@@ -1248,6 +1312,7 @@
         loadFromLocalCache(tId);
       }
     }
+    window.loadLiveTournament = loadLiveTournament;
 
     function loadFromLocalCache(tId) {
       const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
@@ -1267,13 +1332,13 @@
       const totalMatches = data.matches ? data.matches.length : 0;
       const estGamesPerPlayer = pCount > 0 ? Math.round((totalMatches * 4 / pCount) * 10) / 10 : 0;
 
-      const scoringLabel = data.scoringType === "sideout" 
-        ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out") 
+      const scoringLabel = data.scoringType === "sideout"
+        ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out")
         : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
       document.getElementById("live-title").innerText = data.name;
-      document.getElementById("live-players-count").innerText = STATE.lang === "zh-TW" 
-        ? `${pCount} 人 (每人約 ${estGamesPerPlayer} 場)` 
+      document.getElementById("live-players-count").innerText = STATE.lang === "zh-TW"
+        ? `${pCount} 人 (每人約 ${estGamesPerPlayer} 場)`
         : `${pCount} Players (~${estGamesPerPlayer} games/player)`;
       document.getElementById("live-duration").innerText = data.durationHours || "2.0";
       document.getElementById("live-scoring-type").innerText = `${scoringLabel} (${data.targetScore || 15}分)`;
@@ -1348,7 +1413,7 @@
       lucide.createIcons();
     }
 
-    window.saveMatchScore = async function (matchId) {
+    async function saveMatchScore(matchId) {
       const blueScoreVal = document.getElementById(`score-blue-${matchId}`).value;
       const redScoreVal = document.getElementById(`score-red-${matchId}`).value;
 
@@ -1387,7 +1452,8 @@
       } else {
         showToast(STATE.lang === "zh-TW" ? `第 ${matchId} 局比分已儲存 (本地)` : `Game ${matchId} saved (Local)`, "success");
       }
-    };
+    }
+    window.saveMatchScore = saveMatchScore;
 
     // ----------------------------------------------------
     // LEADERBOARD CALCULATOR & TIE-BREAKER SORTING
@@ -1482,7 +1548,7 @@
     // ----------------------------------------------------
     // SHARE & QR CODE MODAL
     // ----------------------------------------------------
-    window.openShareModal = function () {
+    function openShareModal() {
       const modal = document.getElementById("modal-share");
       const urlInput = document.getElementById("share-url-input");
       const qrImg = document.getElementById("share-qr-img");
@@ -1492,18 +1558,21 @@
       qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
 
       modal.classList.remove("hidden");
-    };
+    }
+    window.openShareModal = openShareModal;
 
-    window.closeShareModal = function () {
+    function closeShareModal() {
       document.getElementById("modal-share").classList.add("hidden");
-    };
+    }
+    window.closeShareModal = closeShareModal;
 
-    window.copyShareUrl = function () {
+    function copyShareUrl() {
       const urlInput = document.getElementById("share-url-input");
       urlInput.select();
       navigator.clipboard.writeText(urlInput.value);
       showToast(t("copiedToast"), "success");
-    };
+    }
+    window.copyShareUrl = copyShareUrl;
 
     // ----------------------------------------------------
     // TOAST NOTIFICATION SYSTEM
@@ -1526,6 +1595,28 @@
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
+
+    // ----------------------------------------------------
+    // APP BOOTSTRAP INITIALIZATION
+    // ----------------------------------------------------
+    function initApp() {
+      applyThemeUI();
+      initFirebase(DEFAULT_FIREBASE_CONFIG);
+      applyLanguageUI();
+      initRouting();
+      lucide.createIcons();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
+    }
+
+    window.addEventListener("popstate", () => {
+      initRouting();
+    });
   </script>
 </body>
+
 </html>
