@@ -181,7 +181,7 @@
       <!-- Logo & Title -->
       <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
         <div
-          class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-emerald-500/20 shrink-0">
+          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold shadow-sm shrink-0">
           <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
@@ -226,9 +226,9 @@
           <span id="t-nav-history" class="hidden sm:inline">歷史紀錄</span>
         </button>
 
-        <!-- Nav: Create Icon Button -->
+        <!-- Nav: Create Icon Button (Consistent Style) -->
         <button onclick="navigateTo('create')"
-          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
+          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl card-inner border hover:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 font-semibold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
           <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
         </button>
@@ -261,7 +261,7 @@
             <i data-lucide="history" class="w-3.5 h-3.5"></i> <span id="t-btn-hub-history">歷史完賽紀錄</span>
           </button>
           <button onclick="navigateTo('create')" id="t-create-new-btn"
-            class="sm:flex hidden bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-sm">
+            class="sm:flex hidden card-inner border text-emerald-600 dark:text-emerald-400 font-semibold px-3 py-2 rounded-xl text-xs shadow-sm hover:border-emerald-500/50 items-center gap-1">
             ➕ 建立新賽事
           </button>
         </div>
@@ -407,23 +407,30 @@
               </div>
             </div>
 
-            <!-- Quick Generate Players by Count -->
+            <!-- Row 1: Quick Add Player Input (Full Width on Mobile) -->
             <div class="flex items-center gap-1.5">
-              <input type="number" id="quick-generate-count" min="4" max="30" placeholder="人數"
-                class="w-16 input-bg border rounded-lg px-2 py-1.5 text-xs text-center focus:border-amber-500 focus:outline-none"
-                onkeydown="if(event.key==='Enter'){event.preventDefault(); quickGeneratePlayers();}" />
-              <button type="button" onclick="quickGeneratePlayers()" id="t-quick-gen-btn"
-                class="px-2.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 shrink-0 transition shadow-sm active:scale-95">
-                <i data-lucide="zap" class="w-3 h-3"></i> <span id="t-btn-quick-gen">快速產生</span>
-              </button>
-              <span class="sub-text text-[10px]">|</span>
               <input type="text" id="quick-add-player-input" placeholder="輸入姓名快速新增人員 (按 Enter)..."
-                class="flex-1 input-bg border rounded-lg px-2.5 py-1.5 text-xs focus:border-emerald-500 focus:outline-none"
+                class="flex-1 input-bg border rounded-lg px-2.5 py-2 text-xs focus:border-emerald-500 focus:outline-none"
                 onkeydown="if(event.key==='Enter'){event.preventDefault(); quickAddPlayer();}" />
               <button type="button" onclick="quickAddPlayer()" id="t-quick-add-btn"
-                class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 shrink-0 transition shadow-sm active:scale-95">
-                <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> <span id="t-btn-add-person">新增人員</span>
+                class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 shrink-0 transition shadow-sm active:scale-95">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> <span id="t-btn-add-person">新增</span>
               </button>
+            </div>
+
+            <!-- Row 2: Test Players Quick Generate (Clean Secondary Row) -->
+            <div
+              class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
+              <span class="sub-text text-[11px]">快速產生名單：</span>
+              <div class="flex items-center gap-1">
+                <input type="number" id="quick-generate-count" min="4" max="30" placeholder="人數"
+                  class="w-14 input-bg border rounded-md px-1.5 py-1 text-xs text-center focus:border-amber-500 focus:outline-none"
+                  onkeydown="if(event.key==='Enter'){event.preventDefault(); quickGeneratePlayers();}" />
+                <button type="button" onclick="quickGeneratePlayers()" id="t-quick-gen-btn"
+                  class="px-2.5 py-1 card-inner border hover:border-amber-500 text-amber-600 dark:text-amber-400 font-bold rounded-md text-[11px] flex items-center gap-1 transition shadow-sm active:scale-95">
+                  <i data-lucide="zap" class="w-3 h-3"></i> <span id="t-btn-quick-gen">產生</span>
+                </button>
+              </div>
             </div>
 
             <!-- Member Chips Area -->
@@ -463,23 +470,6 @@
           <i data-lucide="zap" class="w-4 h-4"></i> 自動生成賽程並發布
         </button>
       </form>
-    </section></span>
-    </div>
-
-    <p id="time-estimate-text" class="sub-text text-[11px]">輸入選手名單預估局數與每局時間。</p>
-
-    <!-- Fair Schedule Options Container (rendered dynamically) -->
-    <div id="fair-schedule-options" class="space-y-2 pt-1 hidden">
-      <!-- Dynamically populated options cards -->
-    </div>
-    </div>
-    <input type="hidden" id="create-selected-total-games" value="" />
-
-    <button type="submit" id="t-submit-create-btn"
-      class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-1.5 mt-2">
-      <i data-lucide="zap" class="w-4 h-4"></i> 自動生成賽程並發布
-    </button>
-    </form>
     </section>
 
     <!-- ==================== PAGE D: LIVE TOURNAMENT VIEW (進入賽程頁面排版優化) ==================== -->
@@ -2281,33 +2271,28 @@
 
       const clubName = tObj ? (tObj.clubName || '').trim() : '';
       const clubPwd = clubName ? await getClubPassword(clubName) : null;
+      const tournamentName = tObj ? tObj.name : id;
 
-      // If user is already in admin mode or has verified this club in session
-      if (!STATE.isAdmin && (!clubName || !STATE.authenticatedClubs.has(clubName))) {
-        let promptMsg = "";
-        if (clubPwd) {
-          promptMsg = STATE.lang === "zh-TW"
-            ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n請輸入社團「${clubName}」密碼或管理員 PIN：`
-            : `🗑️ Delete tournament (${id})?\nEnter password for "${clubName}" or Master PIN:`;
-        } else {
-          promptMsg = STATE.lang === "zh-TW"
-            ? `🗑️ 確定刪除賽事 (${id}) 嗎？\n此賽事未設社團密碼，請輸入 Master PIN 確認刪除：`
-            : `🗑️ Delete tournament (${id})?\nEnter Master PIN to confirm:`;
-        }
+      // If the club has a password and user hasn't authenticated it in session
+      if (clubPwd && !STATE.isAdmin && !STATE.authenticatedClubs.has(clubName)) {
+        const promptMsg = STATE.lang === "zh-TW"
+          ? `🗑️ 確定刪除賽事「${tournamentName}」(${id}) 嗎？\n請輸入社團「${clubName}」密碼或管理員 PIN：`
+          : `🗑️ Delete tournament "${tournamentName}" (${id})?\nEnter password for "${clubName}" or Master PIN:`;
 
         const input = prompt(promptMsg);
         if (input === null) return;
         const cleanInput = input.trim();
 
-        const isValid = (clubPwd && cleanInput === clubPwd) || (cleanInput === MASTER_PIN);
+        const isValid = (cleanInput === clubPwd) || (cleanInput === MASTER_PIN);
         if (!isValid) {
           showToast(STATE.lang === "zh-TW" ? "❌ 密碼不符，無法刪除！" : "❌ Password Incorrect!", "error");
           return;
         }
       } else {
+        // No password on club or already authenticated -> standard confirm dialog
         const confirmMsg = STATE.lang === "zh-TW"
-          ? `🗑️ 確定要刪除賽事 (${id}) 嗎？`
-          : `🗑️ Are you sure you want to delete tournament (${id})?`;
+          ? `🗑️ 確定要刪除賽事「${tournamentName}」(${id}) 嗎？\n（此操作無法復原）`
+          : `🗑️ Are you sure you want to delete "${tournamentName}" (${id})?\n(This cannot be undone)`;
         if (!confirm(confirmMsg)) return;
       }
 
@@ -2322,7 +2307,11 @@
       delete local[id];
       localStorage.setItem("pb_tournaments", JSON.stringify(local));
 
-      showToast(STATE.lang === "zh-TW" ? `賽事 ${id} 已成功刪除` : `Tournament ${id} deleted`, "success");
+      // Remove from memory cache
+      STATE.allTournamentsCache = (STATE.allTournamentsCache || []).filter(t => t.id !== id);
+
+      showToast(STATE.lang === "zh-TW" ? `賽事「${tournamentName}」已成功刪除` : `Tournament "${tournamentName}" deleted`, "success");
+      displayHubTournamentsList(STATE.allTournamentsCache);
       renderHubTournaments();
     }
     window.deleteTournament = deleteTournament;
@@ -2373,11 +2362,7 @@
     function isTournamentAdmin(tData) {
       if (!tData) return false;
       if (STATE.isAdmin) return true; // Master PIN logged in
-      const clubName = (tData.clubName || '').trim();
-      if (clubName && STATE.authenticatedClubs.has(clubName)) return true;
-      if (STATE.authenticatedClubs.has(`tournament_${tData.id}`)) return true;
-      if (STATE.activeTournamentAdmin === tData.id) return true;
-      return false;
+      return STATE.activeTournamentAdmin === tData.id;
     }
     window.isTournamentAdmin = isTournamentAdmin;
 
@@ -2390,15 +2375,13 @@
       if (hasAdmin) {
         // Switch back to spectator / viewer mode
         STATE.activeTournamentAdmin = null;
-        const clubName = (tData.clubName || '').trim();
-        if (clubName) STATE.authenticatedClubs.delete(clubName);
-        STATE.authenticatedClubs.delete(`tournament_${tData.id}`);
         showToast(STATE.lang === "zh-TW" ? "👀 已切換為瀏覽模式 (唯讀)" : "👀 Switched to Viewer Mode (Read-only)", "info");
         renderLiveUI(tData);
         return;
       }
 
       // Unlock Admin Mode
+      const MASTER_PIN = "19851108";
       const clubName = (tData.clubName || '').trim();
       const clubPwd = clubName ? await getClubPassword(clubName) : null;
 
@@ -2423,13 +2406,7 @@
         return;
       }
 
-      if (clubName) {
-        STATE.authenticatedClubs.add(clubName);
-      } else {
-        STATE.authenticatedClubs.add(`tournament_${tData.id}`);
-      }
       STATE.activeTournamentAdmin = tData.id;
-
       showToast(STATE.lang === "zh-TW" ? "🔓 管理模式已解鎖！可輸入比分與流局" : "🔓 Admin Mode Unlocked!", "success");
       renderLiveUI(tData);
     }
@@ -2443,10 +2420,6 @@
       const pCount = data.players ? data.players.length : 0;
       const validMatches = (data.matches || []).filter(m => !m.voided);
       const estGamesPerPlayer = pCount > 0 ? Math.round((validMatches.length * 4 / pCount) * 10) / 10 : 0;
-
-      const scoringLabel = data.scoringType === "sideout"
-        ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out")
-        : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
 
       document.getElementById("live-title").innerText = data.name;
 
@@ -2550,35 +2523,31 @@
         const isDone = m.completed;
         const isVoided = m.voided;
 
-        // Score display: Editable inputs in Admin Mode, read-only badges in Viewer Mode
+        // Score display: Editable inputs in Admin Mode, read-only scoreboard in Viewer Mode
         let scoreHTML = '';
         if (hasAdmin) {
           scoreHTML = `
             <!-- Teams Grid (Admin Mode - Editable) -->
-            <div class="grid grid-cols-2 gap-1.5 ${isVoided ? 'opacity-50' : ''}">
-              <!-- Blue Team -->
-              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/25 space-y-1">
-                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-blue-600 dark:text-blue-400 tracking-tight flex items-center justify-between">
-                  <span>${t("blueTeam")}</span>
+            <div class="grid grid-cols-2 gap-2 ${isVoided ? 'opacity-50' : ''}">
+              <!-- Blue Side -->
+              <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2 flex flex-col justify-between">
+                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+                  <div class="truncate">${m.blue[0] || ''}</div>
+                  <div class="truncate">${m.blue[1] || ''}</div>
                 </div>
-                <div class="text-xs font-semibold line-clamp-1">
-                  ${m.blue[0]} & ${m.blue[1]}
-                </div>
-                <div class="flex items-center pt-0.5">
-                  <input type="number" min="0" max="99" id="score-blue-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-blue-400" />
+                <div class="flex items-center pt-1">
+                  <input type="number" min="0" max="99" id="score-blue-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="比分" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-lg p-1.5 text-center font-mono text-base font-extrabold focus:outline-none focus:border-blue-400" />
                 </div>
               </div>
 
-              <!-- Red Team -->
-              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/25 space-y-1">
-                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-rose-600 dark:text-rose-400 tracking-tight flex items-center justify-between">
-                  <span>${t("redTeam")}</span>
+              <!-- Red Side -->
+              <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2 flex flex-col justify-between">
+                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+                  <div class="truncate">${m.red[0] || ''}</div>
+                  <div class="truncate">${m.red[1] || ''}</div>
                 </div>
-                <div class="text-xs font-semibold line-clamp-1">
-                  ${m.red[0]} & ${m.red[1]}
-                </div>
-                <div class="flex items-center pt-0.5">
-                  <input type="number" min="0" max="99" id="score-red-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.redScore !== null ? m.redScore : ''}" placeholder="${t('scorePlaceholder')}" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-md p-1 text-center font-mono text-sm font-bold focus:outline-none focus:border-rose-400" />
+                <div class="flex items-center pt-1">
+                  <input type="number" min="0" max="99" id="score-red-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.redScore !== null ? m.redScore : ''}" placeholder="比分" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-lg p-1.5 text-center font-mono text-base font-extrabold focus:outline-none focus:border-rose-400" />
                 </div>
               </div>
             </div>
@@ -2587,29 +2556,25 @@
           // Viewer Mode - Read Only
           scoreHTML = `
             <!-- Teams Grid (Viewer Mode - Read Only) -->
-            <div class="grid grid-cols-2 gap-1.5 ${isVoided ? 'opacity-50' : ''}">
-              <!-- Blue Team -->
-              <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/25 space-y-1">
-                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-blue-600 dark:text-blue-400 tracking-tight flex items-center justify-between">
-                  <span>${t("blueTeam")}</span>
+            <div class="grid grid-cols-2 gap-2 ${isVoided ? 'opacity-50' : ''}">
+              <!-- Blue Side -->
+              <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2 flex flex-col justify-between">
+                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+                  <div class="truncate">${m.blue[0] || ''}</div>
+                  <div class="truncate">${m.blue[1] || ''}</div>
                 </div>
-                <div class="text-xs font-semibold line-clamp-1">
-                  ${m.blue[0]} & ${m.blue[1]}
-                </div>
-                <div class="pt-0.5 text-center font-mono text-base font-extrabold ${m.blueScore !== null ? 'text-blue-600 dark:text-blue-400' : 'sub-text'}">
+                <div class="pt-1 text-center font-mono text-xl sm:text-2xl font-black ${m.blueScore !== null ? 'text-blue-600 dark:text-blue-400' : 'sub-text'}">
                   ${m.blueScore !== null ? m.blueScore : '-'}
                 </div>
               </div>
 
-              <!-- Red Team -->
-              <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/25 space-y-1">
-                <div class="text-[9.5px] sm:text-[10.5px] font-bold text-rose-600 dark:text-rose-400 tracking-tight flex items-center justify-between">
-                  <span>${t("redTeam")}</span>
+              <!-- Red Side -->
+              <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2 flex flex-col justify-between">
+                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+                  <div class="truncate">${m.red[0] || ''}</div>
+                  <div class="truncate">${m.red[1] || ''}</div>
                 </div>
-                <div class="text-xs font-semibold line-clamp-1">
-                  ${m.red[0]} & ${m.red[1]}
-                </div>
-                <div class="pt-0.5 text-center font-mono text-base font-extrabold ${m.redScore !== null ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
+                <div class="pt-1 text-center font-mono text-xl sm:text-2xl font-black ${m.redScore !== null ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
                   ${m.redScore !== null ? m.redScore : '-'}
                 </div>
               </div>
