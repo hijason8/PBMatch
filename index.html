@@ -177,68 +177,89 @@
 
   <!-- ==================== HEADER / NAV (超緊湊手機優化版) ==================== -->
   <header class="sticky top-0 z-40 glass-nav border-b transition-colors">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-13 sm:h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
       <!-- Logo & Title -->
-      <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('hub')">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('hub')">
         <div
-          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold shadow-sm shrink-0">
-          <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold shadow-sm shrink-0">
+          <i data-lucide="trophy" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
         </div>
-        <div>
-          <h1 class="font-display font-extrabold text-base sm:text-lg tracking-tight leading-none">
-            Pickleball<span id="brand-hub-text"
-              class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
-          </h1>
-          <p id="t-app-subtitle" class="text-[9px] sm:text-[10px] sub-text font-medium tracking-wider uppercase mt-0.5">
-            排賽系統</p>
-        </div>
+        <h1 class="font-display font-black text-lg sm:text-xl tracking-tight leading-none">
+          Pickleball<span id="brand-hub-text"
+            class="text-emerald-500 dark:text-emerald-400 transition-colors duration-300">Hub</span>
+        </h1>
       </div>
 
-      <!-- Compact Action Icons Bar -->
-      <div class="flex items-center gap-1.5 sm:gap-2">
-        <!-- Theme Toggle (Icon Only) -->
-        <button onclick="toggleTheme()"
-          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-amber-500 transition active:scale-95 shadow-sm"
-          title="切換黑/白底模式">
-          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
-        </button>
-
-        <!-- Language Toggle (Icon Only) -->
-        <button onclick="toggleLanguage()"
-          class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition active:scale-95 shadow-sm"
-          title="切換語言 / Language">
-          <i data-lucide="globe" class="w-4 h-4"></i>
-        </button>
-
-        <!-- Nav: Hub Icon Button -->
-        <button onclick="navigateTo('hub')"
-          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-emerald-500/10 transition flex items-center gap-1 text-xs font-semibold"
+      <!-- Action Buttons Bar (3 Unified Nav Buttons + Settings Gear Dropdown) -->
+      <div class="flex items-center gap-1.5 sm:gap-2 relative">
+        <!-- Nav: Hub -->
+        <button id="nav-btn-hub" onclick="navigateTo('hub')"
+          class="px-2.5 sm:px-3.5 py-1.5 rounded-xl card-inner border hover:border-emerald-500/50 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm active:scale-95"
           title="賽事大廳">
-          <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-500"></i>
-          <span id="t-nav-hub" class="hidden sm:inline">賽事大廳</span>
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-emerald-500"></i>
+          <span id="t-nav-hub" class="hidden xs:inline sm:inline">賽事大廳</span>
         </button>
 
-        <!-- Nav: History Icon Button -->
-        <button onclick="navigateTo('history')"
-          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-amber-500/10 transition flex items-center gap-1 text-xs font-semibold text-amber-600 dark:text-amber-400"
-          title="歷史對戰紀錄">
-          <i data-lucide="history" class="w-4 h-4 text-amber-500"></i>
-          <span id="t-nav-history" class="hidden sm:inline">歷史紀錄</span>
+        <!-- Nav: History (完賽紀錄) -->
+        <button id="nav-btn-history" onclick="navigateTo('history')"
+          class="px-2.5 sm:px-3.5 py-1.5 rounded-xl card-inner border hover:border-amber-500/50 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm active:scale-95"
+          title="完賽紀錄">
+          <i data-lucide="history" class="w-3.5 h-3.5 text-amber-500"></i>
+          <span id="t-nav-history" class="hidden xs:inline sm:inline">完賽紀錄</span>
         </button>
 
-        <!-- Nav: Create Icon Button (Consistent Style) -->
-        <button onclick="navigateTo('create')"
-          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl card-inner border hover:border-emerald-500/50 text-emerald-600 dark:text-emerald-400 font-semibold transition flex items-center gap-1 text-xs shadow-sm active:scale-95">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span id="t-nav-create" class="hidden sm:inline">建立賽事</span>
+        <!-- Nav: Create (建立賽事) -->
+        <button id="nav-btn-create" onclick="navigateTo('create')"
+          class="px-2.5 sm:px-3.5 py-1.5 rounded-xl card-inner border hover:border-emerald-500/50 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm active:scale-95"
+          title="建立賽事">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+          <span id="t-nav-create" class="hidden xs:inline sm:inline">建立賽事</span>
         </button>
 
-        <!-- Nav: Admin Icon Button -->
-        <button onclick="navigateToAdmin()"
-          class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-rose-500/10 transition flex items-center gap-1 text-xs font-semibold sub-text"
-          title="管理員">
-          <i data-lucide="settings" class="w-4 h-4"></i>
-        </button>
+        <!-- Settings Gear Dropdown Button -->
+        <div class="relative">
+          <button id="btn-settings-toggle" onclick="toggleSettingsDropdown(event)"
+            class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl card-inner border hover:border-emerald-500/50 flex items-center justify-center sub-text hover:text-stone-900 dark:hover:text-white transition shadow-sm active:scale-95"
+            title="設定與管理">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div id="settings-dropdown-menu"
+            class="hidden absolute right-0 mt-2 w-44 rounded-2xl glass-card border border-stone-200 dark:border-slate-800 shadow-2xl p-1.5 space-y-1 z-50 text-xs">
+            <!-- Theme Toggle -->
+            <button type="button" onclick="toggleTheme(); closeSettingsDropdown();"
+              class="w-full px-3 py-2 rounded-xl hover:bg-stone-500/10 transition flex items-center justify-between text-left font-semibold">
+              <span class="flex items-center gap-2">
+                <i id="theme-icon" data-lucide="moon" class="w-4 h-4 text-amber-500"></i>
+                <span id="t-dropdown-theme">外觀主題</span>
+              </span>
+              <span id="theme-mode-label" class="sub-text text-[11px] font-mono">切換</span>
+            </button>
+
+            <!-- Language Toggle -->
+            <button type="button" onclick="toggleLanguage(); closeSettingsDropdown();"
+              class="w-full px-3 py-2 rounded-xl hover:bg-stone-500/10 transition flex items-center justify-between text-left font-semibold">
+              <span class="flex items-center gap-2">
+                <i data-lucide="globe" class="w-4 h-4 text-emerald-500"></i>
+                <span id="t-dropdown-lang">語言切換</span>
+              </span>
+              <span id="lang-mode-label" class="sub-text text-[11px] font-mono">中/EN</span>
+            </button>
+
+            <div class="border-t border-stone-200 dark:border-slate-800 my-1"></div>
+
+            <!-- Admin Master Panel -->
+            <button type="button" onclick="navigateToAdmin(); closeSettingsDropdown();"
+              class="w-full px-3 py-2 rounded-xl hover:bg-rose-500/10 text-rose-600 dark:text-rose-400 transition flex items-center justify-between text-left font-semibold">
+              <span class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span id="t-dropdown-admin">管理員後台</span>
+              </span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded card-inner border font-mono">PIN</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -253,49 +274,49 @@
           <h2 id="t-hub-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-left">
             <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i> 賽事大廳
           </h2>
-          <p id="t-hub-desc" class="text-xs sub-text mt-0.5 text-left">點擊卡片即可進入即時對戰賽程</p>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="navigateTo('history')" id="t-hub-history-btn"
-            class="sm:flex hidden card-inner border text-amber-600 dark:text-amber-400 font-semibold px-3 py-2 rounded-xl text-xs shadow-sm hover:border-amber-500/50 items-center gap-1">
-            <i data-lucide="history" class="w-3.5 h-3.5"></i> <span id="t-btn-hub-history">歷史完賽紀錄</span>
-          </button>
           <button onclick="navigateTo('create')" id="t-create-new-btn"
-            class="sm:flex hidden card-inner border text-emerald-600 dark:text-emerald-400 font-semibold px-3 py-2 rounded-xl text-xs shadow-sm hover:border-emerald-500/50 items-center gap-1">
+            class="card-inner border text-emerald-600 dark:text-emerald-400 font-semibold px-3 py-2 rounded-xl text-xs shadow-sm hover:border-emerald-500/50 flex items-center gap-1">
             ➕ 建立新賽事
           </button>
         </div>
       </div>
 
-      <!-- Filter Controls: Club Tabs & Status Pills -->
-      <div class="space-y-2">
-        <!-- Status Filter Pills -->
-        <div class="flex items-center justify-between gap-2 flex-wrap">
-          <div class="inline-flex p-0.5 rounded-xl card-inner border text-xs font-semibold gap-1">
-            <button id="hub-filter-all" onclick="setHubStatusFilter('all')"
-              class="px-3 py-1 rounded-lg transition bg-emerald-500 text-white dark:text-slate-950 font-bold shadow-sm">
-              全部
-            </button>
-            <button id="hub-filter-active" onclick="setHubStatusFilter('active')"
-              class="px-3 py-1 rounded-lg transition sub-text hover:text-emerald-500">
-              🔥 進行中
-            </button>
-            <button id="hub-filter-completed" onclick="setHubStatusFilter('completed')"
-              class="px-3 py-1 rounded-lg transition sub-text hover:text-emerald-500">
-              🏆 已完賽
-            </button>
-          </div>
+      <!-- Section 1: Active Tournaments (進行中賽事) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 id="t-hub-active-heading" class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="flame" class="w-4 h-4 text-orange-500"></i> <span>進行中賽事</span>
+          </h3>
+          <span id="hub-active-count" class="text-xs sub-text font-semibold"></span>
         </div>
-
-        <!-- Club Filter Tabs Container -->
-        <div id="club-filter-container" class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div id="hub-active-tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           <!-- Rendered dynamically -->
         </div>
       </div>
 
-      <!-- Tournaments Grid -->
-      <div id="tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-        <!-- Rendered dynamically -->
+      <!-- Section 2: Completed Tournaments (已完賽賽事 - 可折疊收合) -->
+      <div class="space-y-3 pt-2">
+        <button type="button" onclick="toggleHubCompletedCollapse()"
+          class="w-full flex items-center justify-between p-3.5 rounded-2xl card-inner border hover:border-amber-500/50 transition cursor-pointer text-left shadow-sm">
+          <div class="flex items-center gap-2 font-bold text-xs sm:text-sm text-stone-800 dark:text-slate-200">
+            <i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i>
+            <span id="t-hub-completed-heading">已完賽賽事</span>
+            <span id="hub-completed-count"
+              class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-mono">0 場</span>
+          </div>
+          <div class="flex items-center gap-1.5 sub-text text-xs font-semibold">
+            <span id="hub-completed-toggle-text">展開</span>
+            <i id="hub-completed-chevron" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+          </div>
+        </button>
+
+        <div id="hub-completed-tournaments-wrap" class="hidden space-y-3 pt-1">
+          <div id="hub-completed-tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
       </div>
     </section>
 
@@ -305,7 +326,6 @@
         <h2 id="t-create-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2">
           <i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> 建立新賽事 / 暢打
         </h2>
-        <p id="t-create-desc" class="text-xs sub-text mt-0.5">選擇「平均模式」自動排賽，或「自由模式」現場陸續開局</p>
       </div>
 
       <form id="form-create-tournament" onsubmit="handleCreateTournament(event)"
@@ -500,6 +520,13 @@
         </div>
 
         <div class="flex items-center gap-2 shrink-0 flex-wrap">
+          <!-- Complete Tournament & Return to Hub (Admin Only) -->
+          <button onclick="completeTournamentAndReturn()" id="btn-complete-and-return"
+            class="hidden px-3 py-2 rounded-xl card-inner border hover:border-emerald-500 text-emerald-600 dark:text-emerald-400 text-xs font-bold items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+            <span id="t-btn-complete-and-return">完賽並返回大廳</span>
+          </button>
+
           <!-- Mode Switch Button (Viewer vs Admin) -->
           <button onclick="toggleTournamentAdminMode()" id="btn-toggle-live-admin"
             class="px-3 py-2 rounded-xl card-inner border hover:border-amber-500/50 text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm">
@@ -532,7 +559,7 @@
           </div>
 
           <!-- Add Match Toolbar (Append Extra Match on Demand in Admin Mode) -->
-          <div id="live-admin-toolbar" class="hidden flex items-center gap-2 pt-2">
+          <div id="live-admin-toolbar" class="hidden flex flex-wrap items-center gap-2 pt-2">
             <button type="button" onclick="openAddMatchModal()"
               class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
               <i data-lucide="plus-circle" class="w-4 h-4"></i> ➕ 新增場次 / 加打一局
@@ -540,6 +567,10 @@
             <button type="button" onclick="addLivePlayerPrompt()"
               class="py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500/50 sub-text hover:text-emerald-500 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95">
               <i data-lucide="user-plus" class="w-4 h-4"></i> 補入選手
+            </button>
+            <button type="button" onclick="completeTournamentAndReturn()" id="btn-complete-and-return-bottom"
+              class="w-full py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> <span id="t-btn-complete-and-return-bottom">完賽並返回大廳</span>
             </button>
           </div>
         </div>
@@ -590,77 +621,64 @@
 
     <!-- ==================== PAGE E: TOURNAMENT HISTORY ARCHIVE ==================== -->
     <section id="page-history" class="hidden space-y-4 sm:space-y-6">
-      <div class="flex items-center justify-between border-b border-stone-300 dark:border-slate-800 pb-3 text-left">
+      <div class="border-b border-stone-300 dark:border-slate-800 pb-3 text-left">
         <div>
           <h2 id="t-history-title" class="text-lg sm:text-2xl font-display font-bold flex items-center gap-2 text-left">
-            <i data-lucide="history" class="w-5 h-5 text-amber-500"></i> 歷史完賽對戰紀錄
+            <i data-lucide="history" class="w-5 h-5 text-amber-500"></i> 完賽紀錄
           </h2>
-          <p id="t-history-desc" class="text-xs sub-text mt-0.5 text-left">完整典藏已完賽賽事、榮譽榜與對戰數據總表</p>
         </div>
-        <button onclick="navigateTo('hub')" id="t-back-hub-btn"
-          class="card-inner border px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 sub-text hover:text-emerald-500 transition shadow-sm">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> <span id="t-nav-back-hub">返回大廳</span>
-        </button>
       </div>
 
-      <!-- History Mode Tabs: 單場賽事 vs 跨賽事總排行 -->
-      <div class="inline-flex p-0.5 rounded-xl card-inner border text-xs font-semibold gap-1">
-        <button id="history-tab-individual" onclick="setHistoryTab('individual')"
-          class="px-3 py-1.5 rounded-lg transition bg-amber-500 text-white dark:text-slate-950 font-bold shadow-sm flex items-center gap-1">
-          <i data-lucide="list" class="w-3.5 h-3.5"></i> <span id="t-history-tab-individual">📋 單場賽事</span>
-        </button>
-        <button id="history-tab-aggregate" onclick="setHistoryTab('aggregate')"
-          class="px-3 py-1.5 rounded-lg transition sub-text hover:text-amber-500 flex items-center gap-1">
-          <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> <span id="t-history-tab-aggregate">📊 跨賽事總排行</span>
-        </button>
-      </div>
-
-      <!-- History Club Filter Tabs -->
+      <!-- History Classification Tabs: 臨打賽事 vs 各社團 -->
       <div id="history-club-filter-container" class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-        <!-- Rendered dynamically -->
+        <!-- Rendered dynamically: [ 臨打賽事 ] [ 社團 A ] [ 社團 B ] -->
       </div>
 
-      <!-- Individual Tournaments View -->
-      <div id="history-tournaments-list" class="space-y-4">
-        <!-- Rendered dynamically -->
-      </div>
-
-      <!-- Aggregate Leaderboard View -->
-      <div id="history-aggregate-view" class="hidden space-y-4">
-        <!-- Month Filter -->
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-xs font-semibold sub-text flex items-center gap-1"><i data-lucide="calendar"
-              class="w-3.5 h-3.5"></i> <span id="t-month-filter-label">月份篩選：</span></span>
-          <select id="history-month-select" onchange="setHistoryMonthFilter(this.value)"
-            class="input-bg border rounded-lg px-2.5 py-1.5 text-xs focus:border-amber-500 focus:outline-none">
-            <option value="all" id="t-month-all">全部月份</option>
-          </select>
-        </div>
-        <!-- Aggregate Table -->
-        <div class="glass-card rounded-2xl overflow-hidden border">
-          <div class="px-3 py-2.5 card-inner border-b flex items-center gap-1.5 text-xs font-bold">
-            <i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i> <span
-              id="t-aggregate-title">跨賽事累計總排行榜</span>
+      <!-- Top: Club Aggregate Leaderboard (Only shown when a specific club is selected) -->
+      <div id="history-club-aggregate-section" class="hidden space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+            <i data-lucide="crown" class="w-4 h-4"></i> <span id="t-history-aggregate-heading">社團總戰績榜</span> (<span id="history-aggregate-club-name"></span>)
+          </h3>
+          <!-- Month Filter -->
+          <div class="flex items-center gap-1.5 text-xs">
+            <span id="t-history-month-label" class="sub-text">月份：</span>
+            <select id="history-month-select" onchange="setHistoryMonthFilter(this.value)"
+              class="input-bg border rounded-lg px-2 py-1 text-xs focus:border-amber-500 focus:outline-none">
+              <option value="all">全部月份</option>
+            </select>
           </div>
+        </div>
+
+        <!-- Aggregate Table Card -->
+        <div class="glass-card rounded-2xl overflow-hidden border">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="card-inner sub-text uppercase font-semibold border-b text-[11px]">
                 <tr>
-                  <th class="py-2.5 px-2 text-center w-10" id="th-agg-rank">名次</th>
-                  <th class="py-2.5 px-2" id="th-agg-player">選手</th>
-                  <th class="py-2.5 px-1.5 text-center" id="th-agg-tournaments">出賽</th>
-                  <th class="py-2.5 px-1.5 text-center" id="th-agg-games">場次</th>
-                  <th class="py-2.5 px-1.5 text-center" id="th-agg-wl">勝/敗</th>
-                  <th class="py-2.5 px-1.5 text-center" id="th-agg-winrate">勝率</th>
-                  <th class="py-2.5 px-1.5 text-center" id="th-agg-diff">淨勝</th>
-                  <th class="py-2.5 px-2 text-center" id="th-agg-pfpa">得/失分</th>
+                  <th id="th-agg-player" class="py-2.5 px-3">選手名稱</th>
+                  <th id="th-agg-games" class="py-2.5 px-2 text-center">出賽局數</th>
+                  <th id="th-agg-winrate" class="py-2.5 px-2 text-center">總勝率</th>
+                  <th id="th-agg-wl" class="py-2.5 px-2 text-center">勝/敗場</th>
+                  <th id="th-agg-diff" class="py-2.5 px-2 text-center">總淨勝分</th>
+                  <th id="th-agg-pfpa" class="py-2.5 px-2 text-center">總得/失分</th>
                 </tr>
               </thead>
-              <tbody id="aggregate-leaderboard-tbody" class="divide-y font-medium text-xs">
+              <tbody id="history-aggregate-tbody" class="divide-y font-medium text-xs">
                 <!-- Rendered dynamically -->
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- Bottom: Individual Match List (List of completed tournament cards for this club / casual) -->
+      <div class="space-y-3">
+        <h3 id="history-matches-section-title" class="text-sm sm:text-base font-bold flex items-center gap-1.5 sub-text">
+          <i data-lucide="calendar" class="w-4 h-4"></i> 歷次賽事紀錄
+        </h3>
+        <div id="history-tournaments-list" class="space-y-4">
+          <!-- Rendered dynamically -->
         </div>
       </div>
     </section>
@@ -845,9 +863,9 @@
         filterCompleted: "🏆 已完賽",
 
         // History Page
-        historyTitle: "歷史完賽對戰紀錄",
-        historyDesc: "完整典藏已完賽賽事、榮譽榜與對戰數據總表",
-        navBackHub: "返回大廳",
+        historyTitle: "完賽紀錄",
+        historyDesc: "",
+        navBackHub: "賽事大廳",
         expandDetails: "📊 展開完整對戰與排行",
         collapseDetails: "▲ 收合詳細對戰",
         copyReportBtn: "📋 複製完賽戰報",
@@ -861,7 +879,7 @@
 
         // Create Form
         createTitle: "建立新賽事",
-        createDesc: "自動計算個人雙打最佳輪播與配時",
+        createDesc: "",
         labelName: "1. 賽事名稱",
         labelClub: "2. 所屬社團 / 球團",
         selectClubOption: "-- 請選擇社團 (可留空/未分類) --",
@@ -936,7 +954,7 @@
 
         // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
-        modalQrDesc: "掌描同步戰況比分",
+        modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
         copiedToast: "📋 專屬連結已複製！",
 
@@ -954,20 +972,33 @@
         clubPasswordUpdated: "✅ 社團密碼已更新",
         clubPasswordRemoved: "✅ 社團密碼已移除",
 
-        // History Tabs
-        historyTabIndividual: "📋 單場賽事",
-        historyTabAggregate: "📊 跨賽事總排行",
-        monthFilterLabel: "月份篩選：",
+        // Hub & Sections
+        hubActiveTitle: "進行中賽事",
+        hubCompletedTitle: "已完賽賽事",
+        hubActiveCountSuffix: "場進行中",
+        hubCompletedCountSuffix: "場",
+        expandText: "展開",
+        collapseText: "闔上",
+        noActiveTournaments: "目前無進行中的賽事",
+        noCompletedTournamentsHub: "尚無已完賽的賽事記錄",
+        createTournamentDirect: "建立新賽事",
+        finishAndReturnBtn: "完賽並返回大廳",
+        confirmFinishPrompt: "確定將賽事結算完賽並返回大廳？\n（此操作將把賽事歸檔至完賽紀錄）",
+
+        // History Page & Standings
+        casualPlay: "臨打賽事",
+        casualArchiveTitle: "臨打歷史賽事紀錄",
+        clubArchiveTitle: "歷次賽事紀錄",
+        clubStandingsTitle: "社團總戰績榜",
+        monthFilterLabel: "月份：",
         monthAll: "全部月份",
-        aggregateTitle: "跨賽事累計總排行榜",
-        thAggRank: "名次",
-        thAggPlayer: "選手",
-        thAggTournaments: "出賽",
-        thAggGames: "場次",
-        thAggWl: "勝/敗",
-        thAggWinrate: "勝率",
-        thAggDiff: "淨勝",
-        thAggPfPa: "得/失分",
+        thAggPlayer: "選手名稱",
+        thAggGames: "出賽局數",
+        thAggWinrate: "總勝率",
+        thAggWl: "勝/敗場",
+        thAggDiff: "總淨勝分",
+        thAggPfPa: "總得/失分",
+        noPeriodStats: "本區間尚無出賽數據",
         monthlyMvp: "🏅 月度 MVP",
 
         // Admin
@@ -1012,6 +1043,19 @@
         filterActive: "🔥 Active",
         filterCompleted: "🏆 Finished",
 
+        // Hub & Sections
+        hubActiveTitle: "Active Tournaments",
+        hubCompletedTitle: "Completed Tournaments",
+        hubActiveCountSuffix: "Active",
+        hubCompletedCountSuffix: "Games",
+        expandText: "Expand",
+        collapseText: "Collapse",
+        noActiveTournaments: "No active tournaments",
+        noCompletedTournamentsHub: "No completed tournaments yet",
+        createTournamentDirect: "Create Tournament",
+        finishAndReturnBtn: "Finish & Return to Hub",
+        confirmFinishPrompt: "Complete this tournament and return to hub?\n(This will archive the tournament to History)",
+
         // History Page
         historyTitle: "Completed Match Archives",
         historyDesc: "Full archive of finished tournaments, podium & head-to-head breakdown",
@@ -1026,6 +1070,22 @@
         podiumThird: "3rd Place",
         finalLeaderboard: "Final Leaderboard",
         allMatchesLog: "Full Match-by-Match Breakdown",
+
+        // History Standings
+        casualPlay: "Casual Play",
+        casualArchiveTitle: "Casual Match Archives",
+        clubArchiveTitle: "Match Archives",
+        clubStandingsTitle: "Club Total Standings",
+        monthFilterLabel: "Month:",
+        monthAll: "All Months",
+        thAggPlayer: "Player",
+        thAggGames: "Games",
+        thAggWinrate: "Win%",
+        thAggWl: "W/L",
+        thAggDiff: "Diff",
+        thAggPfPa: "PF/PA",
+        noPeriodStats: "No match records for this period",
+        monthlyMvp: "🏅 Monthly MVP",
 
         // Create Form
         createTitle: "Create Tournament",
@@ -1122,22 +1182,6 @@
         clubPasswordUpdated: "✅ Club password updated",
         clubPasswordRemoved: "✅ Club password removed",
 
-        // History Tabs
-        historyTabIndividual: "📋 Individual",
-        historyTabAggregate: "📊 Aggregate Ranking",
-        monthFilterLabel: "Month:",
-        monthAll: "All Months",
-        aggregateTitle: "Cross-Tournament Aggregate Leaderboard",
-        thAggRank: "Rank",
-        thAggPlayer: "Player",
-        thAggTournaments: "Entered",
-        thAggGames: "Games",
-        thAggWl: "W/L",
-        thAggWinrate: "Win%",
-        thAggDiff: "Diff",
-        thAggPfPa: "PF/PA",
-        monthlyMvp: "🏅 Monthly MVP",
-
         // Admin
         adminTitle: "Admin Panel",
         adminDesc: "Club passwords · Tournament management · Members",
@@ -1218,40 +1262,109 @@
       return (I18N[STATE.lang] && I18N[STATE.lang][key]) || key;
     }
 
+    function toggleSettingsDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById("settings-dropdown-menu");
+      if (menu) menu.classList.toggle("hidden");
+    }
+    window.toggleSettingsDropdown = toggleSettingsDropdown;
+
+    function closeSettingsDropdown() {
+      const menu = document.getElementById("settings-dropdown-menu");
+      if (menu) menu.classList.add("hidden");
+    }
+    window.closeSettingsDropdown = closeSettingsDropdown;
+
+    document.addEventListener("click", (e) => {
+      const menu = document.getElementById("settings-dropdown-menu");
+      const btn = document.getElementById("btn-settings-toggle");
+      if (menu && !menu.classList.contains("hidden")) {
+        if (!menu.contains(e.target) && !btn?.contains(e.target)) {
+          menu.classList.add("hidden");
+        }
+      }
+    });
+
+    function updateNavActiveState(pageName) {
+      const btnHub = document.getElementById("nav-btn-hub");
+      const btnHistory = document.getElementById("nav-btn-history");
+      const btnCreate = document.getElementById("nav-btn-create");
+
+      const activeClasses = ["border-emerald-500", "bg-emerald-500/10", "text-emerald-600", "dark:text-emerald-400", "font-bold"];
+      const inactiveClasses = ["text-stone-700", "dark:text-slate-300", "font-semibold"];
+
+      const setBtnState = (btn, isActive) => {
+        if (!btn) return;
+        if (isActive) {
+          btn.classList.add(...activeClasses);
+          btn.classList.remove(...inactiveClasses);
+        } else {
+          btn.classList.remove(...activeClasses);
+          btn.classList.add(...inactiveClasses);
+        }
+      };
+
+      setBtnState(btnHub, pageName === "hub");
+      setBtnState(btnHistory, pageName === "history");
+      setBtnState(btnCreate, pageName === "create");
+    }
+
     function applyLanguageUI() {
-      document.getElementById("t-app-subtitle").innerText = t("appSubtitle");
-      document.getElementById("t-nav-hub").innerText = t("navHub");
+      const navHubEl = document.getElementById("t-nav-hub");
+      if (navHubEl) navHubEl.innerText = t("navHub");
       const navHistoryEl = document.getElementById("t-nav-history");
       if (navHistoryEl) navHistoryEl.innerText = t("navHistory");
-      document.getElementById("t-nav-create").innerText = t("navCreate");
+      const navCreateEl = document.getElementById("t-nav-create");
+      if (navCreateEl) navCreateEl.innerText = t("navCreate");
+
+      // Dropdown labels
+      const dropTheme = document.getElementById("t-dropdown-theme");
+      if (dropTheme) dropTheme.innerText = STATE.lang === "zh-TW" ? "外觀主題" : "Appearance";
+      const dropLang = document.getElementById("t-dropdown-lang");
+      if (dropLang) dropLang.innerText = STATE.lang === "zh-TW" ? "語言切換" : "Language";
+      const dropAdmin = document.getElementById("t-dropdown-admin");
+      if (dropAdmin) dropAdmin.innerText = STATE.lang === "zh-TW" ? "管理員後台" : "Admin Panel";
+      const langLabel = document.getElementById("lang-mode-label");
+      if (langLabel) langLabel.innerText = STATE.lang === "zh-TW" ? "繁中" : "EN";
 
       // Hub Page
-      document.getElementById("t-hub-title").innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
-      document.getElementById("t-hub-desc").innerText = t("hubDesc");
-      const btnHubHistoryEl = document.getElementById("t-btn-hub-history");
-      if (btnHubHistoryEl) btnHubHistoryEl.innerText = t("hubHistoryBtn");
-      document.getElementById("t-create-new-btn").innerHTML = `➕ ${t("createNewBtn")}`;
-
-      // Status filters
-      const fAll = document.getElementById("hub-filter-all");
-      if (fAll) fAll.innerText = t("filterAll");
-      const fAct = document.getElementById("hub-filter-active");
-      if (fAct) fAct.innerText = t("filterActive");
-      const fComp = document.getElementById("hub-filter-completed");
-      if (fComp) fComp.innerText = t("filterCompleted");
+      const hubTitle = document.getElementById("t-hub-title");
+      if (hubTitle) hubTitle.innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
+      const createNewBtnEl = document.getElementById("t-create-new-btn");
+      if (createNewBtnEl) createNewBtnEl.innerHTML = `➕ ${t("createNewBtn")}`;
+      const hubActHeading = document.getElementById("t-hub-active-heading");
+      if (hubActHeading) hubActHeading.innerHTML = `<i data-lucide="flame" class="w-4 h-4 text-orange-500"></i> <span>${t("hubActiveTitle")}</span>`;
+      const hubCompHeading = document.getElementById("t-hub-completed-heading");
+      if (hubCompHeading) hubCompHeading.innerText = t("hubCompletedTitle");
+      const hubCompToggle = document.getElementById("hub-completed-toggle-text");
+      const isHubCompOpen = !document.getElementById("hub-completed-tournaments-wrap")?.classList.contains("hidden");
+      if (hubCompToggle) hubCompToggle.innerText = isHubCompOpen ? t("collapseText") : t("expandText");
 
       // History Page
       const histTitle = document.getElementById("t-history-title");
       if (histTitle) histTitle.innerHTML = `<i data-lucide="history" class="w-5 h-5 text-amber-500"></i> ${t("historyTitle")}`;
-      const histDesc = document.getElementById("t-history-desc");
-      if (histDesc) histDesc.innerText = t("historyDesc");
-      const navBackHub = document.getElementById("t-nav-back-hub");
-      if (navBackHub) navBackHub.innerText = t("navBackHub");
+      const histAggHeading = document.getElementById("t-history-aggregate-heading");
+      if (histAggHeading) histAggHeading.innerText = t("clubStandingsTitle");
+      const histMonthLabel = document.getElementById("t-history-month-label");
+      if (histMonthLabel) histMonthLabel.innerText = t("monthFilterLabel");
+      const thAggPlayerEl = document.getElementById("th-agg-player");
+      if (thAggPlayerEl) thAggPlayerEl.innerText = t("thAggPlayer");
+      const thAggGamesEl = document.getElementById("th-agg-games");
+      if (thAggGamesEl) thAggGamesEl.innerText = t("thAggGames");
+      const thAggWinrateEl = document.getElementById("th-agg-winrate");
+      if (thAggWinrateEl) thAggWinrateEl.innerText = t("thAggWinrate");
+      const thAggWlEl = document.getElementById("th-agg-wl");
+      if (thAggWlEl) thAggWlEl.innerText = t("thAggWl");
+      const thAggDiffEl = document.getElementById("th-agg-diff");
+      if (thAggDiffEl) thAggDiffEl.innerText = t("thAggDiff");
+      const thAggPfpaEl = document.getElementById("th-agg-pfpa");
+      if (thAggPfpaEl) thAggPfpaEl.innerText = t("thAggPfPa");
 
       // Create Form Page
-      document.getElementById("t-create-title").innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
-      document.getElementById("t-create-desc").innerText = t("createDesc");
-      document.getElementById("t-label-name").innerText = t("labelName");
+      const createTitle = document.getElementById("t-create-title");
+      if (createTitle) createTitle.innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 text-orange-500"></i> ${t("createTitle")}`;
+      const labelNameEl = document.getElementById("t-label-name");
+      if (labelNameEl) labelNameEl.innerText = t("labelName");
       const labelClubEl = document.getElementById("t-label-club");
       if (labelClubEl) labelClubEl.innerText = t("labelClub");
       const btnNewClubEl = document.getElementById("t-btn-new-club");
@@ -1262,22 +1375,13 @@
       const newClubInputEl = document.getElementById("create-club-name");
       if (newClubInputEl) newClubInputEl.placeholder = t("placeholderNewClub");
 
-      document.getElementById("t-label-duration").innerText = t("labelDuration");
-      document.getElementById("t-unit-hours").innerText = t("unitHours");
-      const labelExtraEl = document.getElementById("t-label-extra-mins");
-      if (labelExtraEl) labelExtraEl.innerText = t("labelExtraMins");
-      const unitExtraEl = document.getElementById("t-unit-extra-mins");
-      if (unitExtraEl) unitExtraEl.innerText = t("unitExtraMins");
-      document.getElementById("t-label-game-mins").innerText = t("labelGameMins");
-      document.getElementById("t-unit-mins").innerText = t("unitMins");
-      document.getElementById("t-label-scoring").innerText = t("labelScoring");
-      document.getElementById("t-label-target").innerText = t("labelTarget");
-      document.getElementById("t-label-schedule-mode").innerText = t("labelScheduleMode");
-      document.getElementById("t-mode-fair-title").innerText = t("modeFairTitle");
-      document.getElementById("t-mode-fair-desc").innerText = t("modeFairDesc");
-      document.getElementById("t-mode-max-title").innerText = t("modeMaxTitle");
-      document.getElementById("t-mode-max-desc").innerText = t("modeMaxDesc");
-      document.getElementById("t-label-players").innerText = t("labelPlayers");
+      const labelDurationEl = document.getElementById("t-label-duration");
+      if (labelDurationEl) labelDurationEl.innerText = t("labelDuration");
+      const unitHoursEl = document.getElementById("t-unit-hours");
+      if (unitHoursEl) unitHoursEl.innerText = t("unitHours");
+      
+      const labelPlayersEl = document.getElementById("t-label-players");
+      if (labelPlayersEl) labelPlayersEl.innerText = t("labelPlayers");
       const clubMembersTitleEl = document.getElementById("t-club-members-title");
       if (clubMembersTitleEl) clubMembersTitleEl.innerText = t("clubMembersTitle");
       const selectAllBtnEl = document.getElementById("t-select-all-btn");
@@ -1289,48 +1393,63 @@
       const quickAddInputEl = document.getElementById("quick-add-player-input");
       if (quickAddInputEl) quickAddInputEl.placeholder = t("placeholderQuickAdd");
 
-      document.getElementById("t-time-calc-title").innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
-      document.getElementById("t-submit-create-btn").innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
+      const timeCalcTitleEl = document.getElementById("t-time-calc-title");
+      if (timeCalcTitleEl) timeCalcTitleEl.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
+      const submitCreateBtnEl = document.getElementById("t-submit-create-btn");
+      if (submitCreateBtnEl) submitCreateBtnEl.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> ${t("submitCreateBtn")}`;
 
       // Placeholders translation
-      document.getElementById("create-name").placeholder = t("placeholderName");
-      document.getElementById("create-players").placeholder = t("placeholderPlayers");
-
-      // Select Options
-      const scoringSel = document.getElementById("create-scoring-type");
-      if (scoringSel) {
-        scoringSel.options[0].text = t("optionRally");
-        scoringSel.options[1].text = t("optionSideout");
-      }
+      const createNameInput = document.getElementById("create-name");
+      if (createNameInput) createNameInput.placeholder = t("placeholderName");
+      const createPlayersInput = document.getElementById("create-players");
+      if (createPlayersInput) createPlayersInput.placeholder = t("placeholderPlayers");
 
       // Live Tournament
-      document.getElementById("t-est-prefix").innerText = t("estPrefix");
-      document.getElementById("t-hrs-unit").innerText = t("hrsUnit");
-      document.getElementById("t-share-btn").innerHTML = `<i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> ${t("shareBtn")}`;
-      document.getElementById("t-schedule-title").innerHTML = `<i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
-      document.getElementById("t-leaderboard-title").innerHTML = `<i data-lucide="crown" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500"></i> ${t("leaderboardTitle")}`;
+      const estPrefixEl = document.getElementById("t-est-prefix");
+      if (estPrefixEl) estPrefixEl.innerText = t("estPrefix");
+      const hrsUnitEl = document.getElementById("t-hrs-unit");
+      if (hrsUnitEl) hrsUnitEl.innerText = t("hrsUnit");
+      const shareBtnEl = document.getElementById("t-share-btn");
+      if (shareBtnEl) shareBtnEl.innerHTML = `<i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-500"></i> ${t("shareBtn")}`;
+      const scheduleTitleEl = document.getElementById("t-schedule-title");
+      if (scheduleTitleEl) scheduleTitleEl.innerHTML = `<i data-lucide="swords" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500"></i> ${t("scheduleTitle")}`;
+      const leaderboardTitleEl = document.getElementById("t-leaderboard-title");
+      if (leaderboardTitleEl) leaderboardTitleEl.innerHTML = `<i data-lucide="crown" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500"></i> ${t("leaderboardTitle")}`;
+      const btnCompleteReturn = document.getElementById("t-btn-complete-and-return");
+      if (btnCompleteReturn) btnCompleteReturn.innerText = t("finishAndReturnBtn");
+      const btnCompleteReturnBottom = document.getElementById("t-btn-complete-and-return-bottom");
+      if (btnCompleteReturnBottom) btnCompleteReturnBottom.innerText = t("finishAndReturnBtn");
 
       // Leaderboard Table Headers
-      document.getElementById("th-rank").innerText = t("thRank");
-      document.getElementById("th-player").innerText = t("thPlayer");
-      document.getElementById("th-wl").innerText = t("thWl");
-      document.getElementById("th-diff").innerText = t("thDiff");
-      document.getElementById("th-pf-pa").innerText = t("thPfPa");
+      const thRankEl = document.getElementById("th-rank");
+      if (thRankEl) thRankEl.innerText = t("thRank");
+      const thPlayerEl = document.getElementById("th-player");
+      if (thPlayerEl) thPlayerEl.innerText = t("thPlayer");
+      const thWlEl = document.getElementById("th-wl");
+      if (thWlEl) thWlEl.innerText = t("thWl");
+      const thDiffEl = document.getElementById("th-diff");
+      if (thDiffEl) thDiffEl.innerText = t("thDiff");
+      const thPfPaEl = document.getElementById("th-pf-pa");
+      if (thPfPaEl) thPfPaEl.innerText = t("thPfPa");
 
       // Leaderboard Rules Box
-      document.getElementById("t-tiebreaker-box-title").innerText = t("tbTitle");
+      const tieTitleEl = document.getElementById("t-tiebreaker-box-title");
+      if (tieTitleEl) tieTitleEl.innerText = t("tbTitle");
       const list = document.getElementById("t-tiebreaker-list");
       if (list) {
-        list.children[0].innerText = t("tbRule1");
-        list.children[1].innerText = t("tbRule2");
-        list.children[2].innerText = t("tbRule3");
-        list.children[3].innerText = t("tbRule4");
+        if (list.children[0]) list.children[0].innerText = t("tbRule1");
+        if (list.children[1]) list.children[1].innerText = t("tbRule2");
+        if (list.children[2]) list.children[2].innerText = t("tbRule3");
+        if (list.children[3]) list.children[3].innerText = t("tbRule4");
       }
 
       // Modal
-      document.getElementById("t-modal-qr-title").innerText = t("modalQrTitle");
-      document.getElementById("t-modal-qr-desc").innerText = t("modalQrDesc");
-      document.getElementById("t-copy-btn").innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
+      const modalQrTitleEl = document.getElementById("t-modal-qr-title");
+      if (modalQrTitleEl) modalQrTitleEl.innerText = t("modalQrTitle");
+      const modalQrDescEl = document.getElementById("t-modal-qr-desc");
+      if (modalQrDescEl) modalQrDescEl.innerText = t("modalQrDesc");
+      const copyBtnEl = document.getElementById("t-copy-btn");
+      if (copyBtnEl) copyBtnEl.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
 
       updatePlayerCountBadge();
       calculateTimeEstimate();
@@ -1397,6 +1516,8 @@
 
       const target = document.getElementById(`page-${pageName}`);
       if (target) target.classList.remove("hidden");
+
+      updateNavActiveState(pageName);
 
       if (pushHistory) {
         if (pageName === "hub") {
@@ -1577,7 +1698,7 @@
     window.selectFairPlan = selectFairPlan;
 
     function updatePlayerCountBadge() {
-      const text = document.getElementById("create-players").value;
+      const text = document.getElementById("create-players")?.value || "";
       const players = text.split("\n").map(s => s.trim()).filter(Boolean);
       const badge = document.getElementById("player-count-badge");
       if (badge) badge.innerText = `${players.length} ${t("playersBadge")}`;
@@ -1585,9 +1706,9 @@
     window.updatePlayerCountBadge = updatePlayerCountBadge;
 
     function calculateTimeEstimate() {
-      const text = document.getElementById("create-players").value;
+      const text = document.getElementById("create-players")?.value || "";
       const players = text.split("\n").map(s => s.trim()).filter(Boolean);
-      const durationHours = parseFloat(document.getElementById("create-duration").value) || 2.0;
+      const durationHours = parseFloat(document.getElementById("create-duration")?.value) || 2.0;
       const hintText = document.getElementById("time-estimate-text");
       const optionsContainer = document.getElementById("fair-schedule-options");
       const selectedGamesInput = document.getElementById("create-selected-total-games");
@@ -1780,9 +1901,9 @@
       const newClubInput = document.getElementById("create-club-name");
       const wrap = document.getElementById("new-club-input-wrap");
       if (clubSelect && (clubSelect.value === "__new__" || (wrap && !wrap.classList.contains("hidden")))) {
-        return newClubInput ? newClubInput.value.trim() : "";
+        return newClubInput ? (newClubInput.value || "").trim() : "";
       } else if (clubSelect) {
-        return clubSelect.value.trim();
+        return (clubSelect.value || "").trim();
       }
       return "";
     }
@@ -1833,7 +1954,7 @@
       const members = getClubMembersList(currentClub);
 
       const textarea = document.getElementById("create-players");
-      const selectedNames = (textarea ? textarea.value : "").split("\n").map(s => s.trim()).filter(Boolean);
+      const selectedNames = (textarea ? (textarea.value || "") : "").split("\n").map(s => s.trim()).filter(Boolean);
 
       if (members.length === 0) {
         chipsContainer.innerHTML = `<span class="sub-text text-[11px] italic">${t("noMembersHint")}</span>`;
@@ -2023,7 +2144,7 @@
         durationHours: duration,
         scoringType: scoringType,
         targetScore: targetScore,
-        createdAt: new Date().toLocaleString("zh-TW"),
+        createdAt: new Date().toISOString(),
         players: uniquePlayers,
         matches: matches,
         status: "active"
@@ -2075,10 +2196,8 @@
     // ----------------------------------------------------
     function displayHubTournamentsList(list) {
       STATE.allTournamentsCache = list || [];
-      const container = document.getElementById("tournaments-list");
-      const filterContainer = document.getElementById("club-filter-container");
 
-      // Extract unique clubs
+      // Extract unique clubs for create selector
       const clubsSet = new Set();
       (list || []).forEach(t => {
         if (t.clubName && t.clubName.trim()) {
@@ -2103,79 +2222,39 @@
         }
       }
 
-      // Render Club Filter Tabs
-      if (filterContainer) {
-        if (uniqueClubs.length > 0) {
-          filterContainer.innerHTML = `
-            <button onclick="filterByClub('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${STATE.selectedClub === 'all' ? 'bg-emerald-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-emerald-500'}">
-              <span>${t("allClubsTab")}</span>
-              <span class="px-1.5 py-0.2 rounded-full text-[10px] ${STATE.selectedClub === 'all' ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${list.length}</span>
-            </button>
-            ${uniqueClubs.map(club => {
-            const count = list.filter(t => (t.clubName || '').trim() === club).length;
-            const isActive = STATE.selectedClub === club;
-            return `
-                <button onclick="filterByClub('${club}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${isActive ? 'bg-emerald-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-emerald-500'}">
-                  <i data-lucide="shield" class="w-3 h-3"></i>
-                  <span>${club}</span>
-                  <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${count}</span>
-                </button>
-              `;
-          }).join("")}
-          `;
-          filterContainer.classList.remove("hidden");
-        } else {
-          filterContainer.innerHTML = "";
-          filterContainer.classList.add("hidden");
-        }
-      }
-
-      // Filter tournaments by selected club
-      let filteredList = list || [];
-      if (STATE.selectedClub !== "all") {
-        filteredList = filteredList.filter(t => (t.clubName || '').trim() === STATE.selectedClub);
-      }
-
-      // Filter by status (all / active / completed)
-      if (STATE.hubStatusFilter === "active") {
-        filteredList = filteredList.filter(t => {
-          const total = t.matches ? t.matches.length : 0;
-          const done = t.matches ? t.matches.filter(m => m.completed).length : 0;
-          return total === 0 || done < total;
-        });
-      } else if (STATE.hubStatusFilter === "completed") {
-        filteredList = filteredList.filter(t => {
-          const total = t.matches ? t.matches.length : 0;
-          const done = t.matches ? t.matches.filter(m => m.completed).length : 0;
-          return total > 0 && done === total;
-        });
-      }
-
-      if (!filteredList || filteredList.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full glass-card rounded-2xl p-8 text-center space-y-3">
-            <div class="w-12 h-12 rounded-xl card-inner sub-text flex items-center justify-center mx-auto">
-              <i data-lucide="trophy" class="w-6 h-6"></i>
-            </div>
-            <h3 class="text-base font-bold">${STATE.lang === "zh-TW" ? "目前尚無賽事記錄" : "No Tournaments Found"}</h3>
-            <button onclick="navigateTo('create')" class="bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">
-              ➕ ${t("createNewBtn")}
-            </button>
-          </div>
-        `;
-        lucide.createIcons();
-        return;
-      }
-
+      let filteredList = [...(list || [])];
       filteredList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-      container.innerHTML = filteredList.map(tData => {
+      // Separate into Active and Completed lists
+      const activeList = [];
+      const completedList = [];
+
+      filteredList.forEach(tData => {
         const total = tData.matches ? tData.matches.length : 0;
-        const done = tData.matches ? tData.matches.filter(m => m.completed).length : 0;
-        const isFinished = total > 0 && done === total;
-        const scoringLabel = tData.scoringType === "sideout"
-          ? (STATE.lang === "zh-TW" ? "發球得分" : "Side-out")
-          : (STATE.lang === "zh-TW" ? "落地得分" : "Rally");
+        const done = tData.matches ? tData.matches.filter(m => m.completed || m.voided).length : 0;
+        const isDone = tData.status === "completed" || (total > 0 && done === total);
+        if (isDone) {
+          completedList.push(tData);
+        } else {
+          activeList.push(tData);
+        }
+      });
+
+      // Update Counts
+      const activeCountEl = document.getElementById("hub-active-count");
+      if (activeCountEl) {
+        activeCountEl.innerText = `${activeList.length} ${t("hubActiveCountSuffix")}`;
+      }
+      const completedCountEl = document.getElementById("hub-completed-count");
+      if (completedCountEl) {
+        completedCountEl.innerText = `${completedList.length} ${t("hubCompletedCountSuffix")}`;
+      }
+
+      // Helper to render tournament card
+      const renderCard = (tData) => {
+        const total = tData.matches ? tData.matches.length : 0;
+        const done = tData.matches ? tData.matches.filter(m => m.completed || m.voided).length : 0;
+        const isFinished = tData.status === "completed" || (total > 0 && done === total);
 
         const clubBadge = tData.clubName && tData.clubName.trim() ? `
           <span class="text-[10px] px-2 py-0.5 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1">
@@ -2184,7 +2263,7 @@
         ` : '';
 
         return `
-          <div class="glass-card rounded-xl p-4 space-y-3 border hover:border-emerald-500/40 transition flex flex-col justify-between">
+          <div class="glass-card rounded-2xl p-4 space-y-3 border hover:border-emerald-500/40 transition flex flex-col justify-between shadow-sm">
             <div>
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-1.5 flex-wrap">
@@ -2197,16 +2276,16 @@
               </div>
               <h3 class="text-base font-bold mt-1.5 font-display line-clamp-1">${tData.name}</h3>
               <p class="text-xs sub-text mt-1 flex items-center gap-1">
-                <i data-lucide="clock" class="w-3 h-3"></i> ${tData.tournamentMode === "free" ? (STATE.lang === "zh-TW" ? "自由模式" : "Free Play") : (t("estPrefix") + ' ' + (tData.durationHours || 2) + t("hrsUnit"))}
+                <i data-lucide="clock" class="w-3 h-3 text-amber-500"></i> ${tData.tournamentMode === "free" ? (STATE.lang === "zh-TW" ? "自由模式" : "Free Play") : (t("estPrefix") + ' ' + (tData.durationHours || 2) + t("hrsUnit"))}
               </p>
-              <div class="flex items-center gap-3 text-xs mt-2 pt-2 border-t border-stone-200 dark:border-slate-800/80">
+              <div class="flex items-center gap-3 text-xs mt-2 pt-2 border-t border-stone-200 dark:border-slate-800/80 sub-text">
                 <span>👥 ${tData.players ? tData.players.length : 0} ${t("playersCountLabel")}</span>
-                <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-emerald-500 inline shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/><circle cx="16.5" cy="12" r="1" fill="currentColor"/><circle cx="8.8" cy="8.8" r="1" fill="currentColor"/><circle cx="15.2" cy="15.2" r="1" fill="currentColor"/><circle cx="15.2" cy="8.8" r="1" fill="currentColor"/><circle cx="8.8" cy="15.2" r="1" fill="currentColor"/></svg> ${done}/${total} ${t("gamesDoneLabel")}</span>
+                <span class="flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i> ${done}/${total} ${t("gamesDoneLabel")}</span>
               </div>
             </div>
 
             <div class="flex items-center gap-2 pt-1">
-              <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
+              <button onclick="enterTournament('${tData.id}')" class="flex-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
                 <i data-lucide="play" class="w-3.5 h-3.5"></i> ${t("enterTournament")}
               </button>
               <button onclick="deleteTournament('${tData.id}')" class="p-2 rounded-xl card-inner hover:bg-rose-500/20 sub-text hover:text-rose-500 border transition" title="Delete">
@@ -2215,14 +2294,65 @@
             </div>
           </div>
         `;
-      }).join("");
+      };
+
+      // 1. Render Active List
+      const activeContainer = document.getElementById("hub-active-tournaments-list");
+      if (activeContainer) {
+        if (activeList.length === 0) {
+          activeContainer.innerHTML = `
+            <div class="col-span-full glass-card rounded-2xl p-6 text-center space-y-2 border">
+              <p class="text-xs font-semibold sub-text">${t("noActiveTournaments")}</p>
+              <button onclick="navigateTo('create')" class="card-inner border text-emerald-600 dark:text-emerald-400 font-bold px-4 py-1.5 rounded-xl text-xs hover:border-emerald-500/50 transition">
+                ➕ ${t("createTournamentDirect")}
+              </button>
+            </div>
+          `;
+        } else {
+          activeContainer.innerHTML = activeList.map(renderCard).join("");
+        }
+      }
+
+      // 2. Render Completed List
+      const completedContainer = document.getElementById("hub-completed-tournaments-list");
+      if (completedContainer) {
+        if (completedList.length === 0) {
+          completedContainer.innerHTML = `
+            <div class="col-span-full glass-card rounded-2xl p-6 text-center space-y-1 border">
+              <p class="text-xs font-semibold sub-text">${t("noCompletedTournamentsHub")}</p>
+            </div>
+          `;
+        } else {
+          completedContainer.innerHTML = completedList.map(renderCard).join("");
+        }
+      }
 
       lucide.createIcons();
     }
 
+    function toggleHubCompletedCollapse() {
+      const wrap = document.getElementById("hub-completed-tournaments-wrap");
+      const text = document.getElementById("hub-completed-toggle-text");
+      const chevron = document.getElementById("hub-completed-chevron");
+      if (!wrap) return;
+      const isHidden = wrap.classList.contains("hidden");
+      if (isHidden) {
+        wrap.classList.remove("hidden");
+        if (text) text.innerText = STATE.lang === "zh-TW" ? "闔上" : "Collapse";
+        if (chevron) chevron.classList.add("rotate-180");
+      } else {
+        wrap.classList.add("hidden");
+        if (text) text.innerText = STATE.lang === "zh-TW" ? "展開" : "Expand";
+        if (chevron) chevron.classList.remove("rotate-180");
+      }
+    }
+    window.toggleHubCompletedCollapse = toggleHubCompletedCollapse;
+
     function renderHubTournaments() {
-      const container = document.getElementById("tournaments-list");
-      container.innerHTML = `<div class="col-span-full text-center py-8 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
+      const activeContainer = document.getElementById("hub-active-tournaments-list");
+      if (activeContainer) {
+        activeContainer.innerHTML = `<div class="col-span-full text-center py-6 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
+      }
       lucide.createIcons();
 
       if (STATE.hubUnsubscribe) {
@@ -2385,22 +2515,24 @@
       const clubName = (tData.clubName || '').trim();
       const clubPwd = clubName ? await getClubPassword(clubName) : null;
 
-      let promptMsg = "";
-      if (clubPwd) {
-        promptMsg = STATE.lang === "zh-TW"
-          ? `🔐 請輸入社團「${clubName}」密碼以開啟管理模式：`
-          : `🔐 Enter password for "${clubName}" to unlock Admin Mode:`;
-      } else {
-        promptMsg = STATE.lang === "zh-TW"
-          ? `🔐 此賽事未設社團密碼，請輸入 Master PIN 開啟管理模式：`
-          : `🔐 Enter Master PIN to unlock Admin Mode:`;
+      // If the club has NO password, unlock directly without prompt!
+      if (!clubPwd) {
+        STATE.activeTournamentAdmin = tData.id;
+        showToast(STATE.lang === "zh-TW" ? "🔓 管理模式已開啟" : "🔓 Admin Mode Enabled", "success");
+        renderLiveUI(tData);
+        return;
       }
+
+      // If the club has a password, prompt for club password or Master PIN
+      const promptMsg = STATE.lang === "zh-TW"
+        ? `🔐 請輸入社團「${clubName}」密碼以開啟管理模式：`
+        : `🔐 Enter password for "${clubName}" to unlock Admin Mode:`;
 
       const input = prompt(promptMsg);
       if (input === null) return;
       const cleanInput = input.trim();
 
-      const isValid = (clubPwd && cleanInput === clubPwd) || (cleanInput === MASTER_PIN);
+      const isValid = (cleanInput === clubPwd) || (cleanInput === MASTER_PIN);
       if (!isValid) {
         showToast(STATE.lang === "zh-TW" ? "❌ 密碼錯誤，無法開啟管理模式！" : "❌ Password Incorrect!", "error");
         return;
@@ -2479,6 +2611,18 @@
         }
       }
 
+      // Complete & Return to Hub Button (visible if hasAdmin)
+      const completeBtn = document.getElementById("btn-complete-and-return");
+      if (completeBtn) {
+        if (hasAdmin) {
+          completeBtn.classList.remove("hidden");
+          completeBtn.classList.add("flex");
+        } else {
+          completeBtn.classList.add("hidden");
+          completeBtn.classList.remove("flex");
+        }
+      }
+
       // Add Match / Add Player Toolbar (visible if hasAdmin)
       const adminToolbar = document.getElementById("live-admin-toolbar");
       if (adminToolbar) {
@@ -2498,6 +2642,42 @@
 
       lucide.createIcons();
     }
+
+    async function completeTournamentAndReturn() {
+      const tData = STATE.tournamentData;
+      if (!tData) return;
+
+      if (!isTournamentAdmin(tData)) {
+        showToast(STATE.lang === "zh-TW" ? "請先開啟管理模式！" : "Please unlock Admin Mode first!", "warning");
+        return;
+      }
+
+      const confirmMsg = STATE.lang === "zh-TW"
+        ? `確定要結束「${tData.name}」並標記為完賽嗎？\n（完賽後將歸檔至完賽紀錄，並返回賽事大廳）`
+        : `Complete "${tData.name}" and return to hub?`;
+
+      if (!confirm(confirmMsg)) return;
+
+      tData.status = "completed";
+      tData.completedAt = Date.now();
+
+      if (STATE.db) {
+        try {
+          const tRef = ref(STATE.db, `tournaments/${tData.id}`);
+          await update(tRef, {
+            status: "completed",
+            completedAt: tData.completedAt
+          });
+        } catch (err) {
+          console.error("Complete tournament error:", err);
+        }
+      }
+      saveToLocalTournaments(tData);
+
+      showToast(STATE.lang === "zh-TW" ? "✅ 賽事已完賽並封存！" : "✅ Tournament Completed!", "success");
+      navigateTo("hub");
+    }
+    window.completeTournamentAndReturn = completeTournamentAndReturn;
 
     function renderMatchesList(matches, hasAdmin = false) {
       const container = document.getElementById("matches-container");
@@ -2530,52 +2710,56 @@
             <!-- Teams Grid (Admin Mode - Editable) -->
             <div class="grid grid-cols-2 gap-2 ${isVoided ? 'opacity-50' : ''}">
               <!-- Blue Side -->
-              <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2 flex flex-col justify-between">
-                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+              <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2.5 flex flex-col justify-between">
+                <div class="space-y-1 text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-wide">
                   <div class="truncate">${m.blue[0] || ''}</div>
                   <div class="truncate">${m.blue[1] || ''}</div>
                 </div>
                 <div class="flex items-center pt-1">
-                  <input type="number" min="0" max="99" id="score-blue-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.blueScore !== null ? m.blueScore : ''}" placeholder="比分" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-lg p-1.5 text-center font-mono text-base font-extrabold focus:outline-none focus:border-blue-400" />
+                  <input type="number" min="0" max="99" id="score-blue-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.blueScore != null ? m.blueScore : ''}" placeholder="0" class="w-full bg-slate-900 input-bg border border-blue-500/35 rounded-lg p-2 text-center font-mono text-lg font-extrabold focus:outline-none focus:border-blue-400 placeholder:opacity-30 placeholder:text-stone-400 dark:placeholder:text-slate-500" />
                 </div>
               </div>
 
               <!-- Red Side -->
-              <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2 flex flex-col justify-between">
-                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+              <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2.5 flex flex-col justify-between">
+                <div class="space-y-1 text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-wide">
                   <div class="truncate">${m.red[0] || ''}</div>
                   <div class="truncate">${m.red[1] || ''}</div>
                 </div>
                 <div class="flex items-center pt-1">
-                  <input type="number" min="0" max="99" id="score-red-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.redScore !== null ? m.redScore : ''}" placeholder="比分" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-lg p-1.5 text-center font-mono text-base font-extrabold focus:outline-none focus:border-rose-400" />
+                  <input type="number" min="0" max="99" id="score-red-${m.id}" ${isVoided ? 'disabled' : ''} value="${m.redScore != null ? m.redScore : ''}" placeholder="0" class="w-full bg-slate-900 input-bg border border-rose-500/35 rounded-lg p-2 text-center font-mono text-lg font-extrabold focus:outline-none focus:border-rose-400 placeholder:opacity-30 placeholder:text-stone-400 dark:placeholder:text-slate-500" />
                 </div>
               </div>
             </div>
           `;
         } else {
-          // Viewer Mode - Read Only
+          // Viewer Mode - Read Only Scoreboard
+          const hasBlueScore = m.blueScore != null;
+          const hasRedScore = m.redScore != null;
+          const isScored = isDone && hasBlueScore && hasRedScore;
+
           scoreHTML = `
             <!-- Teams Grid (Viewer Mode - Read Only) -->
             <div class="grid grid-cols-2 gap-2 ${isVoided ? 'opacity-50' : ''}">
               <!-- Blue Side -->
-              <div class="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2 flex flex-col justify-between">
-                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+              <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-2.5 flex flex-col justify-between">
+                <div class="space-y-1 text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-wide">
                   <div class="truncate">${m.blue[0] || ''}</div>
                   <div class="truncate">${m.blue[1] || ''}</div>
                 </div>
-                <div class="pt-1 text-center font-mono text-xl sm:text-2xl font-black ${m.blueScore !== null ? 'text-blue-600 dark:text-blue-400' : 'sub-text'}">
-                  ${m.blueScore !== null ? m.blueScore : '-'}
+                <div class="pt-1 text-center font-mono text-2xl sm:text-3xl font-black ${isScored ? 'text-blue-600 dark:text-blue-400' : 'sub-text opacity-30'}">
+                  ${hasBlueScore ? m.blueScore : '0'}
                 </div>
               </div>
 
               <!-- Red Side -->
-              <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2 flex flex-col justify-between">
-                <div class="space-y-1 text-xs font-bold text-stone-900 dark:text-slate-100">
+              <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 space-y-2.5 flex flex-col justify-between">
+                <div class="space-y-1 text-sm sm:text-base font-extrabold text-stone-900 dark:text-white tracking-wide">
                   <div class="truncate">${m.red[0] || ''}</div>
                   <div class="truncate">${m.red[1] || ''}</div>
                 </div>
-                <div class="pt-1 text-center font-mono text-xl sm:text-2xl font-black ${m.redScore !== null ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
-                  ${m.redScore !== null ? m.redScore : '-'}
+                <div class="pt-1 text-center font-mono text-2xl sm:text-3xl font-black ${isScored ? 'text-rose-600 dark:text-rose-400' : 'sub-text opacity-30'}">
+                  ${hasRedScore ? m.redScore : '0'}
                 </div>
               </div>
             </div>
@@ -3012,33 +3196,10 @@
     // ----------------------------------------------------
     // HUB STATUS FILTER (全部 / 進行中 / 已完賽)
     // ----------------------------------------------------
-    function setHubStatusFilter(status) {
-      STATE.hubStatusFilter = status;
-      // Update pill UI
-      const pills = { all: "hub-filter-all", active: "hub-filter-active", completed: "hub-filter-completed" };
-      const activeClass = "bg-emerald-500 text-white dark:text-slate-950 font-bold shadow-sm";
-      const inactiveClass = "sub-text hover:text-emerald-500";
-      Object.entries(pills).forEach(([key, id]) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (key === status) {
-          el.className = `px-3 py-1 rounded-lg transition ${activeClass}`;
-        } else {
-          el.className = `px-3 py-1 rounded-lg transition ${inactiveClass}`;
-        }
-      });
-      // Re-render with cached data
-      displayHubTournamentsList(STATE.allTournamentsCache);
-      lucide.createIcons();
-    }
-    window.setHubStatusFilter = setHubStatusFilter;
-
-    // ----------------------------------------------------
     // PAGE E: HISTORY / COMPLETED TOURNAMENTS ARCHIVE
     // ----------------------------------------------------
     function renderHistoryPage() {
       const container = document.getElementById("history-tournaments-list");
-      const clubFilterContainer = document.getElementById("history-club-filter-container");
       if (!container) return;
 
       container.innerHTML = `<div class="text-center py-8 sub-text"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-1"></i>Loading...</div>`;
@@ -3047,7 +3208,7 @@
       // Fetch from cache or Firebase
       const allT = STATE.allTournamentsCache || [];
       if (allT.length > 0) {
-        renderHistoryList(allT);
+        renderHistoryCategorized(allT);
       } else if (STATE.db) {
         const tournamentsRef = ref(STATE.db, "tournaments");
         get(tournamentsRef).then(snapshot => {
@@ -3060,72 +3221,282 @@
             if (!list.some(t => t.id === lt.id)) list.push(lt);
           });
           STATE.allTournamentsCache = list;
-          renderHistoryList(list);
+          renderHistoryCategorized(list);
         }).catch(() => {
           const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-          renderHistoryList(Object.values(localData));
+          renderHistoryCategorized(Object.values(localData));
         });
       } else {
         const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-        renderHistoryList(Object.values(localData));
+        renderHistoryCategorized(Object.values(localData));
       }
     }
 
-    function renderHistoryList(allList) {
-      const container = document.getElementById("history-tournaments-list");
-      const clubFilterContainer = document.getElementById("history-club-filter-container");
-      if (!container) return;
+    function setHistoryCategory(cat) {
+      STATE.historyCategory = cat;
+      STATE.historyMonthFilter = "all";
+      renderHistoryPage();
+    }
+    window.setHistoryCategory = setHistoryCategory;
 
-      // Only completed tournaments
-      let completed = (allList || []).filter(tData => {
+    function setHistoryMonthFilter(month) {
+      STATE.historyMonthFilter = month;
+      const allT = STATE.allTournamentsCache || [];
+      renderHistoryCategorized(allT);
+    }
+    window.setHistoryMonthFilter = setHistoryMonthFilter;
+
+    function renderHistoryCategorized(allList) {
+      const tournamentsListEl = document.getElementById("history-tournaments-list");
+      const clubFilterContainer = document.getElementById("history-club-filter-container");
+      const aggregateSection = document.getElementById("history-club-aggregate-section");
+      const aggregateClubNameEl = document.getElementById("history-aggregate-club-name");
+      const sectionTitleEl = document.getElementById("history-matches-section-title");
+
+      if (!tournamentsListEl) return;
+
+      // Filter all completed tournaments
+      const completedAll = (allList || []).filter(tData => {
         const total = tData.matches ? tData.matches.length : 0;
-        const done = tData.matches ? tData.matches.filter(m => m.completed).length : 0;
-        return total > 0 && done === total;
+        const done = tData.matches ? tData.matches.filter(m => m.completed || m.voided).length : 0;
+        return tData.status === "completed" || (total > 0 && done === total);
       });
 
-      // Club filter tabs for history
+      // Extract unique clubs
       const clubsSet = new Set();
-      completed.forEach(t => {
+      completedAll.forEach(t => {
         if (t.clubName && t.clubName.trim()) clubsSet.add(t.clubName.trim());
       });
       const uniqueClubs = Array.from(clubsSet);
 
+      const casualCount = completedAll.filter(t => !t.clubName || !t.clubName.trim()).length;
+
+      // Default category
+      if (!STATE.historyCategory) {
+        STATE.historyCategory = uniqueClubs.length > 0 ? uniqueClubs[0] : "__casual__";
+      }
+
+      // Render category tabs: [ 臨打賽事 (count) ] [ 🛡️ 社團 A (count) ] ...
       if (clubFilterContainer) {
-        if (uniqueClubs.length > 0) {
-          clubFilterContainer.innerHTML = `
-            <button onclick="setHistoryClubFilter('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${STATE.historyClubFilter === 'all' ? 'bg-amber-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-amber-500'}">
-              <span>${t("allClubsTab")}</span>
-              <span class="px-1.5 py-0.2 rounded-full text-[10px] ${STATE.historyClubFilter === 'all' ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${completed.length}</span>
+        const isCasualActive = STATE.historyCategory === "__casual__";
+        let tabsHTML = `
+          <button onclick="setHistoryCategory('__casual__')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${isCasualActive ? 'bg-amber-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-amber-500'}">
+            <span>${STATE.lang === 'zh-TW' ? '臨打賽事' : 'Casual Play'}</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isCasualActive ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${casualCount}</span>
+          </button>
+        `;
+
+        uniqueClubs.forEach(club => {
+          const count = completedAll.filter(t => (t.clubName || '').trim() === club).length;
+          const isActive = STATE.historyCategory === club;
+          tabsHTML += `
+            <button onclick="setHistoryCategory('${club}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${isActive ? 'bg-amber-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-amber-500'}">
+              <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+              <span>${club}</span>
+              <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${count}</span>
             </button>
-            ${uniqueClubs.map(club => {
-            const count = completed.filter(t => (t.clubName || '').trim() === club).length;
-            const isActive = STATE.historyClubFilter === club;
-            return `
-                <button onclick="setHistoryClubFilter('${club}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 flex items-center gap-1.5 ${isActive ? 'bg-amber-500 text-white dark:text-slate-950 shadow-sm' : 'card-inner border sub-text hover:text-amber-500'}">
-                  <i data-lucide="shield" class="w-3 h-3"></i>
-                  <span>${club}</span>
-                  <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-black/20 text-white dark:text-slate-950' : 'card-inner'}">${count}</span>
-                </button>
-              `;
-          }).join("")}
           `;
-          clubFilterContainer.classList.remove("hidden");
-        } else {
-          clubFilterContainer.innerHTML = "";
-          clubFilterContainer.classList.add("hidden");
+        });
+
+        clubFilterContainer.innerHTML = tabsHTML;
+      }
+
+      // If Casual is selected
+      if (STATE.historyCategory === "__casual__") {
+        if (aggregateSection) aggregateSection.classList.add("hidden");
+        if (sectionTitleEl) {
+          sectionTitleEl.innerHTML = `<i data-lucide="calendar" class="w-4 h-4"></i> ${t("casualArchiveTitle")}`;
+        }
+
+        const casualTournaments = completedAll.filter(t => !t.clubName || !t.clubName.trim());
+        renderHistoryTournamentCards(casualTournaments, tournamentsListEl);
+      } else {
+        // Specific Club is selected
+        const clubName = STATE.historyCategory;
+        if (aggregateSection) aggregateSection.classList.remove("hidden");
+        if (aggregateClubNameEl) aggregateClubNameEl.innerText = clubName;
+        if (sectionTitleEl) {
+          sectionTitleEl.innerHTML = `<i data-lucide="calendar" class="w-4 h-4"></i> ${clubName} ${t("clubArchiveTitle")}`;
+        }
+
+        const clubTournaments = completedAll.filter(t => (t.clubName || '').trim() === clubName);
+
+        // Populate month selector
+        populateHistoryMonthSelect(clubTournaments);
+
+        // Render aggregate leaderboard
+        renderHistoryClubAggregate(clubTournaments);
+
+        // Render tournament cards
+        renderHistoryTournamentCards(clubTournaments, tournamentsListEl);
+      }
+
+      lucide.createIcons();
+    }
+
+    function parseTournamentDate(val) {
+      if (!val) return null;
+      let d = new Date(val);
+      if (!isNaN(d.getTime())) return d;
+      if (typeof val === "string") {
+        const cleanStr = val.replace(/上午|下午/g, "").replace(/\//g, "-").trim();
+        d = new Date(cleanStr);
+        if (!isNaN(d.getTime())) return d;
+        const match = val.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})/);
+        if (match) {
+          d = new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+          if (!isNaN(d.getTime())) return d;
         }
       }
+      return null;
+    }
 
-      // Apply club filter
-      if (STATE.historyClubFilter !== "all") {
-        completed = completed.filter(t => (t.clubName || '').trim() === STATE.historyClubFilter);
+    function formatTournamentDate(val) {
+      const d = parseTournamentDate(val);
+      if (!d) return "";
+      return d.toLocaleDateString(STATE.lang === "zh-TW" ? "zh-TW" : "en-US", { year: "numeric", month: "short", day: "numeric" });
+    }
+
+    function populateHistoryMonthSelect(tournaments) {
+      const select = document.getElementById("history-month-select");
+      if (!select) return;
+
+      const currentVal = STATE.historyMonthFilter || "all";
+      const monthsSet = new Set();
+      tournaments.forEach(t => {
+        const d = parseTournamentDate(t.createdAt);
+        if (d) {
+          const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+          monthsSet.add(ym);
+        }
+      });
+
+      const sortedMonths = Array.from(monthsSet).sort().reverse();
+      let html = `<option value="all">${t("monthAll")}</option>`;
+      sortedMonths.forEach(m => {
+        const [year, month] = m.split("-");
+        const label = STATE.lang === "zh-TW" ? `${year} 年 ${parseInt(month)} 月` : `${m}`;
+        html += `<option value="${m}" ${currentVal === m ? 'selected' : ''}>${label}</option>`;
+      });
+
+      select.innerHTML = html;
+      if (currentVal && (currentVal === "all" || monthsSet.has(currentVal))) {
+        select.value = currentVal;
+      } else {
+        select.value = "all";
+        STATE.historyMonthFilter = "all";
+      }
+    }
+
+    function renderHistoryClubAggregate(tournaments) {
+      const tbody = document.getElementById("history-aggregate-tbody");
+      if (!tbody) return;
+
+      // Filter tournaments by selected month if not "all"
+      let filtered = tournaments;
+      if (STATE.historyMonthFilter && STATE.historyMonthFilter !== "all") {
+        filtered = tournaments.filter(t => {
+          const d = parseTournamentDate(t.createdAt);
+          if (!d) return false;
+          const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+          return ym === STATE.historyMonthFilter;
+        });
       }
 
-      if (completed.length === 0) {
+      // Compute aggregate stats across matches of filtered tournaments
+      const stats = {};
+      filtered.forEach(t => {
+        const matches = t.matches || [];
+        matches.forEach(m => {
+          if (m.voided || !m.completed || m.blueScore == null || m.redScore == null) return;
+          const bScore = parseInt(m.blueScore) || 0;
+          const rScore = parseInt(m.redScore) || 0;
+          const blueWon = bScore > rScore;
+          const redWon = rScore > bScore;
+
+          const initPlayer = (p) => {
+            if (!stats[p]) {
+              stats[p] = { name: p, played: 0, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0, winRate: 0 };
+            }
+          };
+
+          (m.blue || []).forEach(p => {
+            if (!p) return;
+            initPlayer(p);
+            stats[p].played += 1;
+            if (blueWon) stats[p].wins += 1;
+            else if (redWon) stats[p].losses += 1;
+            stats[p].pf += bScore;
+            stats[p].pa += rScore;
+          });
+
+          (m.red || []).forEach(p => {
+            if (!p) return;
+            initPlayer(p);
+            stats[p].played += 1;
+            if (redWon) stats[p].wins += 1;
+            else if (blueWon) stats[p].losses += 1;
+            stats[p].pf += rScore;
+            stats[p].pa += bScore;
+          });
+        });
+      });
+
+      const list = Object.values(stats).map(s => {
+        s.diff = s.pf - s.pa;
+        s.winRate = s.played > 0 ? Math.round((s.wins / s.played) * 100) : 0;
+        return s;
+      });
+
+      // Sort by Games played desc -> Wins desc -> WinRate desc -> Diff desc -> PF desc
+      list.sort((a, b) => {
+        if (b.played !== a.played) return b.played - a.played;
+        if (b.wins !== a.wins) return b.wins - a.wins;
+        if (b.winRate !== a.winRate) return b.winRate - a.winRate;
+        if (b.diff !== a.diff) return b.diff - a.diff;
+        return b.pf - a.pf;
+      });
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center sub-text text-xs">${t("noPeriodStats")}</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map((row) => {
+        const winUnit = STATE.lang === "zh-TW" ? "勝" : "W";
+        const lossUnit = STATE.lang === "zh-TW" ? "敗" : "L";
+
+        return `
+          <tr class="hover:bg-stone-500/5 transition">
+            <td class="py-2.5 px-3">
+              <span class="font-semibold text-xs text-stone-900 dark:text-slate-100">${row.name}</span>
+            </td>
+            <td class="py-2.5 px-2 text-center font-mono">
+              <span class="px-2.5 py-0.5 rounded-md text-xs font-bold font-mono bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">${row.played}</span>
+            </td>
+            <td class="py-2.5 px-2 text-center font-mono font-bold text-xs ${row.winRate >= 50 ? 'text-emerald-600 dark:text-emerald-400' : 'sub-text'}">
+              ${row.winRate}%
+            </td>
+            <td class="py-2.5 px-2 text-center font-mono text-[11px]">
+              <span class="text-emerald-600 dark:text-emerald-400">${row.wins}${winUnit}</span> / <span class="text-rose-600 dark:text-rose-400">${row.losses}${lossUnit}</span>
+            </td>
+            <td class="py-2.5 px-2 text-center font-mono text-[11px] font-bold ${row.diff > 0 ? 'text-emerald-600 dark:text-emerald-400' : row.diff < 0 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
+              ${row.diff > 0 ? '+' + row.diff : row.diff}
+            </td>
+            <td class="py-2.5 px-2 text-center font-mono text-[11px] sub-text">
+              ${row.pf} / ${row.pa}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderHistoryTournamentCards(tournaments, container) {
+      if (!tournaments || tournaments.length === 0) {
         container.innerHTML = `
-          <div class="glass-card rounded-2xl p-8 text-center space-y-3">
-            <div class="w-14 h-14 rounded-xl card-inner sub-text flex items-center justify-center mx-auto">
-              <i data-lucide="archive" class="w-7 h-7"></i>
+          <div class="glass-card rounded-2xl p-8 text-center space-y-3 border">
+            <div class="w-12 h-12 rounded-xl card-inner sub-text flex items-center justify-center mx-auto">
+              <i data-lucide="archive" class="w-6 h-6 text-amber-500"></i>
             </div>
             <h3 class="text-base font-bold">${t("noCompletedTournaments")}</h3>
             <p class="text-xs sub-text">${STATE.lang === "zh-TW" ? "完成所有比賽後，賽事將自動歸檔至此" : "Tournaments will appear here once all matches are completed"}</p>
@@ -3135,9 +3506,9 @@
         return;
       }
 
-      completed.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      tournaments.sort((a, b) => (parseTournamentDate(b.createdAt)?.getTime() || 0) - (parseTournamentDate(a.createdAt)?.getTime() || 0));
 
-      container.innerHTML = completed.map(tData => {
+      container.innerHTML = tournaments.map(tData => {
         const matches = tData.matches || [];
         const players = tData.players || [];
         const leaderboard = calculateLeaderboard(players, matches);
@@ -3149,10 +3520,8 @@
         const runnerUp = leaderboard[1];
         const third = leaderboard[2];
 
-        // Date
-        const dateStr = tData.createdAt
-          ? new Date(tData.createdAt).toLocaleDateString(STATE.lang === "zh-TW" ? "zh-TW" : "en-US", { year: "numeric", month: "short", day: "numeric" })
-          : "";
+        // Safe formatted date
+        const dateStr = formatTournamentDate(tData.createdAt);
 
         const clubBadge = tData.clubName && tData.clubName.trim() ? `
           <span class="text-[10px] px-2 py-0.5 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1">
@@ -3163,7 +3532,6 @@
         // Expanded content: full leaderboard + match log
         let expandedHTML = '';
         if (isExpanded) {
-          // Full leaderboard table
           const winUnit = STATE.lang === "zh-TW" ? "勝" : "W";
           const lossUnit = STATE.lang === "zh-TW" ? "敗" : "L";
           const lbRows = leaderboard.map((row, idx) => {
@@ -3187,7 +3555,6 @@
             `;
           }).join("");
 
-          // Match log
           const matchRows = matches.map(m => {
             const blueWon = m.blueScore > m.redScore;
             return `
@@ -3243,13 +3610,8 @@
           `;
         }
 
-        const isFreePlay = tData.tournamentType === "freeplay";
-        const typeBadge = isFreePlay
-          ? `<span class="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">🎾 自由暢打</span>`
-          : `<span class="text-[10px] px-2 py-0.5 rounded font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">🏆 雙打輪播</span>`;
-
         return `
-          <div class="glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/20 space-y-3 transition hover:border-amber-500/40">
+          <div class="glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/20 space-y-3 transition hover:border-amber-500/40 shadow-sm">
             <!-- Header -->
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-1.5 flex-wrap">
@@ -3277,9 +3639,9 @@
               <span>⏱️ ${tData.durationHours || 2}${t("hrsUnit")}</span>
             </div>
 
-            <!-- Expand / Collapse -->
+            <!-- Expand / Collapse & Enter View -->
             <div class="flex items-center gap-2 pt-1">
-              <button onclick="toggleHistoryTournament('${tData.id}')" class="flex-1 ${isExpanded ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400' : 'card-inner border sub-text hover:text-amber-500 hover:border-amber-500/30'} font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1">
+              <button onclick="toggleHistoryTournament('${tData.id}')" class="flex-1 ${isExpanded ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400' : 'card-inner border sub-text hover:text-amber-500 hover:border-amber-500/30'} font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 active:scale-95">
                 <i data-lucide="${isExpanded ? 'chevron-up' : 'bar-chart-3'}" class="w-3.5 h-3.5"></i>
                 ${isExpanded ? t("collapseDetails") : t("expandDetails")}
               </button>
@@ -3302,12 +3664,6 @@
     }
     window.toggleHistoryTournament = toggleHistoryTournament;
 
-    function setHistoryClubFilter(club) {
-      STATE.historyClubFilter = club;
-      renderHistoryPage();
-    }
-    window.setHistoryClubFilter = setHistoryClubFilter;
-
     function copyTournamentReport(tId) {
       const allT = STATE.allTournamentsCache || [];
       const tData = allT.find(t => t.id === tId);
@@ -3316,9 +3672,7 @@
       const matches = tData.matches || [];
       const players = tData.players || [];
       const leaderboard = calculateLeaderboard(players, matches);
-      const dateStr = tData.createdAt
-        ? new Date(tData.createdAt).toLocaleDateString(STATE.lang === "zh-TW" ? "zh-TW" : "en-US", { year: "numeric", month: "short", day: "numeric" })
-        : "";
+      const dateStr = formatTournamentDate(tData.createdAt);
 
       const isZh = STATE.lang === "zh-TW";
       let report = "";
@@ -3459,172 +3813,6 @@
 
       showToast(t("clubPasswordWrong"), "error");
       return false;
-    }
-
-    // ----------------------------------------------------
-    // FEATURE 1: HISTORY TABS & AGGREGATE LEADERBOARD
-    // ----------------------------------------------------
-    function setHistoryTab(tab) {
-      STATE.historyTab = tab;
-      const individualView = document.getElementById("history-tournaments-list");
-      const aggregateView = document.getElementById("history-aggregate-view");
-      const tabIndiv = document.getElementById("history-tab-individual");
-      const tabAgg = document.getElementById("history-tab-aggregate");
-
-      const activeClass = "bg-amber-500 text-white dark:text-slate-950 font-bold shadow-sm";
-      const inactiveClass = "sub-text hover:text-amber-500";
-
-      if (tab === "individual") {
-        if (individualView) individualView.classList.remove("hidden");
-        if (aggregateView) aggregateView.classList.add("hidden");
-        if (tabIndiv) tabIndiv.className = `px-3 py-1.5 rounded-lg transition ${activeClass} flex items-center gap-1`;
-        if (tabAgg) tabAgg.className = `px-3 py-1.5 rounded-lg transition ${inactiveClass} flex items-center gap-1`;
-      } else {
-        if (individualView) individualView.classList.add("hidden");
-        if (aggregateView) aggregateView.classList.remove("hidden");
-        if (tabIndiv) tabIndiv.className = `px-3 py-1.5 rounded-lg transition ${inactiveClass} flex items-center gap-1`;
-        if (tabAgg) tabAgg.className = `px-3 py-1.5 rounded-lg transition ${activeClass} flex items-center gap-1`;
-        renderAggregateLeaderboard();
-      }
-      lucide.createIcons();
-    }
-    window.setHistoryTab = setHistoryTab;
-
-    function setHistoryMonthFilter(month) {
-      STATE.historyMonthFilter = month;
-      renderAggregateLeaderboard();
-    }
-    window.setHistoryMonthFilter = setHistoryMonthFilter;
-
-    function renderAggregateLeaderboard() {
-      const allT = STATE.allTournamentsCache || [];
-      let completed = allT.filter(tData => {
-        const total = tData.matches ? tData.matches.length : 0;
-        const done = tData.matches ? tData.matches.filter(m => m.completed).length : 0;
-        return total > 0 && done === total;
-      });
-
-      // Apply club filter
-      if (STATE.historyClubFilter !== "all") {
-        completed = completed.filter(t => (t.clubName || '').trim() === STATE.historyClubFilter);
-      }
-
-      // Build month options
-      const monthsSet = new Set();
-      completed.forEach(t => {
-        if (t.createdAt) {
-          try {
-            const d = new Date(t.createdAt);
-            if (!isNaN(d.getTime())) {
-              const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-              monthsSet.add(ym);
-            }
-          } catch (e) { /* ignore */ }
-        }
-      });
-      const monthsSorted = Array.from(monthsSet).sort().reverse();
-      const monthSelect = document.getElementById("history-month-select");
-      if (monthSelect) {
-        const currentVal = STATE.historyMonthFilter;
-        monthSelect.innerHTML = `<option value="all">${t("monthAll")}</option>` +
-          monthsSorted.map(m => `<option value="${m}" ${currentVal === m ? 'selected' : ''}>${m}</option>`).join("");
-      }
-
-      // Apply month filter
-      if (STATE.historyMonthFilter !== "all") {
-        completed = completed.filter(tData => {
-          if (!tData.createdAt) return false;
-          try {
-            const d = new Date(tData.createdAt);
-            const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-            return ym === STATE.historyMonthFilter;
-          } catch (e) { return false; }
-        });
-      }
-
-      // Aggregate all players across tournaments
-      const aggStats = {};
-      completed.forEach(tData => {
-        const matches = tData.matches || [];
-        const playersInTournament = new Set();
-
-        matches.forEach(m => {
-          if (!m.completed || m.blueScore === null || m.redScore === null) return;
-          const bs = m.blueScore, rs = m.redScore;
-          const blueWon = bs > rs;
-
-          m.blue.forEach(p => {
-            if (!aggStats[p]) aggStats[p] = { name: p, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0, played: 0, tournaments: 0 };
-            aggStats[p].played++;
-            aggStats[p].pf += bs;
-            aggStats[p].pa += rs;
-            if (blueWon) aggStats[p].wins++; else aggStats[p].losses++;
-            playersInTournament.add(p);
-          });
-
-          m.red.forEach(p => {
-            if (!aggStats[p]) aggStats[p] = { name: p, wins: 0, losses: 0, pf: 0, pa: 0, diff: 0, played: 0, tournaments: 0 };
-            aggStats[p].played++;
-            aggStats[p].pf += rs;
-            aggStats[p].pa += bs;
-            if (!blueWon) aggStats[p].wins++; else aggStats[p].losses++;
-            playersInTournament.add(p);
-          });
-        });
-
-        playersInTournament.forEach(p => {
-          if (aggStats[p]) aggStats[p].tournaments++;
-        });
-      });
-
-      Object.values(aggStats).forEach(s => { s.diff = s.pf - s.pa; });
-
-      const sorted = Object.values(aggStats).sort((a, b) => {
-        if (b.wins !== a.wins) return b.wins - a.wins;
-        if (b.diff !== a.diff) return b.diff - a.diff;
-        if (b.pf !== a.pf) return b.pf - a.pf;
-        return a.pa - b.pa;
-      });
-
-      const tbody = document.getElementById("aggregate-leaderboard-tbody");
-      if (!tbody) return;
-
-      if (sorted.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center sub-text text-xs">${t("noCompletedTournaments")}</td></tr>`;
-        return;
-      }
-
-      const winUnit = STATE.lang === "zh-TW" ? "勝" : "W";
-      const lossUnit = STATE.lang === "zh-TW" ? "敗" : "L";
-
-      tbody.innerHTML = sorted.map((row, idx) => {
-        const isMvp = idx === 0 && row.played > 0;
-        let rankBadge = `<span class="font-mono sub-text font-bold text-[11px]">${idx + 1}</span>`;
-        if (isMvp) rankBadge = `<span class="text-base">👑</span>`;
-        else if (idx === 1 && row.played > 0) rankBadge = `<span class="text-sm">🥈</span>`;
-        else if (idx === 2 && row.played > 0) rankBadge = `<span class="text-sm">🥉</span>`;
-
-        const winRate = row.played > 0 ? Math.round(row.wins / row.played * 100) : 0;
-
-        return `
-          <tr class="${isMvp ? 'bg-amber-500/10 font-bold border-l-2 border-amber-400' : 'hover:bg-stone-500/5'} transition">
-            <td class="py-2 px-1 text-center">${rankBadge}</td>
-            <td class="py-2 px-2"><span class="font-semibold text-xs ${isMvp ? 'text-amber-600 dark:text-amber-300' : ''}">${row.name}</span></td>
-            <td class="py-2 px-1 text-center font-mono text-[11px] sub-text">${row.tournaments}</td>
-            <td class="py-2 px-1 text-center font-mono text-[11px] sub-text">${row.played}</td>
-            <td class="py-2 px-1 text-center font-mono text-[11px]">
-              <span class="text-emerald-600 dark:text-emerald-400">${row.wins}${winUnit}</span>/<span class="text-rose-600 dark:text-rose-400">${row.losses}${lossUnit}</span>
-            </td>
-            <td class="py-2 px-1 text-center font-mono text-[11px] font-bold ${winRate >= 60 ? 'text-emerald-600 dark:text-emerald-400' : winRate <= 40 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
-              ${winRate}%
-            </td>
-            <td class="py-2 px-1 text-center font-mono text-[11px] font-bold ${row.diff > 0 ? 'text-emerald-600 dark:text-emerald-400' : row.diff < 0 ? 'text-rose-600 dark:text-rose-400' : 'sub-text'}">
-              ${row.diff > 0 ? '+' + row.diff : row.diff}
-            </td>
-            <td class="py-2 px-2 text-center font-mono text-[11px] sub-text">${row.pf}/${row.pa}</td>
-          </tr>
-        `;
-      }).join("");
     }
 
     // ----------------------------------------------------
