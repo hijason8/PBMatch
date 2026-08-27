@@ -286,7 +286,8 @@
       <!-- Section 1: Active Tournaments (進行中賽事) -->
       <div class="space-y-3">
         <div class="flex items-center justify-between">
-          <h3 id="t-hub-active-heading" class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+          <h3 id="t-hub-active-heading"
+            class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
             <i data-lucide="flame" class="w-4 h-4 text-orange-500"></i> <span>進行中賽事</span>
           </h3>
           <span id="hub-active-count" class="text-xs sub-text font-semibold"></span>
@@ -304,16 +305,19 @@
             <i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i>
             <span id="t-hub-completed-heading">已完賽賽事</span>
             <span id="hub-completed-count"
-              class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-mono">0 場</span>
+              class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-mono">0
+              場</span>
           </div>
           <div class="flex items-center gap-1.5 sub-text text-xs font-semibold">
             <span id="hub-completed-toggle-text">展開</span>
-            <i id="hub-completed-chevron" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+            <i id="hub-completed-chevron" data-lucide="chevron-down"
+              class="w-4 h-4 transition-transform duration-200"></i>
           </div>
         </button>
 
         <div id="hub-completed-tournaments-wrap" class="hidden space-y-3 pt-1">
-          <div id="hub-completed-tournaments-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <div id="hub-completed-tournaments-list"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             <!-- Rendered dynamically -->
           </div>
         </div>
@@ -365,16 +369,16 @@
         <!-- 3. Tournament Mode Selector (Clean Text, No Emojis/Icons) -->
         <div>
           <label class="block text-xs sm:text-sm font-semibold mb-1.5" id="t-label-mode">3. 賽事模式選擇</label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button type="button" id="btn-mode-fair" onclick="setCreateMode('fair')"
-              class="mode-btn-active px-3.5 py-3 rounded-xl border-2 text-xs font-bold transition text-left space-y-1">
-              <div class="text-sm font-display font-extrabold">平均模式 (輪播賽)</div>
-              <p class="text-[11px] font-normal opacity-75 leading-relaxed">固定總時間與名單，自動試算每人場數一致的公平賽程</p>
+              class="mode-btn-active px-3 py-2 sm:py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="text-xs sm:text-sm font-display font-extrabold" id="t-mode-fair-title">平均模式</div>
+              <p class="text-[11px] font-normal opacity-75 leading-tight" id="t-mode-fair-desc">自動排定每人場次均等的公平賽程</p>
             </button>
             <button type="button" id="btn-mode-free" onclick="setCreateMode('free')"
-              class="mode-btn-inactive px-3.5 py-3 rounded-xl border-2 text-xs font-bold transition text-left space-y-1">
-              <div class="text-sm font-display font-extrabold">自由模式 (隨到隨打)</div>
-              <p class="text-[11px] font-normal opacity-75 leading-relaxed">人員陸續到場，由管理員在現場隨時新增場次與補入人員</p>
+              class="mode-btn-inactive px-3 py-2 sm:py-2.5 rounded-xl border-2 text-xs font-bold transition text-left space-y-0.5">
+              <div class="text-xs sm:text-sm font-display font-extrabold" id="t-mode-free-title">自由模式</div>
+              <p class="text-[11px] font-normal opacity-75 leading-tight" id="t-mode-free-desc">隨到隨打，現場彈性加開場次與補人</p>
             </button>
           </div>
           <input type="hidden" id="create-tournament-mode" value="fair" />
@@ -393,11 +397,11 @@
         </div>
 
         <!-- Free Mode Helper Box -->
-        <div id="wrap-free-notice" class="hidden p-3 rounded-xl card-inner border text-xs space-y-1">
+        <div id="wrap-free-notice" class="hidden p-2.5 sm:p-3 rounded-xl card-inner border text-xs space-y-0.5">
           <div class="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-            <span>自由模式說明：</span>
+            <span id="t-free-notice-title">自由模式說明：</span>
           </div>
-          <p class="sub-text text-[11px]">進入賽事後，使用管理模式隨時點擊「➕ 新增場次」與「➕ 補入人員」即時開局記分！</p>
+          <p class="sub-text text-[11px]" id="t-free-notice-desc">進入賽事後，使用管理模式隨時點擊「➕ 新增場次」與「補入選手」即時開局記分！</p>
         </div>
 
         <!-- Player List & Club Members Quick Selector -->
@@ -570,7 +574,8 @@
             </button>
             <button type="button" onclick="completeTournamentAndReturn()" id="btn-complete-and-return-bottom"
               class="w-full py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
-              <i data-lucide="check-circle-2" class="w-4 h-4"></i> <span id="t-btn-complete-and-return-bottom">完賽並返回大廳</span>
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> <span
+                id="t-btn-complete-and-return-bottom">完賽並返回大廳</span>
             </button>
           </div>
         </div>
@@ -638,7 +643,8 @@
       <div id="history-club-aggregate-section" class="hidden space-y-3">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <h3 class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
-            <i data-lucide="crown" class="w-4 h-4"></i> <span id="t-history-aggregate-heading">社團總戰績榜</span> (<span id="history-aggregate-club-name"></span>)
+            <i data-lucide="crown" class="w-4 h-4"></i> <span id="t-history-aggregate-heading">社團總戰績榜</span> (<span
+              id="history-aggregate-club-name"></span>)
           </h3>
           <!-- Month Filter -->
           <div class="flex items-center gap-1.5 text-xs">
@@ -674,7 +680,8 @@
 
       <!-- Bottom: Individual Match List (List of completed tournament cards for this club / casual) -->
       <div class="space-y-3">
-        <h3 id="history-matches-section-title" class="text-sm sm:text-base font-bold flex items-center gap-1.5 sub-text">
+        <h3 id="history-matches-section-title"
+          class="text-sm sm:text-base font-bold flex items-center gap-1.5 sub-text">
           <i data-lucide="calendar" class="w-4 h-4"></i> 歷次賽事紀錄
         </h3>
         <div id="history-tournaments-list" class="space-y-4">
@@ -887,22 +894,17 @@
         btnNewClub: "➕ 新增社團",
         btnSelectClub: "選擇既有社團",
         placeholderNewClub: "請輸入新社團名稱 (例如：樂活早午團)",
-        labelDuration: "3. 預計比賽總時間",
-        labelExtraMins: "延長/緩衝時間 (選填)",
-        labelGameMins: "4. 預估單局配時",
+        labelMode: "3. 賽事模式選擇",
+        modeFairTitle: "平均模式",
+        modeFairDesc: "自動排定每人場次均等的公平賽程",
+        modeFreeTitle: "自由模式",
+        modeFreeDesc: "隨到隨打，現場彈性加開場次與補人",
+        labelDuration: "4. 預計比賽總時間",
         unitHours: "小時",
         unitMins: "分鐘",
-        unitExtraMins: "分鐘",
-        labelScoring: "5. 計分賽制選擇",
-        labelTarget: "6. 每局目標分數",
-        optionRally: "落地得分制 (Rally)",
-        optionSideout: "發球得分制 (Side-out)",
-        labelScheduleMode: "7. 賽事模式",
-        modeFairTitle: "平均賽事",
-        modeFairDesc: "場數完全一致",
-        modeMaxTitle: "最大賽事",
-        modeMaxDesc: "時間內最多局",
-        labelPlayers: "8. 參賽選手名單 (每列一位)",
+        freeNoticeTitle: "自由模式說明：",
+        freeNoticeDesc: "進入賽事後，使用管理模式隨時點擊「➕ 新增場次」與「補入選手」即時開局記分！",
+        labelPlayers: "5. 參賽選手名單 (每列一位)",
         playersBadge: "位選手",
         timeCalcTitle: "時間預估試算：",
         submitCreateBtn: "⚡ 自動生成賽程並發布",
@@ -1097,22 +1099,17 @@
         btnNewClub: "➕ Add Club",
         btnSelectClub: "Select Club",
         placeholderNewClub: "Enter club name (e.g. LOHAS Pickleball)",
-        labelDuration: "3. Total Estimated Duration",
-        labelExtraMins: "Buffer / Extra Time (Optional)",
-        labelGameMins: "4. Single Game Mins",
+        labelMode: "3. Tournament Mode",
+        modeFairTitle: "Fair Play",
+        modeFairDesc: "Auto-balanced fair round-robin",
+        modeFreeTitle: "Free Play",
+        modeFreeDesc: "Flexible on-demand matchmaking",
+        labelDuration: "4. Estimated Duration",
         unitHours: "Hrs",
         unitMins: "Mins",
-        unitExtraMins: "Mins",
-        labelScoring: "5. Scoring System",
-        labelTarget: "6. Target Points",
-        optionRally: "Rally Scoring",
-        optionSideout: "Side-out Scoring",
-        labelScheduleMode: "7. Schedule Mode",
-        modeFairTitle: "Fair Play",
-        modeFairDesc: "Equal games each",
-        modeMaxTitle: "Max Games",
-        modeMaxDesc: "Most games possible",
-        labelPlayers: "8. Player Roster (One per line)",
+        freeNoticeTitle: "Free Mode Guide:",
+        freeNoticeDesc: "In live view, unlock Admin Mode to add matches and players on the fly!",
+        labelPlayers: "5. Player Roster (One per line)",
         playersBadge: "Players",
         timeCalcTitle: "Estimated Time Calculation:",
         submitCreateBtn: "⚡ Generate & Publish Schedule",
@@ -1375,11 +1372,28 @@
       const newClubInputEl = document.getElementById("create-club-name");
       if (newClubInputEl) newClubInputEl.placeholder = t("placeholderNewClub");
 
+      // Mode Selector
+      const labelModeEl = document.getElementById("t-label-mode");
+      if (labelModeEl) labelModeEl.innerText = t("labelMode");
+      const modeFairTitleEl = document.getElementById("t-mode-fair-title");
+      if (modeFairTitleEl) modeFairTitleEl.innerText = t("modeFairTitle");
+      const modeFairDescEl = document.getElementById("t-mode-fair-desc");
+      if (modeFairDescEl) modeFairDescEl.innerText = t("modeFairDesc");
+      const modeFreeTitleEl = document.getElementById("t-mode-free-title");
+      if (modeFreeTitleEl) modeFreeTitleEl.innerText = t("modeFreeTitle");
+      const modeFreeDescEl = document.getElementById("t-mode-free-desc");
+      if (modeFreeDescEl) modeFreeDescEl.innerText = t("modeFreeDesc");
+
       const labelDurationEl = document.getElementById("t-label-duration");
       if (labelDurationEl) labelDurationEl.innerText = t("labelDuration");
       const unitHoursEl = document.getElementById("t-unit-hours");
       if (unitHoursEl) unitHoursEl.innerText = t("unitHours");
-      
+
+      const freeNoticeTitleEl = document.getElementById("t-free-notice-title");
+      if (freeNoticeTitleEl) freeNoticeTitleEl.innerText = t("freeNoticeTitle");
+      const freeNoticeDescEl = document.getElementById("t-free-notice-desc");
+      if (freeNoticeDescEl) freeNoticeDescEl.innerText = t("freeNoticeDesc");
+
       const labelPlayersEl = document.getElementById("t-label-players");
       if (labelPlayersEl) labelPlayersEl.innerText = t("labelPlayers");
       const clubMembersTitleEl = document.getElementById("t-club-members-title");
@@ -2559,10 +2573,10 @@
       const modeBadge = document.getElementById("live-mode-badge");
       if (modeBadge) {
         if (isFreeMode) {
-          modeBadge.innerText = "自由模式";
+          modeBadge.innerText = t("modeFreeTitle");
           modeBadge.className = "px-2 py-0.5 rounded-md text-[10px] font-bold border bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
         } else {
-          modeBadge.innerText = "平均模式";
+          modeBadge.innerText = t("modeFairTitle");
           modeBadge.className = "px-2 py-0.5 rounded-md text-[10px] font-bold border bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
         }
       }
