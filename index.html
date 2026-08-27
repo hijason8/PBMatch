@@ -664,8 +664,8 @@
       <!-- Top: Club Aggregate Leaderboard (Only shown when a specific club is selected) -->
       <div id="history-club-aggregate-section" class="hidden space-y-3">
         <div class="flex items-center justify-between flex-wrap gap-2">
-          <h3 class="text-sm sm:text-base font-bold flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
-            <i data-lucide="crown" class="w-4 h-4"></i> <span id="t-history-aggregate-heading">社團總戰績榜</span> (<span
+          <h3 class="text-sm sm:text-base font-bold text-amber-600 dark:text-amber-400">
+            <span id="t-history-aggregate-heading">社團參賽紀錄</span> (<span
               id="history-aggregate-club-name"></span>)
           </h3>
           <!-- Month Filter -->
@@ -1028,7 +1028,7 @@
         casualPlay: "臨打賽事",
         casualArchiveTitle: "臨打歷史賽事紀錄",
         clubArchiveTitle: "歷次賽事紀錄",
-        clubStandingsTitle: "社團總戰績榜",
+        clubStandingsTitle: "社團參賽紀錄",
         monthFilterLabel: "月份：",
         monthAll: "全部月份",
         thAggPlayer: "選手名稱",
@@ -1122,7 +1122,7 @@
         casualPlay: "Casual Play",
         casualArchiveTitle: "Casual Match Archives",
         clubArchiveTitle: "Match Archives",
-        clubStandingsTitle: "Club Total Standings",
+        clubStandingsTitle: "Club Match Records",
         monthFilterLabel: "Month:",
         monthAll: "All Months",
         thAggPlayer: "Player",
@@ -3535,7 +3535,10 @@
       let html = `<option value="all">${t("monthAll")}</option>`;
       sortedMonths.forEach(m => {
         const [year, month] = m.split("-");
-        const label = STATE.lang === "zh-TW" ? `${year} 年 ${parseInt(month)} 月` : `${m}`;
+        const dateObj = new Date(parseInt(year), parseInt(month) - 1, 1);
+        const label = STATE.lang === "zh-TW"
+          ? `${year} 年 ${parseInt(month)} 月`
+          : dateObj.toLocaleDateString("en-US", { month: "short", year: "numeric" });
         html += `<option value="${m}" ${currentVal === m ? 'selected' : ''}>${label}</option>`;
       });
 
