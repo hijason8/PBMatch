@@ -404,49 +404,67 @@
           <p class="sub-text text-[11px]" id="t-free-notice-desc">進入賽事後，使用管理模式隨時點擊「➕ 新增場次」與「補入選手」即時開局記分！</p>
         </div>
 
-        <!-- Player List & Club Members Quick Selector -->
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between mb-1">
-            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">5. 參賽選手名單 (每列一位)</label>
-            <span id="player-count-badge"
-              class="text-[11px] font-semibold px-2 py-0.5 rounded-full card-inner text-emerald-600 dark:text-emerald-400">0
-              位</span>
+        <!-- 5. Player Roster Section (Unified Compact Chips Container) -->
+        <div class="space-y-2">
+          <!-- Header Bar -->
+          <div class="flex items-center justify-between">
+            <label id="t-label-players" class="block text-xs sm:text-sm font-semibold">5. 參賽選手名單</label>
+            <div class="flex items-center gap-2 text-[11px]">
+              <button type="button" onclick="selectAllClubMembers()"
+                class="text-emerald-600 dark:text-emerald-400 hover:underline font-semibold"
+                id="t-select-all-btn">全選社團名單</button>
+              <span class="sub-text">|</span>
+              <button type="button" onclick="clearSelectedPlayers()"
+                class="sub-text hover:text-rose-500 font-semibold" id="t-clear-all-btn">清空名單</button>
+            </div>
           </div>
 
-          <!-- Quick Add Member & Member Chips Box -->
-          <div class="card-inner border rounded-xl p-3 space-y-2.5">
-            <!-- Header Bar -->
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <div class="flex items-center gap-1.5 text-xs font-semibold text-stone-800 dark:text-slate-200">
-                <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-500"></i>
-                <span id="t-club-members-title">社團常用成員名單 (點擊選取)</span>
+          <!-- Unified Card Container -->
+          <div class="card-inner border rounded-2xl p-3 sm:p-3.5 space-y-3 shadow-sm">
+            <!-- Row 1: Single Unified Input Bar + Live Count Badge -->
+            <div class="flex items-center gap-2">
+              <div class="relative flex-1">
+                <input type="text" id="quick-add-player-input"
+                  placeholder="輸入姓名或貼上名單 (按 Enter / 點新增)..."
+                  class="w-full input-bg border rounded-xl pl-3 pr-16 sm:pr-20 py-2 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none shadow-inner"
+                  onkeydown="if(event.key==='Enter'){event.preventDefault(); quickAddPlayer();}" />
+                <button type="button" onclick="quickAddPlayer()" id="t-quick-add-btn"
+                  class="absolute right-1 top-1 bottom-1 px-3 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 transition shadow-sm active:scale-95">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> <span id="t-btn-add-person">新增</span>
+                </button>
               </div>
-              <div class="flex items-center gap-2 text-[11px]">
-                <button type="button" onclick="selectAllClubMembers()"
-                  class="text-emerald-600 dark:text-emerald-400 hover:underline font-semibold"
-                  id="t-select-all-btn">全選</button>
-                <span class="sub-text">|</span>
-                <button type="button" onclick="clearSelectedPlayers()"
-                  class="sub-text hover:text-rose-500 font-semibold" id="t-clear-all-btn">清空</button>
+              <!-- Player count badge right next to the input -->
+              <span id="player-count-badge"
+                class="px-2.5 sm:px-3 py-2 rounded-xl font-bold text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 font-mono shrink-0 shadow-sm">
+                <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                <span><b id="roster-count-num">0</b> 位選手</span>
+              </span>
+            </div>
+
+            <!-- Row 2: Selected Players (Active Chips Area) -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-bold sub-text">
+                <span id="t-selected-roster-heading">👥 本次參賽選手：</span>
+              </div>
+              <div id="selected-players-chips" class="flex flex-wrap gap-1.5 min-h-[38px] p-2.5 rounded-xl bg-stone-500/5 border border-dashed border-stone-300 dark:border-slate-800 items-center">
+                <!-- Dynamically rendered active player chips -->
               </div>
             </div>
 
-            <!-- Row 1: Quick Add Player Input (Full Width on Mobile) -->
-            <div class="flex items-center gap-1.5">
-              <input type="text" id="quick-add-player-input" placeholder="輸入姓名快速新增人員 (按 Enter)..."
-                class="flex-1 input-bg border rounded-lg px-2.5 py-2 text-xs focus:border-emerald-500 focus:outline-none"
-                onkeydown="if(event.key==='Enter'){event.preventDefault(); quickAddPlayer();}" />
-              <button type="button" onclick="quickAddPlayer()" id="t-quick-add-btn"
-                class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 shrink-0 transition shadow-sm active:scale-95">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i> <span id="t-btn-add-person">新增</span>
-              </button>
+            <!-- Row 3: Club Common Members (Toggle chips) -->
+            <div id="club-members-section" class="space-y-1.5 pt-2 border-t border-stone-200 dark:border-slate-800/60">
+              <div class="flex items-center justify-between text-[11px] font-bold sub-text">
+                <span id="t-club-members-title">🛡️ 社團常用成員名單（點擊加入/取消）：</span>
+              </div>
+              <div id="club-members-chips" class="flex flex-wrap gap-1.5 pt-0.5">
+                <!-- Dynamically rendered club members -->
+              </div>
             </div>
 
-            <!-- Row 2: Test Players Quick Generate (Clean Secondary Row) -->
-            <div
-              class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
-              <span class="sub-text text-[11px]">快速產生名單：</span>
-              <div class="flex items-center gap-1">
+            <!-- Row 4: Test Players Quick Generate (Compact Bar) -->
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-200 dark:border-slate-800/40 text-[11px]">
+              <span id="t-auto-gen-label" class="sub-text text-[11px]">自動生成：</span>
+              <div class="flex items-center gap-1.5">
                 <input type="number" id="quick-generate-count" min="4" max="30" placeholder="人數"
                   class="w-14 input-bg border rounded-md px-1.5 py-1 text-xs text-center focus:border-amber-500 focus:outline-none"
                   onkeydown="if(event.key==='Enter'){event.preventDefault(); quickGeneratePlayers();}" />
@@ -456,17 +474,10 @@
                 </button>
               </div>
             </div>
-
-            <!-- Member Chips Area -->
-            <div id="club-members-chips" class="flex flex-wrap gap-1.5 min-h-[28px] items-center pt-0.5">
-              <!-- Dynamically populated -->
-            </div>
           </div>
 
-          <textarea id="create-players" rows="5" required
-            oninput="syncChipsFromTextarea(); updatePlayerCountBadge(); calculateTimeEstimate();"
-            placeholder="選手 A&#10;選手 B&#10;選手 C&#10;選手 D&#10;選手 E&#10;選手 F"
-            class="w-full input-bg border rounded-xl p-2.5 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none font-mono"></textarea>
+          <!-- Hidden Textarea for Algorithm & Form Submission Compatibility -->
+          <textarea id="create-players" class="hidden"></textarea>
         </div>
 
         <!-- Time Estimation Hint Box & Fair Schedule Options -->
@@ -1396,16 +1407,23 @@
 
       const labelPlayersEl = document.getElementById("t-label-players");
       if (labelPlayersEl) labelPlayersEl.innerText = t("labelPlayers");
+      const selRosterHeading = document.getElementById("t-selected-roster-heading");
+      if (selRosterHeading) selRosterHeading.innerText = STATE.lang === "zh-TW" ? "👥 本次參賽選手：" : "👥 Selected Roster:";
       const clubMembersTitleEl = document.getElementById("t-club-members-title");
-      if (clubMembersTitleEl) clubMembersTitleEl.innerText = t("clubMembersTitle");
+      if (clubMembersTitleEl) clubMembersTitleEl.innerText = STATE.lang === "zh-TW" ? "🛡️ 社團常用成員名單（點擊加入/取消）：" : "🛡️ Club Members (Click to add/remove):";
       const selectAllBtnEl = document.getElementById("t-select-all-btn");
-      if (selectAllBtnEl) selectAllBtnEl.innerText = t("selectAllBtn");
+      if (selectAllBtnEl) selectAllBtnEl.innerText = STATE.lang === "zh-TW" ? "全選社團名單" : "Select All Club Members";
       const clearAllBtnEl = document.getElementById("t-clear-all-btn");
-      if (clearAllBtnEl) clearAllBtnEl.innerText = t("clearAllBtn");
+      if (clearAllBtnEl) clearAllBtnEl.innerText = STATE.lang === "zh-TW" ? "清空名單" : "Clear Roster";
+      const autoGenLabelEl = document.getElementById("t-auto-gen-label");
+      if (autoGenLabelEl) autoGenLabelEl.innerText = STATE.lang === "zh-TW" ? "自動生成：" : "Auto Generate:";
       const btnAddPersonEl = document.getElementById("t-btn-add-person");
       if (btnAddPersonEl) btnAddPersonEl.innerText = t("btnAddPerson");
       const quickAddInputEl = document.getElementById("quick-add-player-input");
-      if (quickAddInputEl) quickAddInputEl.placeholder = t("placeholderQuickAdd");
+      if (quickAddInputEl) quickAddInputEl.placeholder = STATE.lang === "zh-TW" ? "輸入姓名或貼上名單 (按 Enter / 點新增)..." : "Enter name or paste roster (Press Enter)...";
+
+      renderSelectedPlayerChips();
+      renderClubMemberChips();
 
       const timeCalcTitleEl = document.getElementById("t-time-calc-title");
       if (timeCalcTitleEl) timeCalcTitleEl.innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t("timeCalcTitle")}`;
@@ -1715,7 +1733,13 @@
       const text = document.getElementById("create-players")?.value || "";
       const players = text.split("\n").map(s => s.trim()).filter(Boolean);
       const badge = document.getElementById("player-count-badge");
-      if (badge) badge.innerText = `${players.length} ${t("playersBadge")}`;
+      const num = document.getElementById("roster-count-num");
+      if (num) num.innerText = players.length;
+      if (badge) {
+        const isZh = STATE.lang === "zh-TW";
+        badge.innerHTML = `<i data-lucide="users" class="w-3.5 h-3.5 text-emerald-500"></i> <span><b id="roster-count-num">${players.length}</b> ${isZh ? "位選手" : "Players"}</span>`;
+      }
+      lucide.createIcons();
     }
     window.updatePlayerCountBadge = updatePlayerCountBadge;
 
@@ -1960,18 +1984,72 @@
       }
     }
 
+    function extractPlayerNames(rawText) {
+      if (!rawText) return [];
+      return rawText
+        .split(/[\n,，、;；\t]+/)
+        .map(s => s.replace(/^\d+[\.\、\s\-]+/, "").trim())
+        .filter(s => s.length > 0 && s.length <= 25);
+    }
+
+    function getSelectedPlayers() {
+      const textarea = document.getElementById("create-players");
+      if (!textarea || !textarea.value) return [];
+      return textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+    }
+
+    function setSelectedPlayers(list) {
+      const textarea = document.getElementById("create-players");
+      const unique = Array.from(new Set((list || []).map(s => s.trim()).filter(Boolean)));
+      if (textarea) textarea.value = unique.join("\n");
+      renderSelectedPlayerChips();
+      renderClubMemberChips();
+      updatePlayerCountBadge();
+      calculateTimeEstimate();
+    }
+
+    function renderSelectedPlayerChips() {
+      const container = document.getElementById("selected-players-chips");
+      if (!container) return;
+      const players = getSelectedPlayers();
+      if (players.length === 0) {
+        container.innerHTML = `<span class="sub-text text-[11px] italic py-1 px-1">${STATE.lang === 'zh-TW' ? '尚未加入任何選手，請在上方輸入或點選下方社團成員' : 'No players added yet. Type above or select from club members'}</span>`;
+        return;
+      }
+      container.innerHTML = players.map(name => {
+        const escaped = name.replace(/'/g, "\\'");
+        return `
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-white dark:text-slate-950 shadow-sm transition hover:scale-[1.02]">
+            <i data-lucide="user" class="w-3 h-3"></i>
+            <span>${name}</span>
+            <button type="button" onclick="removeSelectedPlayer('${escaped}')" class="ml-0.5 opacity-75 hover:opacity-100 hover:text-rose-200 transition text-[11px]" title="Remove">✕</button>
+          </div>
+        `;
+      }).join("");
+      lucide.createIcons();
+    }
+    window.renderSelectedPlayerChips = renderSelectedPlayerChips;
+
+    function removeSelectedPlayer(name) {
+      const current = getSelectedPlayers().filter(p => p !== name);
+      setSelectedPlayers(current);
+    }
+    window.removeSelectedPlayer = removeSelectedPlayer;
+
     function renderClubMemberChips() {
       const chipsContainer = document.getElementById("club-members-chips");
       if (!chipsContainer) return;
 
       const currentClub = getCurrentClubName();
       const members = getClubMembersList(currentClub);
-
-      const textarea = document.getElementById("create-players");
-      const selectedNames = (textarea ? (textarea.value || "") : "").split("\n").map(s => s.trim()).filter(Boolean);
+      const selectedNames = getSelectedPlayers();
 
       if (members.length === 0) {
-        chipsContainer.innerHTML = `<span class="sub-text text-[11px] italic">${t("noMembersHint")}</span>`;
+        if (!currentClub) {
+          chipsContainer.innerHTML = `<span class="sub-text text-[11px] italic">${STATE.lang === 'zh-TW' ? '未選擇社團，可直接在上方輸入姓名新增選手' : 'No club selected. Type names above to add players.'}</span>`;
+        } else {
+          chipsContainer.innerHTML = `<span class="sub-text text-[11px] italic">${t("noMembersHint")}</span>`;
+        }
         return;
       }
 
@@ -1980,14 +2058,14 @@
         const escapedName = name.replace(/'/g, "\\'");
         return `
           <div class="group inline-flex items-center rounded-lg border text-xs transition select-none ${isSelected
-            ? 'bg-emerald-500 text-white dark:text-slate-950 border-emerald-500 font-bold shadow-sm'
+            ? 'bg-emerald-500/15 border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold shadow-sm'
             : 'card-inner sub-text hover:border-emerald-500/50 hover:text-stone-900 dark:hover:text-white'
           }">
-            <button type="button" onclick="togglePlayerSelection('${escapedName}')" class="px-2.5 py-1 flex items-center gap-1">
-              <i data-lucide="${isSelected ? 'check' : 'user'}" class="w-3 h-3"></i>
+            <button type="button" onclick="togglePlayerSelection('${escapedName}')" class="px-2.5 py-1 flex items-center gap-1.5">
+              <i data-lucide="${isSelected ? 'check-circle-2' : 'circle'}" class="w-3 h-3 ${isSelected ? 'text-emerald-500' : 'opacity-40'}"></i>
               <span>${name}</span>
             </button>
-            <button type="button" onclick="removeClubMember('${escapedName}')" class="pr-1.5 pl-0.5 py-1 text-[10px] opacity-40 group-hover:opacity-100 hover:text-rose-400 transition" title="Delete member">
+            <button type="button" onclick="removeClubMember('${escapedName}')" class="pr-1.5 pl-0.5 py-1 text-[10px] opacity-30 group-hover:opacity-100 hover:text-rose-500 transition" title="Delete from club">
               ✕
             </button>
           </div>
@@ -2001,50 +2079,41 @@
     function quickAddPlayer() {
       const input = document.getElementById("quick-add-player-input");
       if (!input) return;
-      const name = input.value.trim();
-      if (!name) return;
+      const raw = input.value.trim();
+      if (!raw) return;
 
+      const names = extractPlayerNames(raw);
+      if (names.length === 0) return;
+
+      const current = getSelectedPlayers();
       const currentClub = getCurrentClubName();
-      if (currentClub) {
-        const members = getClubMembersList(currentClub);
-        if (!members.includes(name)) {
-          members.push(name);
-          saveClubMembersList(currentClub, members);
-        }
-      }
+      let clubMembers = currentClub ? getClubMembersList(currentClub) : [];
 
-      const textarea = document.getElementById("create-players");
-      if (textarea) {
-        const currentList = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
-        if (!currentList.includes(name)) {
-          currentList.push(name);
-          textarea.value = currentList.join("\n");
+      names.forEach(name => {
+        if (!current.includes(name)) current.push(name);
+        if (currentClub && !clubMembers.includes(name)) {
+          clubMembers.push(name);
         }
+      });
+
+      if (currentClub) {
+        saveClubMembersList(currentClub, clubMembers);
       }
 
       input.value = "";
-      renderClubMemberChips();
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
-      showToast(`${t("addedPlayerToast")}${name}`, "success");
+      setSelectedPlayers(current);
+      showToast(`${t("addedPlayerToast")}${names.join(", ")}`, "success");
     }
     window.quickAddPlayer = quickAddPlayer;
 
     function togglePlayerSelection(name) {
-      const textarea = document.getElementById("create-players");
-      if (!textarea) return;
-      let currentList = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
-
-      if (currentList.includes(name)) {
-        currentList = currentList.filter(p => p !== name);
+      let current = getSelectedPlayers();
+      if (current.includes(name)) {
+        current = current.filter(p => p !== name);
       } else {
-        currentList.push(name);
+        current.push(name);
       }
-
-      textarea.value = currentList.join("\n");
-      renderClubMemberChips();
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
+      setSelectedPlayers(current);
     }
     window.togglePlayerSelection = togglePlayerSelection;
 
@@ -2062,35 +2131,34 @@
       const currentClub = getCurrentClubName();
       const members = getClubMembersList(currentClub);
       if (members.length === 0) return;
-
-      const textarea = document.getElementById("create-players");
-      if (!textarea) return;
-
-      let currentList = textarea.value.split("\n").map(s => s.trim()).filter(Boolean);
+      const current = getSelectedPlayers();
       members.forEach(m => {
-        if (!currentList.includes(m)) currentList.push(m);
+        if (!current.includes(m)) current.push(m);
       });
-
-      textarea.value = currentList.join("\n");
-      renderClubMemberChips();
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
+      setSelectedPlayers(current);
     }
     window.selectAllClubMembers = selectAllClubMembers;
 
     function clearSelectedPlayers() {
-      const textarea = document.getElementById("create-players");
-      if (textarea) textarea.value = "";
-      renderClubMemberChips();
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
+      setSelectedPlayers([]);
     }
     window.clearSelectedPlayers = clearSelectedPlayers;
 
-    function syncChipsFromTextarea() {
-      renderClubMemberChips();
+    function quickGeneratePlayers() {
+      const countInput = document.getElementById("quick-generate-count");
+      const count = parseInt(countInput?.value) || 8;
+      if (count < 4 || count > 30) {
+        showToast(t("quickGenError"), "warning");
+        return;
+      }
+      const generated = [];
+      for (let i = 1; i <= count; i++) {
+        generated.push(STATE.lang === "zh-TW" ? `選手 ${i}` : `Player ${i}`);
+      }
+      setSelectedPlayers(generated);
+      showToast(t("quickGenToast").replace("{n}", count), "success");
     }
-    window.syncChipsFromTextarea = syncChipsFromTextarea;
+    window.quickGeneratePlayers = quickGeneratePlayers;
 
     async function handleCreateTournament(e) {
       e.preventDefault();
@@ -2381,11 +2449,10 @@
           if (snapshot.exists()) {
             const data = snapshot.val();
             list = Object.values(data);
+            localStorage.setItem("pb_tournaments", JSON.stringify(data));
+          } else {
+            localStorage.setItem("pb_tournaments", JSON.stringify({}));
           }
-          const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-          Object.values(localData).forEach(lt => {
-            if (!list.some(t => t.id === lt.id)) list.push(lt);
-          });
           displayHubTournamentsList(list);
         }, (error) => {
           console.error("Fetch tournaments error:", error);
@@ -2483,7 +2550,11 @@
             saveToLocalTournaments(STATE.tournamentData);
             renderLiveUI(STATE.tournamentData);
           } else {
-            loadFromLocalCache(tId);
+            const local = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+            delete local[tId];
+            localStorage.setItem("pb_tournaments", JSON.stringify(local));
+            showToast(STATE.lang === "zh-TW" ? "❌ 此賽事已不存在或已被刪除" : "Tournament not found or deleted", "error");
+            navigateTo("hub");
           }
         });
       } else {
@@ -3220,20 +3291,18 @@
       lucide.createIcons();
 
       // Fetch from cache or Firebase
-      const allT = STATE.allTournamentsCache || [];
-      if (allT.length > 0) {
-        renderHistoryCategorized(allT);
-      } else if (STATE.db) {
+      // Fetch from Firebase or fallback
+      if (STATE.db) {
         const tournamentsRef = ref(STATE.db, "tournaments");
         get(tournamentsRef).then(snapshot => {
           let list = [];
           if (snapshot.exists()) {
-            list = Object.values(snapshot.val());
+            const data = snapshot.val();
+            list = Object.values(data);
+            localStorage.setItem("pb_tournaments", JSON.stringify(data));
+          } else {
+            localStorage.setItem("pb_tournaments", JSON.stringify({}));
           }
-          const localData = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
-          Object.values(localData).forEach(lt => {
-            if (!list.some(t => t.id === lt.id)) list.push(lt);
-          });
           STATE.allTournamentsCache = list;
           renderHistoryCategorized(list);
         }).catch(() => {
@@ -3729,43 +3798,6 @@
     window.copyTournamentReport = copyTournamentReport;
 
     // ----------------------------------------------------
-    // FEATURE 4: QUICK GENERATE PLAYERS
-    // ----------------------------------------------------
-    function quickGeneratePlayers() {
-      const input = document.getElementById("quick-generate-count");
-      if (!input) return;
-      const count = parseInt(input.value);
-      if (isNaN(count) || count < 4 || count > 30) {
-        showToast(t("quickGenError"), "warning");
-        return;
-      }
-
-      const prefix = STATE.lang === "zh-TW" ? "選手" : "Player";
-      const names = [];
-      for (let i = 0; i < count; i++) {
-        // A, B, C, ... Z, AA, AB, ...
-        let label = "";
-        let n = i;
-        do {
-          label = String.fromCharCode(65 + (n % 26)) + label;
-          n = Math.floor(n / 26) - 1;
-        } while (n >= 0);
-        names.push(`${prefix} ${label}`);
-      }
-
-      const textarea = document.getElementById("create-players");
-      if (textarea) {
-        textarea.value = names.join("\n");
-      }
-      input.value = "";
-      renderClubMemberChips();
-      updatePlayerCountBadge();
-      calculateTimeEstimate();
-      showToast(t("quickGenToast").replace("{n}", count), "success");
-    }
-    window.quickGeneratePlayers = quickGeneratePlayers;
-
-    // ----------------------------------------------------
     // FEATURE 3: CLUB PASSWORD PROTECTION
     // ----------------------------------------------------
     async function getClubPassword(clubName) {
@@ -4038,6 +4070,8 @@
       initFirebase(DEFAULT_FIREBASE_CONFIG);
       applyLanguageUI();
       renderClubMemberChips();
+      renderSelectedPlayerChips();
+      updatePlayerCountBadge();
       initRouting();
       lucide.createIcons();
     }
