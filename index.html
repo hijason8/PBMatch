@@ -6,6 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Pickleball Hub - 匹克球個人雙打輪播賽事管理系統</title>
 
+  <!-- PWA & Apple iOS Web App Support -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" sizes="192x192" href="apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="PickleballHub" />
+  <meta name="theme-color" content="#10b981" />
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="專業的匹克球（Pickleball）個人雙打輪播賽事管理系統，手機直螢幕優化、支援黑白主題切換與即時比分同步。" />
   <meta name="keywords" content="Pickleball, 匹克球, 雙打輪播賽, 排賽系統" />
@@ -347,8 +357,8 @@
           <div class="flex items-center justify-between mb-1">
             <label id="t-label-club" class="block text-xs sm:text-sm font-semibold">2. 所屬社團 / 球團 (選填)</label>
             <button type="button" onclick="toggleNewClubInput()" id="btn-toggle-new-club"
-              class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-0.5">
-              <i data-lucide="plus-circle" class="w-3 h-3"></i> <span id="t-btn-new-club">➕ 新增社團</span>
+              class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> <span id="t-btn-new-club">新增社團</span>
             </button>
           </div>
           <div class="space-y-2">
@@ -414,8 +424,8 @@
                 class="text-emerald-600 dark:text-emerald-400 hover:underline font-semibold"
                 id="t-select-all-btn">全選社團名單</button>
               <span class="sub-text">|</span>
-              <button type="button" onclick="clearSelectedPlayers()"
-                class="sub-text hover:text-rose-500 font-semibold" id="t-clear-all-btn">清空名單</button>
+              <button type="button" onclick="clearSelectedPlayers()" class="sub-text hover:text-rose-500 font-semibold"
+                id="t-clear-all-btn">清空名單</button>
             </div>
           </div>
 
@@ -424,9 +434,8 @@
             <!-- Row 1: Single Unified Input Bar + Live Count Badge -->
             <div class="flex items-center gap-2">
               <div class="relative flex-1">
-                <input type="text" id="quick-add-player-input"
-                  placeholder="輸入姓名或貼上名單 (按 Enter / 點新增)..."
-                  class="w-full input-bg border rounded-xl pl-3 pr-16 sm:pr-20 py-2 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none shadow-inner"
+                <input type="text" id="quick-add-player-input" placeholder="輸入姓名或貼上名單 (按 Enter / 點新增)..."
+                  class="w-full input-bg border rounded-xl pl-3 pr-20 sm:pr-24 py-2 text-xs sm:text-sm focus:border-emerald-500 focus:outline-none shadow-inner"
                   onkeydown="if(event.key==='Enter'){event.preventDefault(); quickAddPlayer();}" />
                 <button type="button" onclick="quickAddPlayer()" id="t-quick-add-btn"
                   class="absolute right-1 top-1 bottom-1 px-3 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 transition shadow-sm active:scale-95">
@@ -446,7 +455,8 @@
               <div class="flex items-center justify-between text-[11px] font-bold sub-text">
                 <span id="t-selected-roster-heading">👥 本次參賽選手：</span>
               </div>
-              <div id="selected-players-chips" class="flex flex-wrap gap-1.5 min-h-[38px] p-2.5 rounded-xl bg-stone-500/5 border border-dashed border-stone-300 dark:border-slate-800 items-center">
+              <div id="selected-players-chips"
+                class="flex flex-wrap gap-1.5 min-h-[38px] p-2.5 rounded-xl bg-stone-500/5 border border-dashed border-stone-300 dark:border-slate-800 items-center">
                 <!-- Dynamically rendered active player chips -->
               </div>
             </div>
@@ -462,7 +472,8 @@
             </div>
 
             <!-- Row 4: Test Players Quick Generate (Compact Bar) -->
-            <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-200 dark:border-slate-800/40 text-[11px]">
+            <div
+              class="flex items-center justify-between gap-2 pt-2 border-t border-stone-200 dark:border-slate-800/40 text-[11px]">
               <span id="t-auto-gen-label" class="sub-text text-[11px]">自動生成：</span>
               <div class="flex items-center gap-1.5">
                 <input type="number" id="quick-generate-count" min="4" max="30" placeholder="人數"
@@ -577,7 +588,7 @@
           <div id="live-admin-toolbar" class="hidden flex flex-wrap items-center gap-2 pt-2">
             <button type="button" onclick="openAddMatchModal()"
               class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> ➕ 新增場次 / 加打一局
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> 新增場次 / 加打一局
             </button>
             <button type="button" onclick="addLivePlayerPrompt()"
               class="py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500/50 sub-text hover:text-emerald-500 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95">
@@ -902,7 +913,7 @@
         labelClub: "2. 所屬社團 / 球團",
         selectClubOption: "-- 請選擇社團 (可留空/未分類) --",
         newClubOption: "➕ 輸入新社團名稱...",
-        btnNewClub: "➕ 新增社團",
+        btnNewClub: "新增社團",
         btnSelectClub: "選擇既有社團",
         placeholderNewClub: "請輸入新社團名稱 (例如：樂活早午團)",
         labelMode: "3. 賽事模式選擇",
@@ -925,7 +936,7 @@
         selectAllBtn: "全選",
         clearAllBtn: "清空",
         placeholderQuickAdd: "輸入姓名快速新增人員 (按 Enter)...",
-        btnAddPerson: "新增人員",
+        btnAddPerson: "新增",
         noMembersHint: "尚無成員，請在上方輸入姓名快速新增！",
         addedPlayerToast: "已新增人員：",
 
@@ -1107,7 +1118,7 @@
         labelClub: "2. Club / League",
         selectClubOption: "-- Select Club (Optional) --",
         newClubOption: "➕ Enter new club name...",
-        btnNewClub: "➕ Add Club",
+        btnNewClub: "Add Club",
         btnSelectClub: "Select Club",
         placeholderNewClub: "Enter club name (e.g. LOHAS Pickleball)",
         labelMode: "3. Tournament Mode",
@@ -1130,7 +1141,7 @@
         selectAllBtn: "Select All",
         clearAllBtn: "Clear",
         placeholderQuickAdd: "Enter name to add player (Press Enter)...",
-        btnAddPerson: "Add Player",
+        btnAddPerson: "Add",
         noMembersHint: "No saved members yet. Type a name above to add!",
         addedPlayerToast: "Added player: ",
 
@@ -1339,7 +1350,7 @@
       const hubTitle = document.getElementById("t-hub-title");
       if (hubTitle) hubTitle.innerHTML = `<i data-lucide="layout-grid" class="w-5 h-5 text-emerald-500"></i> ${t("hubTitle")}`;
       const createNewBtnEl = document.getElementById("t-create-new-btn");
-      if (createNewBtnEl) createNewBtnEl.innerHTML = `➕ ${t("createNewBtn")}`;
+      if (createNewBtnEl) createNewBtnEl.innerText = t("createNewBtn");
       const hubActHeading = document.getElementById("t-hub-active-heading");
       if (hubActHeading) hubActHeading.innerHTML = `<i data-lucide="flame" class="w-4 h-4 text-orange-500"></i> <span>${t("hubActiveTitle")}</span>`;
       const hubCompHeading = document.getElementById("t-hub-completed-heading");
