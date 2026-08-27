@@ -588,11 +588,11 @@
           <div id="live-admin-toolbar" class="hidden flex flex-wrap items-center gap-2 pt-2">
             <button type="button" onclick="openAddMatchModal()"
               class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> 新增場次 / 加打一局
+              <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="t-btn-add-match-toolbar">新增場次 / 加打一局</span>
             </button>
             <button type="button" onclick="addLivePlayerPrompt()"
               class="py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500/50 sub-text hover:text-emerald-500 font-bold text-xs flex items-center justify-center gap-1.5 transition active:scale-95">
-              <i data-lucide="user-plus" class="w-4 h-4"></i> 補入選手
+              <i data-lucide="user-plus" class="w-4 h-4"></i> <span id="t-btn-add-live-player">補入選手</span>
             </button>
             <button type="button" onclick="completeTournamentAndReturn()" id="btn-complete-and-return-bottom"
               class="w-full py-2.5 px-3 rounded-xl card-inner border hover:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm active:scale-95">
@@ -784,15 +784,15 @@
         </div>
         <div>
           <h3 class="text-sm font-bold font-display" id="modal-add-match-title">加打一局 / 增加場次</h3>
-          <p class="text-[11px] sub-text">選擇 4 位選手或點擊智慧抽籤</p>
+          <p class="text-[11px] sub-text" id="modal-add-match-desc">選擇 4 位選手或點擊自動配對</p>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
-        <span class="text-xs font-semibold sub-text">自選陣容</span>
-        <button type="button" onclick="autoPickAddMatchPlayers()"
+        <span class="text-xs font-semibold sub-text" id="modal-custom-roster-label">自選陣容</span>
+        <button type="button" onclick="autoPickAddMatchPlayers()" id="modal-btn-auto-pick"
           class="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 font-bold text-xs flex items-center gap-1 transition">
-          <i data-lucide="sparkles" class="w-3 h-3"></i> 🎲 智慧抽籤 (場次少者優先)
+          <span id="modal-auto-pick-text">自動配對（場次少者優先）</span>
         </button>
       </div>
 
@@ -801,7 +801,7 @@
         <!-- Blue Team -->
         <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 space-y-2">
           <div class="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 藍隊 (Blue)
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span> <span id="modal-blue-team-title">藍隊</span>
           </div>
           <select id="add-blue-1"
             class="w-full input-bg border rounded-lg p-1.5 text-xs font-semibold focus:outline-none"></select>
@@ -812,7 +812,7 @@
         <!-- Red Team -->
         <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-2">
           <div class="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span> 紅隊 (Red)
+            <span class="w-2 h-2 rounded-full bg-rose-500"></span> <span id="modal-red-team-title">紅隊</span>
           </div>
           <select id="add-red-1"
             class="w-full input-bg border rounded-lg p-1.5 text-xs font-semibold focus:outline-none"></select>
@@ -821,9 +821,9 @@
         </div>
       </div>
 
-      <button type="button" onclick="submitAddMatch()"
+      <button type="button" onclick="submitAddMatch()" id="modal-btn-confirm-add"
         class="w-full bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1 shadow-md transition active:scale-95">
-        <i data-lucide="plus-circle" class="w-4 h-4"></i> 確認增加對局
+        <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="t-modal-confirm-add-text">確認增加對局</span>
       </button>
     </div>
   </div>
@@ -975,12 +975,27 @@
         editScoreBtn: "修改",
         gameCompleted: "已完成",
         scorePlaceholder: "得分",
+        voidMatchBtn: "🚫 流局",
+        restoreMatchBtn: "↩️ 恢復對局",
+        voidedNotice: "🚫 此場次已流局 (不計分)",
+        voidedBadge: "流局",
+        inProgressBadge: "進行中...",
+        finishedBadge: "✅ 已完賽",
+        btnAddMatchToolbar: "新增場次 / 加打一局",
+        btnAddLivePlayer: "補入選手",
 
         // Modals & Toasts
         modalQrTitle: "賽事專屬 QR Code",
         modalQrDesc: "掃描同步戰況比分",
         copyBtn: "複製",
         copiedToast: "📋 專屬連結已複製！",
+        addMatchModalTitle: "加打一局 / 增加場次",
+        addMatchModalDesc: "選擇 4 位選手或點擊自動配對",
+        customRosterLabel: "自選陣容",
+        autoPairBtn: "自動配對（場次少者優先）",
+        modalBlueTeamTitle: "藍隊",
+        modalRedTeamTitle: "紅隊",
+        confirmAddMatchBtn: "確認增加對局",
 
         // Quick Generate
         btnQuickGen: "快速產生",
@@ -1027,21 +1042,29 @@
 
         // Admin
         adminTitle: "管理員控制台",
-        adminDesc: "社團密碼管理 · 賽事管理 · 成員管理",
+        adminDesc: "社團更名 · 密碼管理 · 成員名單 · 賽事管理",
         adminBack: "返回大廳",
         adminPinPrompt: "🔐 請輸入管理員 Master PIN：",
         adminPinWrong: "❌ Master PIN 不符！",
-        adminClubSection: "🛡️ 社團密碼管理",
+        adminClubSection: "🛡️ 社團管理（更名 / 密碼 / 成員）",
         adminTournamentSection: "🏆 賽事管理",
         adminSetPassword: "設定密碼",
-        adminChangePassword: "修改密碼",
+        adminChangePassword: "變更密碼",
         adminRemovePassword: "移除密碼",
         adminNewPassword: "新密碼",
-        adminNoPassword: "未設密碼",
-        adminHasPassword: "已設密碼 ✅",
+        adminNoPassword: "無密碼",
+        adminHasPassword: "已加密 🔒",
+        adminRenameBtn: "✏️ 改名",
+        adminMembersBtn: "👥 成員",
+        adminAddMemberBtn: "新增",
+        adminAddMemberPlaceholder: "輸入姓名新增 (按 Enter)...",
+        adminNoMembers: "尚無成員名單",
         adminForceComplete: "強制完賽",
         adminForceCompleteConfirm: "確定強制將此賽事標記為完賽？未打完的局將設為 0:0",
-        adminForceCompleteDone: "✅ 賽事已強制完賽"
+        adminForceCompleteDone: "✅ 賽事已強制完賽",
+        adminStatsTournaments: "總賽事",
+        adminStatsClubs: "社團數",
+        adminStatsGames: "總完成局數"
       },
 
       "en": {
@@ -1180,12 +1203,27 @@
         editScoreBtn: "Edit",
         gameCompleted: "Finished",
         scorePlaceholder: "Score",
+        voidMatchBtn: "🚫 Void",
+        restoreMatchBtn: "↩️ Restore",
+        voidedNotice: "🚫 Match Voided (No Score)",
+        voidedBadge: "Voided",
+        inProgressBadge: "In Progress...",
+        finishedBadge: "✅ Finished",
+        btnAddMatchToolbar: "Add Match / Extra Game",
+        btnAddLivePlayer: "Add Player",
 
         // Modals & Toasts
         modalQrTitle: "Tournament QR Code",
         modalQrDesc: "Scan to sync live scores",
         copyBtn: "Copy",
         copiedToast: "📋 Link copied to clipboard!",
+        addMatchModalTitle: "Add Match / Extra Game",
+        addMatchModalDesc: "Select 4 players or use auto pairing",
+        customRosterLabel: "Custom Roster",
+        autoPairBtn: "Auto Pair (Fewer games first)",
+        modalBlueTeamTitle: "Blue Team",
+        modalRedTeamTitle: "Red Team",
+        confirmAddMatchBtn: "Confirm Add Match",
 
         // Quick Generate
         btnQuickGen: "Quick Gen",
@@ -1203,21 +1241,29 @@
 
         // Admin
         adminTitle: "Admin Panel",
-        adminDesc: "Club passwords · Tournament management · Members",
+        adminDesc: "Rename Clubs · Passwords · Members · Tournaments",
         adminBack: "Back to Hub",
         adminPinPrompt: "🔐 Enter Master Admin PIN:",
         adminPinWrong: "❌ Incorrect Master PIN!",
-        adminClubSection: "🛡️ Club Password Management",
+        adminClubSection: "🛡️ Club Management (Rename / Password / Members)",
         adminTournamentSection: "🏆 Tournament Management",
         adminSetPassword: "Set Password",
-        adminChangePassword: "Change",
-        adminRemovePassword: "Remove",
+        adminChangePassword: "Change Password",
+        adminRemovePassword: "Remove Password",
         adminNewPassword: "New Password",
         adminNoPassword: "No Password",
-        adminHasPassword: "Protected ✅",
+        adminHasPassword: "Protected 🔒",
+        adminRenameBtn: "✏️ Rename",
+        adminMembersBtn: "👥 Members",
+        adminAddMemberBtn: "Add",
+        adminAddMemberPlaceholder: "Enter name to add...",
+        adminNoMembers: "No members saved yet",
         adminForceComplete: "Force Complete",
         adminForceCompleteConfirm: "Force complete this tournament? Unplayed games will be set to 0:0",
-        adminForceCompleteDone: "✅ Tournament force completed"
+        adminForceCompleteDone: "✅ Tournament force completed",
+        adminStatsTournaments: "Tournaments",
+        adminStatsClubs: "Clubs",
+        adminStatsGames: "Completed Games"
       }
     };
 
@@ -1462,6 +1508,10 @@
       if (btnCompleteReturn) btnCompleteReturn.innerText = t("finishAndReturnBtn");
       const btnCompleteReturnBottom = document.getElementById("t-btn-complete-and-return-bottom");
       if (btnCompleteReturnBottom) btnCompleteReturnBottom.innerText = t("finishAndReturnBtn");
+      const btnAddMatchToolbar = document.getElementById("t-btn-add-match-toolbar");
+      if (btnAddMatchToolbar) btnAddMatchToolbar.innerText = t("btnAddMatchToolbar");
+      const btnAddLivePlayer = document.getElementById("t-btn-add-live-player");
+      if (btnAddLivePlayer) btnAddLivePlayer.innerText = t("btnAddLivePlayer");
 
       // Leaderboard Table Headers
       const thRankEl = document.getElementById("th-rank");
@@ -1486,13 +1536,29 @@
         if (list.children[3]) list.children[3].innerText = t("tbRule4");
       }
 
-      // Modal
+      // Modal QR
       const modalQrTitleEl = document.getElementById("t-modal-qr-title");
       if (modalQrTitleEl) modalQrTitleEl.innerText = t("modalQrTitle");
       const modalQrDescEl = document.getElementById("t-modal-qr-desc");
       if (modalQrDescEl) modalQrDescEl.innerText = t("modalQrDesc");
       const copyBtnEl = document.getElementById("t-copy-btn");
       if (copyBtnEl) copyBtnEl.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> ${t("copyBtn")}`;
+
+      // Add Match Modal
+      const addMatchTitleEl = document.getElementById("modal-add-match-title");
+      if (addMatchTitleEl) addMatchTitleEl.innerText = t("addMatchModalTitle");
+      const addMatchDescEl = document.getElementById("modal-add-match-desc");
+      if (addMatchDescEl) addMatchDescEl.innerText = t("addMatchModalDesc");
+      const customRosterLabelEl = document.getElementById("modal-custom-roster-label");
+      if (customRosterLabelEl) customRosterLabelEl.innerText = t("customRosterLabel");
+      const autoPickTextEl = document.getElementById("modal-auto-pick-text");
+      if (autoPickTextEl) autoPickTextEl.innerText = t("autoPairBtn");
+      const blueTeamTitleEl = document.getElementById("modal-blue-team-title");
+      if (blueTeamTitleEl) blueTeamTitleEl.innerText = t("modalBlueTeamTitle");
+      const redTeamTitleEl = document.getElementById("modal-red-team-title");
+      if (redTeamTitleEl) redTeamTitleEl.innerText = t("modalRedTeamTitle");
+      const confirmAddTextEl = document.getElementById("t-modal-confirm-add-text");
+      if (confirmAddTextEl) confirmAddTextEl.innerText = t("confirmAddMatchBtn");
 
       updatePlayerCountBadge();
       calculateTimeEstimate();
@@ -2868,9 +2934,9 @@
           if (isVoided) {
             footerHTML = `
               <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
-                <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold border border-rose-500/20">🚫 此場次已流局 (不計分)</span>
+                <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold border border-rose-500/20">${t("voidedNotice")}</span>
                 <button onclick="toggleVoidMatch(${m.id})" class="px-2.5 py-1 font-bold rounded-lg text-xs transition bg-stone-500/10 hover:bg-stone-500/20 sub-text border">
-                  ↩️ 恢復對局
+                  ${t("restoreMatchBtn")}
                 </button>
               </div>
             `;
@@ -2881,8 +2947,8 @@
                   <span>${t("restingLabel")}<strong class="text-stone-800 dark:text-slate-200 font-semibold">${m.resting && m.resting.length ? m.resting.join(', ') : t('noResting')}</strong></span>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                  <button onclick="toggleVoidMatch(${m.id})" class="px-2 py-1 font-semibold rounded-lg text-[11px] transition text-rose-500 hover:bg-rose-500/10 border border-rose-500/20" title="標記為流局（不計入勝負）">
-                    🚫 流局
+                  <button onclick="toggleVoidMatch(${m.id})" class="px-2 py-1 font-semibold rounded-lg text-[11px] transition text-rose-500 hover:bg-rose-500/10 border border-rose-500/20" title="Void Match">
+                    ${t("voidMatchBtn")}
                   </button>
                   <button onclick="saveMatchScore(${m.id})" class="px-3 py-1 font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-sm ${isDone ? 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30' : 'bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950'}">
                     <i data-lucide="${isDone ? 'edit-2' : 'check'}" class="w-3.5 h-3.5"></i> ${isDone ? t("editScoreBtn") : t("saveScoreBtn")}
@@ -2893,11 +2959,11 @@
           }
         } else {
           // Viewer footer
-          let statusBadge = `<span class="sub-text text-[11px] italic">進行中...</span>`;
+          let statusBadge = `<span class="sub-text text-[11px] italic">${t("inProgressBadge")}</span>`;
           if (isVoided) {
-            statusBadge = `<span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold border border-rose-500/20 text-[11px]">🚫 已流局</span>`;
+            statusBadge = `<span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold border border-rose-500/20 text-[11px]">${t("voidMatchBtn")}</span>`;
           } else if (isDone) {
-            statusBadge = `<span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 text-[11px]">✅ 已完賽</span>`;
+            statusBadge = `<span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 text-[11px]">${t("finishedBadge")}</span>`;
           }
           footerHTML = `
             <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-[11px]">
@@ -2917,7 +2983,7 @@
                 <span class="w-5 h-5 rounded-md card-inner text-emerald-600 dark:text-emerald-400 text-[11px] flex items-center justify-center font-mono">${m.id}</span>
                 ${STATE.lang === 'zh-TW' ? `第 ${m.id} 局` : `Game ${m.id}`}
               </span>
-              ${isVoided ? `<span class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400">流局</span>` : ''}
+              ${isVoided ? `<span class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400">${t("voidedBadge")}</span>` : ''}
             </div>
 
             ${scoreHTML}
@@ -3898,10 +3964,16 @@
 
       const allT = STATE.allTournamentsCache || [];
 
-      // Get unique clubs
+      // Get unique clubs from both tournaments and saved club_members
       const clubsSet = new Set();
       allT.forEach(t => { if (t.clubName && t.clubName.trim()) clubsSet.add(t.clubName.trim()); });
-      const uniqueClubs = Array.from(clubsSet);
+      const localMembers = JSON.parse(localStorage.getItem("pb_club_members") || "{}");
+      Object.keys(localMembers).forEach(c => { if (c && c.trim()) clubsSet.add(c.trim()); });
+      const uniqueClubs = Array.from(clubsSet).sort((a, b) => {
+        if (a === "__general__") return 1;
+        if (b === "__general__") return -1;
+        return a.localeCompare(b);
+      });
 
       // Fetch club passwords
       const clubPasswordMap = {};
@@ -3912,26 +3984,108 @@
       // Sort tournaments by date
       const sortedT = [...allT].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+      // Stats
+      const totalTournaments = sortedT.length;
+      const totalClubs = uniqueClubs.filter(c => c !== "__general__").length;
+      const totalGames = allT.reduce((acc, t) => acc + ((t.matches || []).filter(m => m.completed && !m.voided).length), 0);
+
       container.innerHTML = `
-        <!-- Club Password Management -->
+        <!-- Dashboard Overview Badges -->
+        <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
+          <div class="glass-card rounded-2xl p-3 sm:p-4 border text-center space-y-1">
+            <span class="text-[11px] sub-text font-semibold flex items-center justify-center gap-1">
+              <i data-lucide="trophy" class="w-3.5 h-3.5 text-emerald-500"></i> ${t("adminStatsTournaments")}
+            </span>
+            <div class="text-lg sm:text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400">${totalTournaments}</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3 sm:p-4 border text-center space-y-1">
+            <span class="text-[11px] sub-text font-semibold flex items-center justify-center gap-1">
+              <i data-lucide="shield" class="w-3.5 h-3.5 text-amber-500"></i> ${t("adminStatsClubs")}
+            </span>
+            <div class="text-lg sm:text-2xl font-black font-mono text-amber-600 dark:text-amber-400">${totalClubs}</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3 sm:p-4 border text-center space-y-1">
+            <span class="text-[11px] sub-text font-semibold flex items-center justify-center gap-1">
+              <i data-lucide="swords" class="w-3.5 h-3.5 text-orange-500"></i> ${t("adminStatsGames")}
+            </span>
+            <div class="text-lg sm:text-2xl font-black font-mono text-orange-600 dark:text-orange-400">${totalGames}</div>
+          </div>
+        </div>
+
+        <!-- Club Management Section (Rename / Password / Members) -->
         <div class="glass-card rounded-2xl p-4 sm:p-5 border space-y-3">
           <h3 class="text-sm font-bold font-display flex items-center gap-1.5">${t("adminClubSection")}</h3>
           ${uniqueClubs.length === 0
           ? `<p class="text-xs sub-text">${STATE.lang === "zh-TW" ? "尚無社團" : "No clubs found"}</p>`
           : uniqueClubs.map(club => {
+            const isGeneral = club === "__general__";
+            const displayName = isGeneral ? (STATE.lang === "zh-TW" ? "臨打通用成員庫" : "General / Casual Roster") : club;
             const hasPwd = !!clubPasswordMap[club];
+            const members = getClubMembersList(club);
+            const escapedClub = club.replace(/'/g, "\\'");
+            const safeClubId = encodeURIComponent(club).replace(/%/g, "_");
             return `
-              <div class="flex items-center justify-between gap-2 py-2 border-b border-stone-200 dark:border-slate-800/50 last:border-0">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="shield" class="w-4 h-4 text-amber-500 shrink-0"></i>
-                  <span class="text-xs font-semibold">${club}</span>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded ${hasPwd ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-stone-500/10 sub-text border'}">${hasPwd ? t("adminHasPassword") : t("adminNoPassword")}</span>
+              <div class="p-3 rounded-xl card-inner border space-y-2.5 ${isGeneral ? 'border-emerald-500/30 bg-emerald-500/5' : ''}">
+                <!-- Row 1: Club Header, Badges & Actions -->
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="${isGeneral ? 'globe' : 'shield'}" class="w-4 h-4 ${isGeneral ? 'text-emerald-500' : 'text-amber-500'} shrink-0"></i>
+                    <span class="text-xs sm:text-sm font-bold">${displayName}</span>
+                    ${!isGeneral ? `<span class="text-[10px] px-1.5 py-0.5 rounded font-mono ${hasPwd ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-stone-500/10 sub-text border'}">${hasPwd ? t("adminHasPassword") : t("adminNoPassword")}</span>` : `<span class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">${STATE.lang === 'zh-TW' ? '臨打通用' : 'General'}</span>`}
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    ${!isGeneral ? `
+                    <button onclick="adminRenameClub('${escapedClub}')" class="px-2.5 py-1 card-inner border hover:border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold rounded-lg text-[11px] flex items-center gap-1 transition shadow-sm active:scale-95" title="Rename Club">
+                      ${t("adminRenameBtn")}
+                    </button>` : ''}
+                    <button onclick="adminToggleClubMembers('${safeClubId}')" class="px-2.5 py-1 card-inner border hover:border-blue-500 text-blue-600 dark:text-blue-400 font-bold rounded-lg text-[11px] flex items-center gap-1 transition shadow-sm active:scale-95">
+                      ${t("adminMembersBtn")} (${members.length})
+                    </button>
+                  </div>
                 </div>
-                <div class="flex items-center gap-1.5">
-                  <input type="password" id="admin-pwd-${club}" placeholder="${t("adminNewPassword")}"
-                    class="w-24 input-bg border rounded-lg px-2 py-1 text-xs focus:border-amber-500 focus:outline-none" />
-                  <button onclick="adminSetClubPassword('${club}')" class="px-2 py-1 bg-amber-500 hover:bg-amber-400 text-white dark:text-slate-950 font-bold rounded-lg text-[11px] transition">${hasPwd ? t("adminChangePassword") : t("adminSetPassword")}</button>
-                  ${hasPwd ? `<button onclick="adminRemoveClubPassword('${club}')" class="px-2 py-1 border border-rose-500/30 text-rose-500 hover:bg-rose-500/10 font-bold rounded-lg text-[11px] transition">${t("adminRemovePassword")}</button>` : ''}
+
+                ${!isGeneral ? `
+                <!-- Row 2: Password Management -->
+                <div class="flex items-center justify-between gap-2 pt-1 border-t border-stone-200 dark:border-slate-800/60 text-xs flex-wrap">
+                  <span class="sub-text text-[11px] flex items-center gap-1"><i data-lucide="key" class="w-3 h-3 text-amber-500"></i> ${STATE.lang === "zh-TW" ? "社團密碼：" : "Password:"}</span>
+                  <div class="flex items-center gap-1.5 flex-1 justify-end max-w-sm">
+                    <input type="password" id="admin-pwd-${safeClubId}" placeholder="${t("adminNewPassword")}"
+                      class="w-28 sm:w-32 input-bg border rounded-lg px-2.5 py-1 text-xs focus:border-amber-500 focus:outline-none" />
+                    <button onclick="adminSetClubPassword('${escapedClub}', '${safeClubId}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-white dark:text-slate-950 font-bold rounded-lg text-[11px] transition shadow-sm">${hasPwd ? t("adminChangePassword") : t("adminSetPassword")}</button>
+                    ${hasPwd ? `<button onclick="adminRemoveClubPassword('${escapedClub}')" class="px-2 py-1 border border-rose-500/30 text-rose-500 hover:bg-rose-500/10 font-bold rounded-lg text-[11px] transition">${t("adminRemovePassword")}</button>` : ''}
+                  </div>
+                </div>` : ''}
+
+                <!-- Row 3: Collapsible Member Management Drawer -->
+                <div id="admin-members-wrap-${safeClubId}" class="hidden pt-2 border-t border-stone-200 dark:border-slate-800/60 space-y-2">
+                  <div class="flex items-center justify-between text-[11px] font-bold sub-text">
+                    <span>👥 ${STATE.lang === "zh-TW" ? "常用成員名單（點 ✕ 移除）：" : "Saved Members (Click ✕ to remove):"}</span>
+                  </div>
+                  <!-- Chips List -->
+                  <div class="flex flex-wrap gap-1.5 p-2 rounded-xl bg-stone-500/5 border border-dashed border-stone-300 dark:border-slate-800 min-h-[32px] items-center">
+                    ${members.length === 0
+                      ? `<span class="sub-text text-[11px] italic py-0.5">${t("adminNoMembers")}</span>`
+                      : members.map(m => {
+                        const escapedM = m.replace(/'/g, "\\'");
+                        return `
+                          <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
+                            <span>${m}</span>
+                            <button type="button" onclick="adminRemoveMember('${escapedClub}', '${escapedM}')" class="ml-0.5 opacity-60 hover:opacity-100 hover:text-rose-500 transition text-[11px]">✕</button>
+                          </div>
+                        `;
+                      }).join("")
+                    }
+                  </div>
+                  <!-- Quick Add Input -->
+                  <div class="flex items-center gap-1.5 pt-1">
+                    <input type="text" id="admin-add-member-input-${safeClubId}" placeholder="${t("adminAddMemberPlaceholder")}"
+                      class="flex-1 input-bg border rounded-lg px-2.5 py-1.5 text-xs focus:border-emerald-500 focus:outline-none"
+                      onkeydown="if(event.key==='Enter'){event.preventDefault(); adminAddMember('${escapedClub}', '${safeClubId}');}" />
+                    <button type="button" onclick="adminAddMember('${escapedClub}', '${safeClubId}')"
+                      class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold rounded-lg text-xs transition shadow-sm active:scale-95">
+                      ${t("adminAddMemberBtn")}
+                    </button>
+                  </div>
                 </div>
               </div>`;
           }).join("")
@@ -3970,8 +4124,116 @@
       lucide.createIcons();
     }
 
-    async function adminSetClubPassword(club) {
-      const input = document.getElementById(`admin-pwd-${club}`);
+    async function adminRenameClub(oldName) {
+      const promptMsg = STATE.lang === "zh-TW"
+        ? `✏️ 請輸入社團「${oldName}」的新名稱：`
+        : `✏️ Enter new name for club "${oldName}":`;
+      const newName = prompt(promptMsg, oldName);
+      if (newName === null) return;
+      const cleanNew = newName.trim();
+      if (!cleanNew || cleanNew === oldName) return;
+
+      // 1. Update all tournaments in Firebase and Local Cache
+      const allT = STATE.allTournamentsCache || [];
+      for (const t of allT) {
+        if (t.clubName === oldName) {
+          t.clubName = cleanNew;
+          if (STATE.db) {
+            try {
+              await set(ref(STATE.db, `tournaments/${t.id}/clubName`), cleanNew);
+            } catch (e) {
+              console.error("Update tournament clubName error:", e);
+            }
+          }
+        }
+      }
+
+      // Update local tournaments cache
+      const localT = JSON.parse(localStorage.getItem("pb_tournaments") || "{}");
+      Object.values(localT).forEach(t => {
+        if (t.clubName === oldName) t.clubName = cleanNew;
+      });
+      localStorage.setItem("pb_tournaments", JSON.stringify(localT));
+
+      // 2. Migrate club password
+      const oldPwd = await getClubPassword(oldName);
+      if (oldPwd) {
+        await setClubPasswordDB(cleanNew, oldPwd);
+        await setClubPasswordDB(oldName, null);
+      }
+
+      // 3. Migrate club members list
+      const oldMembers = getClubMembersList(oldName);
+      if (oldMembers && oldMembers.length > 0) {
+        const localMembers = JSON.parse(localStorage.getItem("pb_club_members") || "{}");
+        localMembers[cleanNew] = oldMembers;
+        delete localMembers[oldName];
+        localStorage.setItem("pb_club_members", JSON.stringify(localMembers));
+
+        if (STATE.db) {
+          try {
+            await set(ref(STATE.db, `club_members/${encodeURIComponent(cleanNew)}`), oldMembers);
+            await remove(ref(STATE.db, `club_members/${encodeURIComponent(oldName)}`));
+          } catch (e) {
+            console.error("Migrate club members error:", e);
+          }
+        }
+      }
+
+      // 4. Update session authenticated clubs
+      if (STATE.authenticatedClubs.has(oldName)) {
+        STATE.authenticatedClubs.delete(oldName);
+        STATE.authenticatedClubs.add(cleanNew);
+      }
+
+      showToast(STATE.lang === "zh-TW" ? `✅ 社團「${oldName}」已成功更名為「${cleanNew}」！` : `✅ Club renamed to "${cleanNew}"!`, "success");
+      renderAdminPage();
+      displayHubTournamentsList(STATE.allTournamentsCache);
+      renderHubTournaments();
+    }
+    window.adminRenameClub = adminRenameClub;
+
+    function adminToggleClubMembers(safeClubId) {
+      const el = document.getElementById(`admin-members-wrap-${safeClubId}`);
+      if (el) {
+        el.classList.toggle("hidden");
+        lucide.createIcons();
+      }
+    }
+    window.adminToggleClubMembers = adminToggleClubMembers;
+
+    function adminAddMember(club, safeClubId) {
+      const input = document.getElementById(`admin-add-member-input-${safeClubId}`);
+      if (!input) return;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const names = extractPlayerNames(raw);
+      if (names.length === 0) return;
+
+      const members = getClubMembersList(club);
+      names.forEach(n => {
+        if (!members.includes(n)) members.push(n);
+      });
+
+      saveClubMembersList(club, members);
+      input.value = "";
+      showToast(STATE.lang === "zh-TW" ? `已新增成員至「${club}」` : `Members added to "${club}"`, "success");
+      renderAdminPage();
+    }
+    window.adminAddMember = adminAddMember;
+
+    function adminRemoveMember(club, memberName) {
+      let members = getClubMembersList(club);
+      members = members.filter(m => m !== memberName);
+      saveClubMembersList(club, members);
+      showToast(STATE.lang === "zh-TW" ? `已移除成員「${memberName}」` : `Removed member "${memberName}"`, "info");
+      renderAdminPage();
+    }
+    window.adminRemoveMember = adminRemoveMember;
+
+    async function adminSetClubPassword(club, safeClubId) {
+      const input = document.getElementById(`admin-pwd-${safeClubId}`);
       if (!input) return;
       const pwd = input.value.trim();
       if (!pwd) {
